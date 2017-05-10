@@ -22,8 +22,7 @@
     "versions": [
       {
         "version": "1.0",
-        "status": "PUBLISHED",
-        "access" : @Json.toJson(access("""1.0"""))
+        "status": "PUBLISHED"
       }
     ]
   }
