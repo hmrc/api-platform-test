@@ -1,0 +1,176 @@
+#%RAML 1.0
+---
+title: API Platform Test
+version: 1.0
+
+protocols: [ HTTPS ]
+baseUri: https://api.service.hmrc.gov.uk/
+
+documentation:
+ - title: Overview
+   content: !include docs/overview.md
+
+mediaType: application/json
+
+uses:
+  sec: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/securitySchemes.raml
+  headers: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/headers.raml
+  annotations: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/annotations.raml
+  types: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/types.raml
+
+/api-platform-test:
+  /hello:
+    /world:
+      get:
+        displayName: Get hello world
+        is: [headers.acceptHeader]
+        securedBy: [ sec.x-application ]
+      post:
+        displayName: Post hello world
+        is: [headers.acceptHeader]
+        securedBy: [ sec.x-application ]
+        body:
+          application/json:
+            example: |
+              {
+                "message": "Hello World"
+              }
+    /friend:
+      get:
+        displayName: Get hello friend
+        is: [headers.acceptHeader]
+        securedBy: [ sec.x-application ]
+        queryParameters:
+          givenName:
+            description: Given name
+            type: string
+            required: true
+          lastName:
+            description: Family name
+            type: string
+            required: false
+      post:
+        displayName: Post hello friend
+        is: [headers.acceptHeader]
+        securedBy: [ sec.x-application ]
+        body:
+          application/json:
+            example: |
+              {
+                "message": "Hello World"
+              }
+    /buddies:
+      get:
+        displayName: Get hello buddies
+        is: [headers.acceptHeader]
+        securedBy: [ sec.x-application ]
+        queryParameters:
+          name:
+            description: Given name
+            type: string
+            required: false
+      post:
+        displayName: Post hello buddies
+        is: [headers.acceptHeader]
+        securedBy: [ sec.x-application ]
+        body:
+          application/json:
+            example: |
+              {
+                "message": "Hello World"
+              }
+    /family:
+        /{givenName}:
+          uriParameters:
+            givenName:
+              description: Given name
+              type: string
+          get:
+            displayName: Get family member
+            is: [headers.acceptHeader]
+            securedBy: [ sec.x-application ]
+          put:
+            displayName: Post family member
+            is: [headers.acceptHeader]
+            securedBy: [ sec.x-application ]
+            body:
+              application/json:
+                example: |
+                  {
+                    "message": "Hello World"
+                  }
+          /pets:
+            get:
+              displayName: Get pets
+              is: [headers.acceptHeader]
+              securedBy: [ sec.x-application ]
+            post:
+              displayName: Post pets
+              is: [headers.acceptHeader]
+              securedBy: [ sec.x-application ]
+              body:
+                application/json:
+                  example: |
+                    {
+                      "message": "Hello World"
+                    }
+            /{petName}:
+              uriParameters:
+                petName:
+                  description: Pet name
+                  type: string
+              get:
+                displayName: Get pet
+                is: [headers.acceptHeader]
+                securedBy: [ sec.x-application ]
+              put:
+                displayName: Put pet
+                is: [headers.acceptHeader]
+                securedBy: [ sec.x-application ]
+                body:
+                  application/json:
+                    example: |
+                      {
+                        "message": "Hello World"
+                      }
+              /weight:
+                get:
+                  displayName: Get pet weight
+                  is: [headers.acceptHeader]
+                  securedBy: [ sec.x-application ]
+                  body:
+                    application/json:
+                      example: |
+                        {
+                          "message": "Hello World"
+                        }
+                post:
+                  displayName: Post pet weight
+                  is: [headers.acceptHeader]
+                  securedBy: [ sec.x-application ]
+                  body:
+                    application/json:
+                      example: |
+                        {
+                          "message": "Hello World"
+                        }
+          /preference:
+            get:
+              displayName: Get preference
+              is: [headers.acceptHeader]
+              securedBy: [ sec.x-application ]
+              queryParameters:
+                preferenceType:
+                  description: Preference type
+                  type: string
+                  required: false
+            post:
+              displayName: Post preference
+              is: [headers.acceptHeader]
+              securedBy: [ sec.x-application ]
+              body:
+                application/json:
+                  example: |
+                    {
+                      "message": "Hello World"
+                    }

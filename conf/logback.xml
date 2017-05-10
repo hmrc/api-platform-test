@@ -43,7 +43,12 @@
         <appender-ref ref="STDOUT_IGNORE_NETTY" />
     </logger>
 
-    <logger name="com.google.inject" level="INFO"/>
+    <logger name="com.google.inject" level="WARN"/>
+    <logger name="akka.event" level="WARN"/>
+    <logger name="play.api.libs" level="WARN"/>
+    <logger name="org.apache.http" level="WARN"/>
+    <logger name="io.netty" level="WARN"/>
+    <logger name="org.asynchttpclient.netty" level="WARN"/>
 
     <logger name="uk.gov" level="INFO"/>
 
