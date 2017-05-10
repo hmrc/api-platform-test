@@ -1,7 +1,7 @@
 @import uk.gov.hmrc.apiplatformtest.config.ApiAccess
 @import play.api.libs.json.Json
 
-@(access: ApiAccess)
+@(access: String => ApiAccess)
 {
   "scopes": [
     {
@@ -23,7 +23,7 @@
       {
         "version": "1.0",
         "status": "PUBLISHED",
-        "access" : @Json.toJson(access)
+        "access" : @Json.toJson(access("""1.0"""))
       }
     ]
   }

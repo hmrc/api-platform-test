@@ -22,26 +22,9 @@ import play.api.libs.json.Json
 case class ApiAccess(`type`: String, whitelistedApplicationIds: Option[Seq[String]])
 
 object ApiAccess {
-  val PRIVATE = "PRIVATE"
-
-  def fromConfig(value: Option[Configuration]): ApiAccess = {
-    def accessType = {
-      value match {
-        case Some(config) => {
-          config.getString("type").getOrElse(PRIVATE)
-        }
-        case None => PRIVATE
-      }
-    }
-
-    def whiteListedApplicationIds = {
-      value match {
-        case Some(config) => config.getStringSeq("whitelistedApplicationIds")
-        case None => Some(Seq())
-      }
-    }
-    new ApiAccess(accessType, whiteListedApplicationIds)
-  }
+  def build(config: Option[Configuration])(version: String): ApiAccess = ApiAccess(
+    `type` = config.flatMap(_.getString(s"version-$version.type")).getOrElse("PRIVATE"),
+    whitelistedApplicationIds = config.flatMap((_.getStringSeq(s"version-$version.whitelistedApplicationIds"))).orElse(Some(Seq.empty)))
 
   implicit val apiAccessFmt = Json.format[ApiAccess]
 }

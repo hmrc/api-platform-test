@@ -26,7 +26,7 @@ import uk.gov.hmrc.apiplatformtest.views.txt
 class DocumentationController(httpErrorHandler: HttpErrorHandler, appContext: AppContext) extends AssetsBuilder(httpErrorHandler) with BaseController {
 
   def definition = Action {
-    Ok(txt.definition(ApiAccess.fromConfig(appContext.access))).withHeaders("Content-Type" -> "application/json")
+    Ok(txt.definition(ApiAccess.build(appContext.access))).withHeaders("Content-Type" -> "application/json")
   }
 
   def raml(version: String, file: String) = {
