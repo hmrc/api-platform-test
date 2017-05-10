@@ -26,32 +26,17 @@ import scala.concurrent.Future
 trait HelloController extends BaseController {
   implicit val hc: HeaderCarrier
 
-  val response = Ok(Json.toJson("""{ "message": "Hello World" }"""))
-
-  def get = Action.async {
-    Future.successful(response)
+  def handle = Action.async {
+    Future.successful(Ok(Json.toJson("""{ "message": "Hello World" }""")))
   }
 
-  def getWithOneParam(param: String) = Action.async {
-    Future.successful(response)
+  def handleWithParam(param: String) = Action.async {
+    Future.successful(Ok(Json.toJson(s"""{ "message": "$param" }""")))
   }
 
-  def getWithTwoParams(param1: String, param2: String) = Action.async {
-    Future.successful(response)
+  def handleWithTwoParams(param1: String, param2: String) = Action.async {
+    Future.successful(Ok(Json.toJson(s"""{ "message": "$param1 / $param2" }""")))
   }
-
-  def post = Action.async {
-    Future.successful(response)
-  }
-
-  def postWithOneParam(param: String) = Action.async {
-    Future.successful(response)
-  }
-
-  def postWithTwoParams(param1: String, param2: String) = Action.async {
-    Future.successful(response)
-  }
-
 }
 
 object HelloController extends HelloController {

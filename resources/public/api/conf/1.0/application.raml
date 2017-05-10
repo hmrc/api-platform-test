@@ -174,3 +174,271 @@ uses:
                     {
                       "message": "Hello World"
                     }
+
+  /ni/{nino}:
+    uriParameters:
+      nino:
+        description: National Insurance Number. This should be provided without spaces (e.g. AA999999A), as spaces in NINOs will be forbidden in a future version of the API.
+        type: string
+    /self-employments:
+      post:
+        displayName: Add a self-employment business [test only]
+        description: Add a self-employment business. This API is not available in production.
+        is: [headers.acceptHeader]
+        securedBy: [ sec.x-application ]
+      get:
+        displayName: List all self-employment businesses
+        description: List all self-employment businesses
+        is: [headers.acceptHeader]
+        securedBy: [ sec.x-application ]
+      /{selfEmploymentId}:
+        description: Self-employment business
+        uriParameters:
+          selfEmploymentId:
+            displayName: Self-employment ID
+            description: An identifier for the self-employment business, unique to the customer
+            type: string
+        put:
+          displayName: Update a self-employment business [test only]
+          description: Update a self-employment business. This API is not available in production.
+          is: [headers.acceptHeader]
+          securedBy: [ sec.x-application ]
+        get:
+          displayName: Get a self-employment business
+          description: Get a self-employment business
+          is: [headers.acceptHeader]
+          securedBy: [ sec.x-application ]
+        /obligations:
+          get:
+            displayName: Retrieve self-employment business obligations
+            description: Retrieve self-employment business obligations
+            is: [headers.acceptHeader]
+            securedBy: [ sec.x-application ]
+        /periods:
+          post:
+            displayName: Create a self-employment update period
+            description: Create a self-employment update period for submission of periodic data i.e incomes and expenses.
+                         Submissions which do not include any incomes or expenses are invalid.
+                         You should submit zero values if you do not have incomes or expenses.
+            is: [headers.acceptHeader]
+            securedBy: [ sec.x-application ]
+          get:
+            displayName: List all self-employment update periods [test only]
+            description: List all self-employment update periods. This API is not available in production.
+            is: [headers.acceptHeader]
+            securedBy: [ sec.x-application ]
+          /{periodId}:
+            uriParameters:
+              periodId:
+                description: Update period ID
+                type: string
+            get:
+              displayName: Get a self-employment update period [test only]
+              description: Get a single self-employment update period for a given identifier. This API is not available in production.
+              is: [headers.acceptHeader]
+              securedBy: [ sec.x-application ]
+            put:
+              displayName: Update a self-employment update period [test only]
+              description: Update a self-employment update period. This API is not available in production.
+                           Submissions  which do not include any incomes or expenses are invalid.
+                           You should submit zero values if you do not have incomes or expenses.
+              is: [headers.acceptHeader]
+              securedBy: [ sec.x-application ]
+        /{taxYear}:
+          uriParameters:
+            taxYear:
+              description: The tax year the data applies to
+              type: string
+              example: 2017-18
+          put:
+            displayName: Update a self-employment annual summary [test only]
+            description: Update a self-employment annual summary for a tax year. This API is not available in production.
+            is: [headers.acceptHeader]
+            securedBy: [ sec.x-application ]
+          get:
+            displayName: Get a self-employment annual summary [test only]
+            description: Get a self-employment annual summary for a tax year. This API is not available in production.
+            is: [headers.acceptHeader]
+            securedBy: [ sec.x-application ]
+    /uk-properties:
+      post:
+        displayName: Add a UK property business [test only]
+        description: Add a UK property business. This API is not available in production.
+        is: [headers.acceptHeader]
+        securedBy: [ sec.x-application ]
+      get:
+        displayName: Get a UK property business
+        description: Get a UK property business
+        is: [headers.acceptHeader]
+        securedBy: [ sec.x-application ]
+      /obligations:
+        get:
+          displayName: Retrieve all UK property business obligations
+          description: Retrieve all UK property business obligations
+          is: [headers.acceptHeader]
+          securedBy: [ sec.x-application ]
+      /other:
+        /periods:
+          post:
+            displayName: Create a non FHL UK property update period
+            description: Create a non FHL UK property update period for submission of periodic data i.e incomes and expenses.
+                         Submissions  which do not include any incomes or expenses are invalid.
+                         You should submit zero values if you do not have incomes or expenses.
+            is: [headers.acceptHeader]
+            securedBy: [ sec.x-application ]
+          get:
+            displayName: List all non FHL UK property update periods [test only]
+            description: List all non FHL UK property update periods. This API is not available in production.
+            is: [headers.acceptHeader]
+            securedBy: [ sec.x-application ]
+          /{periodId}:
+            uriParameters:
+              periodId:
+                displayName: Update period ID
+                description: An identifier for the period
+                type: string
+            get:
+              displayName: Get a non FHL UK property update period [test only]
+              description: Get a non FHL UK property update period for a given identifier. This API is not available in production.
+              is: [headers.acceptHeader]
+              securedBy: [ sec.x-application ]
+            put:
+              displayName: Update a non FHL UK property update period [test only]
+              description: Update a non FHL UK property update period. This API is not available in production.
+                           Submissions  which do not include any incomes or expenses are invalid.
+                           You should submit zero values if you do not have incomes or expenses.
+              is: [headers.acceptHeader]
+              securedBy: [ sec.x-application ]
+        /{taxYear}:
+            displayName: Annual Summary
+            uriParameters:
+              taxYear:
+                description: The tax year the data applies to
+                type: string
+                example: 2017-18
+            put:
+              displayName: Update a non-FHL UK property business annual summary [test only]
+              description: Update a non-FHL UK property business annual summary for a tax year. This API is not available in production.
+              is: [headers.acceptHeader]
+              securedBy: [ sec.x-application ]
+            get:
+              displayName: Get non FHL UK property business annual summary [test only]
+              description: Get non FHL UK property business for a tax year. This API is not available in production.
+              is: [headers.acceptHeader]
+              securedBy: [ sec.x-application ]
+      /furnished-holiday-lettings:
+        /periods:
+          post:
+            displayName: Create a FHL UK property update period
+            description: Create a FHL UK property update period for submission of periodic data i.e incomes and expenses.
+                         Submissions which do not include any incomes or expenses are invalid.
+                         You should submit zero values if you do not have incomes or expenses.
+            is: [headers.acceptHeader]
+            securedBy: [ sec.x-application ]
+          get:
+            displayName: List all FHL UK property update periods [test only]
+            description: List all FHL UK property update periods. This API is not available in production.
+            is: [headers.acceptHeader]
+            securedBy: [ sec.x-application ]
+          /{periodId}:
+            uriParameters:
+              periodId:
+                displayName: Update period ID
+                description: An identifier for the period
+                type: string
+            get:
+              displayName: Get a FHL UK property update period [test only]
+              description: Get a FHL UK property update period for a given identifier. This API is not available in production.
+              is: [headers.acceptHeader]
+              securedBy: [ sec.x-application ]
+            put:
+              displayName: Update a FHL UK property update period [test only]
+              description: Update a FHL UK property update period. This API is not available in production.
+                           Submissions which do not include any incomes or expenses are invalid.
+                           You should submit zero values if you do not have incomes or expenses.
+              is: [headers.acceptHeader]
+              securedBy: [ sec.x-application ]
+        /{taxYear}:
+            displayName: Annual Summary
+            uriParameters:
+              taxYear:
+                description: The tax year the data applies to
+                type: string
+                example: 2017-18
+            put:
+              displayName: Update a FHL UK property business annual summary [test only]
+              description: Update a FHL UK property business annual summary for a tax year. This API is not available in production.
+              is: [headers.acceptHeader]
+              securedBy: [ sec.x-application ]
+            get:
+              displayName: Get a FHL UK property business annual summary [test only]
+              description: Get a FHL UK property business annual summary for a tax year. This API is not available in production.
+              is: [headers.acceptHeader]
+              securedBy: [ sec.x-application ]
+    /dividends:
+      /{taxYear}:
+        displayName: Annual Summary
+        uriParameters:
+          taxYear:
+            description: The tax year the data applies to
+            type: string
+            example: 2017-18
+        put:
+          displayName: Update a dividends income annual summary [test only]
+          description: Update a dividends income annual summary for a tax year. This API is not available in production.
+          is: [headers.acceptHeader]
+          securedBy: [ sec.x-application ]
+        get:
+          displayName: Get dividends income annual summary [test only]
+          description: Get dividends income for a tax year. This API is not available in production.
+          is: [headers.acceptHeader]
+          securedBy: [ sec.x-application ]
+    /savings-accounts:
+      post:
+        displayName: Add a savings account [test only]
+        description: Add a savings account. This API is not available in production.
+        is: [headers.acceptHeader]
+        securedBy: [ sec.x-application ]
+      get:
+        displayName: List all savings accounts [test only]
+        description: List all savings accounts. This API is not available in production.
+        is: [headers.acceptHeader]
+        securedBy: [ sec.x-application ]
+      /{savingsAccountId}:
+        put:
+          displayName: Update a savings account [test only]
+          description: Update a savings account. This API is not available in production.
+          is: [headers.acceptHeader]
+          securedBy: [ sec.x-application ]
+        get:
+          displayName: Get a savings account [test only]
+          description: Get a savings account. This API is not available in production.
+          is: [headers.acceptHeader]
+          securedBy: [ sec.x-application ]
+        /{taxYear}:
+          put:
+            displayName: Update a savings account annual summary [test only]
+            description: Update a savings account annual summary for a given tax year. This API is not available in production.
+            is: [headers.acceptHeader]
+            securedBy: [ sec.x-application ]
+          get:
+            displayName: Get a savings account annual summary [test only]
+            description: Get a savings account annual summary for a given tax year. This API is not available in production.
+            is: [headers.acceptHeader]
+            securedBy: [ sec.x-application ]
+    /calculations:
+      post:
+        displayName: Trigger a tax calculation [canned]
+        description: Trigger a tax calculation. Please note that this API will return pre-defined responses that are representative of what may be returned in a future version of this API.
+        is: [headers.acceptHeader]
+        securedBy: [ sec.x-application ]
+      /{taxCalculationId}:
+        uriParameters:
+          taxCalculationId:
+            description: The ID of the tax calculation
+            type: string
+        get:
+          displayName: Retrieve a tax calculation [canned]
+          description: Retrieve a tax calculation. Please note that this API will return pre-defined responses that are representative of what may be returned in a future version of this API.
+          is: [headers.acceptHeader]
+          securedBy: [ sec.x-application ]
