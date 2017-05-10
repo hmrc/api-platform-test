@@ -244,6 +244,13 @@ uses:
                            You should submit zero values if you do not have incomes or expenses.
               is: [headers.acceptHeader]
               securedBy: [ sec.x-application ]
+            post:
+              displayName: Update a self-employment update period [test only]
+              description: Update a self-employment update period. This API is not available in production.
+                           Submissions  which do not include any incomes or expenses are invalid.
+                           You should submit zero values if you do not have incomes or expenses.
+              is: [headers.acceptHeader]
+              securedBy: [ sec.x-application ]
         /{taxYear}:
           uriParameters:
             taxYear:
