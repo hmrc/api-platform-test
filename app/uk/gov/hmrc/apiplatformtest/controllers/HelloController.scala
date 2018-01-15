@@ -24,6 +24,7 @@ import uk.gov.hmrc.play.microservice.controller.BaseController
 import scala.concurrent.Future
 
 trait HelloController extends BaseController {
+
   implicit val hc: HeaderCarrier
 
   def handle = Action.async {
