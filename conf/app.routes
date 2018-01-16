@@ -1,25 +1,25 @@
 # microservice specific routes
 
-GET        /api/definition          uk.gov.hmrc.apiplatformtest.controllers.DocumentationController.definition()
-GET        /api/conf/:version/*file uk.gov.hmrc.apiplatformtest.controllers.DocumentationController.raml(version, file)
+GET        /api/definition                                 uk.gov.hmrc.apiplatformtest.controllers.DocumentationController.definition()
+GET        /api/conf/:version/*file                        uk.gov.hmrc.apiplatformtest.controllers.DocumentationController.raml(version, file)
 
-GET        /hello/world             uk.gov.hmrc.apiplatformtest.controllers.HelloController.handle
-POST       /hello/world             uk.gov.hmrc.apiplatformtest.controllers.HelloController.handle
-GET        /hello/friend            uk.gov.hmrc.apiplatformtest.controllers.HelloController.handle
-POST       /hello/friend            uk.gov.hmrc.apiplatformtest.controllers.HelloController.handle
-GET        /hello/buddies           uk.gov.hmrc.apiplatformtest.controllers.HelloController.handle
-POST       /hello/buddies           uk.gov.hmrc.apiplatformtest.controllers.HelloController.handle
-GET        /hello/family/:givenName           uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(givenName)
-PUT        /hello/family/:givenName           uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(givenName)
-GET        /hello/family/:givenName/pets           uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(givenName)
-POST       /hello/family/:givenName/pets           uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(givenName)
-GET        /hello/family/:givenName/pets/:petName           uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithTwoParams(givenName, petName)
-PUT        /hello/family/:givenName/pets/:petName           uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithTwoParams(givenName, petName)
-GET        /hello/family/:givenName/pets/:petName/weight           uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithTwoParams(givenName, petName)
-POST       /hello/family/:givenName/pets/:petName/weight           uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithTwoParams(givenName, petName)
-GET        /hello/family/:givenName/preference           uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(givenName)
-PUT        /hello/family/:givenName/preference           uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(givenName)
+GET        /hello/world                                    uk.gov.hmrc.apiplatformtest.controllers.HelloController.handle
+POST       /hello/world                                    uk.gov.hmrc.apiplatformtest.controllers.HelloController.handle
+GET        /hello/friend                                   uk.gov.hmrc.apiplatformtest.controllers.HelloController.handle
+POST       /hello/friend                                   uk.gov.hmrc.apiplatformtest.controllers.HelloController.handle
+GET        /hello/buddies                                  uk.gov.hmrc.apiplatformtest.controllers.HelloController.handle
+POST       /hello/buddies                                  uk.gov.hmrc.apiplatformtest.controllers.HelloController.handle
+GET        /hello/family/:givenName                        uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(givenName)
+PUT        /hello/family/:givenName                        uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(givenName)
+GET        /hello/family/:givenName/pets                   uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(givenName)
+POST       /hello/family/:givenName/pets                   uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(givenName)
+GET        /hello/family/:givenName/pets/:petName          uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithTwoParams(givenName, petName)
+PUT        /hello/family/:givenName/pets/:petName          uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithTwoParams(givenName, petName)
+GET        /hello/family/:givenName/pets/:petName/weight   uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithTwoParams(givenName, petName)
+POST       /hello/family/:givenName/pets/:petName/weight   uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithTwoParams(givenName, petName)
+GET        /hello/family/:givenName/preference             uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(givenName)
+PUT        /hello/family/:givenName/preference             uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(givenName)
 
-GET        /ni/*remaining uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(remaining)
-PUT        /ni/*remaining uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(remaining)
-POST       /ni/*remaining uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(remaining)
+GET        /ni/*remaining                                  uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(remaining)
+PUT        /ni/*remaining                                  uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(remaining)
+POST       /ni/*remaining                                  uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(remaining)
