@@ -1,7 +1,4 @@
-# microservice specific routes
-
-GET        /api/definition                                 uk.gov.hmrc.apiplatformtest.controllers.DocumentationController.definition()
-GET        /api/conf/:version/*file                        uk.gov.hmrc.apiplatformtest.controllers.DocumentationController.raml(version, file)
+# API 1.0 routes
 
 GET        /hello/world                                    uk.gov.hmrc.apiplatformtest.controllers.HelloController.handle
 POST       /hello/world                                    uk.gov.hmrc.apiplatformtest.controllers.HelloController.handle

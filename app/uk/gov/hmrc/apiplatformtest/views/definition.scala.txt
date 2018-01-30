@@ -17,11 +17,15 @@
   ],
   "api": {
     "name": "API Platform Test",
-    "description": "Service for testing API platform basic functionality",
+    "description": "Dummy API for testing basic API-functionality on the platform",
     "context": "api-platform-test",
     "versions": [
       {
         "version": "1.0",
+        "status": "PUBLISHED"
+      },
+      {
+        "version": "2.0",
         "status": "PUBLISHED"
       }
     ]

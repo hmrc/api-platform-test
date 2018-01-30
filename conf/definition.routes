@@ -1,0 +1,4 @@
+# API definition routes
+
+GET        /api/definition                                 uk.gov.hmrc.apiplatformtest.controllers.DocumentationController.definition()
+GET        /api/conf/:version/*file                        uk.gov.hmrc.apiplatformtest.controllers.DocumentationController.raml(version, file)

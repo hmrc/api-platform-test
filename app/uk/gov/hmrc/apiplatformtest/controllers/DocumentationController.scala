@@ -16,12 +16,12 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import play.api.http.{HttpErrorHandler, LazyHttpErrorHandler}
-import uk.gov.hmrc.play.microservice.controller.BaseController
 import controllers.AssetsBuilder
+import play.api.http.{HttpErrorHandler, LazyHttpErrorHandler}
 import play.api.mvc.Action
 import uk.gov.hmrc.apiplatformtest.config.{ApiAccess, AppContext}
 import uk.gov.hmrc.apiplatformtest.views.txt
+import uk.gov.hmrc.play.microservice.controller.BaseController
 
 class DocumentationController(httpErrorHandler: HttpErrorHandler, appContext: AppContext) extends AssetsBuilder(httpErrorHandler) with BaseController {
 

@@ -1,0 +1,62 @@
+#%RAML 2.0
+---
+title: API Platform Test
+version: 2.0
+
+protocols: [ HTTPS ]
+baseUri: https://api.service.hmrc.gov.uk/
+
+documentation:
+ - title: Overview
+   content: !include docs/overview.md
+
+mediaType: application/json
+
+uses:
+  sec: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/securitySchemes.raml
+  headers: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/headers.raml
+  annotations: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/annotations.raml
+  types: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/types.raml
+
+/api-platform-test:
+  /:
+    get:
+      displayName: dummy resource
+      is: [headers.acceptHeader]
+
+  /ciao:
+    get:
+      displayName: dummy Ciao resource
+      is: [headers.acceptHeader]
+      queryParameters:
+        surname:
+          type: string
+          required: false
+        firstName:
+          type: string
+          required: false
+        middleName:
+          type: string
+          required: false
+
+    /{surname}:
+      uriParameters:
+        surname:
+          type: string
+
+      get:
+        displayName: dummy Ciao Surname resource
+        is: [headers.acceptHeader]
+
+      /{firstName}:
+        uriParameters:
+          firstName:
+            type: string
+
+        get:
+          displayName: dummy Ciao Full Name resource
+          is: [headers.acceptHeader]
+          queryParameters:
+            middleName:
+              type: string
+              required: false

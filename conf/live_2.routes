@@ -1,0 +1,10 @@
+# API 2.0 routes
+
+# routes published to WSO2 because included in the RAML definition (returning 200 OK)
+GET        /                                   uk.gov.hmrc.apiplatformtest.controllers.CiaoController.handleEmpty()
+GET        /ciao                               uk.gov.hmrc.apiplatformtest.controllers.CiaoController.handleCiao(surname: Option[String], firstName: Option[String], middleName: Option[String])
+GET        /ciao/:surname                      uk.gov.hmrc.apiplatformtest.controllers.CiaoController.handleCiaoSurname(surname: String)
+GET        /ciao/:surname/:firstName           uk.gov.hmrc.apiplatformtest.controllers.CiaoController.handleCiaoFullName(surname: String, firstName: String, middleName: Option[String])
+
+# routes not published to WSO2 because not included in the RAML definition (WSO2 should return 404 MATCHING_RESOURCE_NOT_FOUND for these requests)
+GET        /ciao/kennedy/john/fitzgerald       uk.gov.hmrc.apiplatformtest.controllers.CiaoController.handleNotImplemented()
