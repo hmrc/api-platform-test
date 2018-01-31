@@ -19,14 +19,11 @@ uses:
   types: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/types.raml
 
 /api-platform-test:
-
   /city-details:
-
     /{cityName}:
       uriParameters:
         cityName:
           type: string
-
       /address:
         get:
           displayName: Show City & Address - Get Version
@@ -39,7 +36,6 @@ uses:
         uriParameters:
           postcode:
             type: string
-
         get:
           displayName: Show City & Postcode - Get Version
           is: [headers.acceptHeader]
