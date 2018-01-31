@@ -19,8 +19,8 @@ package uk.gov.hmrc.apiplatformtest.controllers
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import uk.gov.hmrc.apiplatformtest.models.CiaoAnswer
-import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatCiaoAnswer
+import uk.gov.hmrc.apiplatformtest.models.DummyAnswer
+import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatDummyAnswer
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 class CiaoControllerSpec extends UnitSpec with WithFakeApplication {
@@ -39,7 +39,7 @@ class CiaoControllerSpec extends UnitSpec with WithFakeApplication {
 
       status(result) shouldBe Status.OK
 
-      val expectedAnswer = CiaoAnswer(uri = "/", resourceDetails = "Ciao Empty!")
+      val expectedAnswer = DummyAnswer(uri = "/", method = "GET", resourceDetails = "Ciao Empty!")
       await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
     }
 
@@ -58,41 +58,43 @@ class CiaoControllerSpec extends UnitSpec with WithFakeApplication {
 
       status(result) shouldBe Status.OK
 
-      val expectedAnswer = CiaoAnswer(
+      val expectedAnswer = DummyAnswer(
         uri = "/ciao?surname=Kennedy&firstName=John&middleName=Fitzgerald",
+        method = "GET",
         resourceDetails = "Ciao: Some(Kennedy), Some(John), Some(Fitzgerald)"
       )
 
       await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
     }
 
-    "accept the resource `GET /ciao/rossi` " in {
+    "accept the resource `GET /ciao/Rossi` " in {
 
-      val request = FakeRequest(method = "GET", path = "/ciao/rossi")
+      val request = FakeRequest(method = "GET", path = "/ciao/Rossi")
 
-      val result = CiaoController.handleCiaoSurname(surname = "rossi")(request)
+      val result = CiaoController.handleCiaoSurname(surname = "Rossi")(request)
 
       status(result) shouldBe Status.OK
 
-      val expectedAnswer = CiaoAnswer(uri = "/ciao/rossi", resourceDetails = "Ciao Surname: rossi")
+      val expectedAnswer = DummyAnswer(uri = "/ciao/Rossi", method = "GET", resourceDetails = "Ciao Surname: Rossi")
       await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
     }
 
-    "accept the resource `GET /ciao/rossi/valentino?middleName=alvise` " in {
+    "accept the resource `GET /ciao/Rossi/Valentino?middleName=Alvise` " in {
 
-      val request = FakeRequest(method = "GET", path = "/ciao/rossi/valentino?middleName=alvise")
+      val request = FakeRequest(method = "GET", path = "/ciao/Rossi/Valentino?middleName=Alvise")
 
       val result = CiaoController.handleCiaoFullName(
-        surname = "rossi",
-        firstName = "valentino",
-        middleName = Some("alvise")
+        surname = "Rossi",
+        firstName = "Valentino",
+        middleName = Some("Alvise")
       )(request)
 
       status(result) shouldBe Status.OK
 
-      val expectedAnswer = CiaoAnswer(
-        uri = "/ciao/rossi/valentino?middleName=alvise",
-        resourceDetails = "Ciao Full Name: rossi, valentino, Some(alvise)"
+      val expectedAnswer = DummyAnswer(
+        uri = "/ciao/Rossi/Valentino?middleName=Alvise",
+        method = "GET",
+        resourceDetails = "Ciao Full Name: Rossi, Valentino, Some(Alvise)"
       )
 
       await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
@@ -100,16 +102,17 @@ class CiaoControllerSpec extends UnitSpec with WithFakeApplication {
 
     // Expected failing routes.
 
-    "fail on the resource `GET /ciao/kennedy/john/fitzgerald` " in {
+    "fail on the resource `GET /ciao/Kennedy/John/Fitzgerald` " in {
 
-      val request = FakeRequest(method = "GET", path = "/ciao/kennedy/john/fitzgerald")
+      val request = FakeRequest(method = "GET", path = "/ciao/Kennedy/John/Fitzgerald")
 
       val result = CiaoController.handleNotImplemented()(request)
 
       status(result) shouldBe Status.NOT_IMPLEMENTED
 
-      val expectedAnswer = CiaoAnswer(
-        uri = "/ciao/kennedy/john/fitzgerald",
+      val expectedAnswer = DummyAnswer(
+        uri = "/ciao/Kennedy/John/Fitzgerald",
+        method = "GET",
         resourceDetails = "Ciao Not Implemented!"
       )
 

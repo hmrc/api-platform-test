@@ -1,0 +1,8 @@
+# API 3.0 routes
+
+# routes proving the `HMRCPROD-75` (404 MATCHING_RESOURCE_NOT_FOUND) limitation in WSO2 API Manager
+GET       /city-details/:cityName/address         uk.gov.hmrc.apiplatformtest.controllers.CityController.showCityAndAddress(cityName: String)
+PUT       /city-details/:cityName/address         uk.gov.hmrc.apiplatformtest.controllers.CityController.showCityAndAddress(cityName: String)
+
+GET       /city-details/:cityName/:postcode       uk.gov.hmrc.apiplatformtest.controllers.CityController.showCityAndPostcode(cityName: String, postcode: String)
+POST      /city-details/:cityName/:postcode       uk.gov.hmrc.apiplatformtest.controllers.CityController.showCityAndPostcode(cityName: String, postcode: String)

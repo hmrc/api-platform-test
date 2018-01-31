@@ -1,7 +1,7 @@
 #%RAML 1.0
 ---
 title: API Platform Test
-version: 2.0
+version: 3.0
 
 protocols: [ HTTPS ]
 baseUri: https://api.service.hmrc.gov.uk/
@@ -20,44 +20,29 @@ uses:
 
 /api-platform-test:
 
-  /:
-    get:
-      displayName: dummy resource
-      is: [headers.acceptHeader]
+  /city-details:
 
-  /ciao:
-    get:
-      displayName: dummy Ciao resource
-      is: [headers.acceptHeader]
-      queryParameters:
-        surname:
-          type: string
-          required: false
-        firstName:
-          type: string
-          required: false
-        middleName:
-          type: string
-          required: false
-
-    /{surname}:
+    /{cityName}:
       uriParameters:
-        surname:
+        cityName:
           type: string
 
-      get:
-        displayName: dummy Ciao Surname resource
-        is: [headers.acceptHeader]
+      /address:
+        get:
+          displayName: Show City & Address - Get Version
+          is: [headers.acceptHeader]
+        put:
+          displayName: Show City & Address - Put Version
+          is: [headers.acceptHeader]
 
-      /{firstName}:
+      /{postcode}:
         uriParameters:
-          firstName:
+          postcode:
             type: string
 
         get:
-          displayName: dummy Ciao Full Name resource
+          displayName: Show City & Postcode - Get Version
           is: [headers.acceptHeader]
-          queryParameters:
-            middleName:
-              type: string
-              required: false
+        post:
+          displayName: Show City & Postcode - Post Version
+          is: [headers.acceptHeader]
