@@ -16,4 +16,4 @@
 
 package uk.gov.hmrc.apiplatformtest.models
 
-case class CiaoAnswer (uri: String, resourceDetails: String)
+case class DummyAnswer(uri: String, method: String, resourceDetails: String)

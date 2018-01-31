@@ -20,5 +20,5 @@ import play.api.libs.json.Json
 
 object JsonFormatters {
 
-  implicit val formatCiaoAnswer = Json.format[CiaoAnswer]
+  implicit val formatDummyAnswer = Json.format[DummyAnswer]
 }

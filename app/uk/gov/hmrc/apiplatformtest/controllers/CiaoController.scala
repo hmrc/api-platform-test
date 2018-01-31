@@ -16,31 +16,10 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, Request}
-import uk.gov.hmrc.apiplatformtest.models.CiaoAnswer
-import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatCiaoAnswer
+import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.http.HeaderCarrier
-import uk.gov.hmrc.play.microservice.controller.BaseController
 
-import scala.concurrent.Future.successful
-
-trait CiaoController extends BaseController {
-
-  implicit val hc: HeaderCarrier
-
-  private def result(status: Status, resource: String, request: Request[AnyContent]) = {
-    val ciaoAnswer = CiaoAnswer(uri = request.uri, resourceDetails = resource)
-    successful(status(Json.toJson(ciaoAnswer)))
-  }
-
-  private def success(resource: String)(implicit request: Request[AnyContent]) = {
-    result(Ok, resource, request)
-  }
-
-  private def failure(resource: String)(implicit request: Request[AnyContent]) = {
-    result(NotImplemented, resource, request)
-  }
+trait CiaoController extends CommonController {
 
   // Successful routes.
   // These resources/endpoints are published to WSO2.
