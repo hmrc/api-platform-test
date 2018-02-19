@@ -6,3 +6,4 @@ PUT       /city-details/:cityName/address         uk.gov.hmrc.apiplatformtest.co
 
 GET       /city-details/:cityName/:postcode       uk.gov.hmrc.apiplatformtest.controllers.CityController.showCityAndPostcode(cityName: String, postcode: String)
 POST      /city-details/:cityName/:postcode       uk.gov.hmrc.apiplatformtest.controllers.CityController.showCityAndPostcode(cityName: String, postcode: String)
+DELETE    /city-details/:cityName/:postcode       uk.gov.hmrc.apiplatformtest.controllers.CityController.showCityAndPostcode(cityName: String, postcode: String)

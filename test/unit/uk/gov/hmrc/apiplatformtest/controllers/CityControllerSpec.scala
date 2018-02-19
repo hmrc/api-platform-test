@@ -29,6 +29,8 @@ class CityControllerSpec extends UnitSpec with WithFakeApplication {
 
   "CityController" should {
 
+    // tests for the `/city-details/:cityName/address` URL
+
     "accept the resource `GET /city-details/Leeds/address` " in {
 
       val request = FakeRequest(method = "GET", path = "/city-details/Leeds/address")
@@ -63,6 +65,8 @@ class CityControllerSpec extends UnitSpec with WithFakeApplication {
       await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
     }
 
+    // tests for the `/city-details/:cityName/:postcode` URL
+
     "accept the resource `GET /city-details/London/SW208HR` " in {
 
       val request = FakeRequest(method = "GET", path = "/city-details/London/SW208HR")
@@ -91,6 +95,23 @@ class CityControllerSpec extends UnitSpec with WithFakeApplication {
       val expectedAnswer = DummyAnswer(
         uri = "/city-details/London/SW208HR",
         method = "POST",
+        resourceDetails = "City: London, Postcode: SW208HR"
+      )
+
+      await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
+    }
+
+    "accept the resource `DELETE /city-details/London/SW208HR` " in {
+
+      val request = FakeRequest(method = "DELETE", path = "/city-details/London/SW208HR")
+
+      val result = CityController.showCityAndPostcode("London", "SW208HR")(request)
+
+      status(result) shouldBe Status.OK
+
+      val expectedAnswer = DummyAnswer(
+        uri = "/city-details/London/SW208HR",
+        method = "DELETE",
         resourceDetails = "City: London, Postcode: SW208HR"
       )
 
