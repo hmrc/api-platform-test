@@ -78,6 +78,35 @@ curl -v -X GET "[ENVIRONMENT-DOMAIN]/api-platform-test/ciao/kennedy/john/fitzger
 ```
 
 ---
+---
+
+##### resource: `/city-details/:cityName/address`
+##### version: `3.0`
+##### curl request:
+```
+curl -v -X GET|PUT "[ENVIRONMENT-DOMAIN]/api-platform-test/details/Venice/address" -H 'Accept: application/vnd.hmrc.3.0+json' -H "Cache-Control: no-cache"
+```
+##### response code status: `200 OK`
+##### response body:
+```
+{"uri":"/city-details/Venice/address","method":"GET|PUT","resourceDetails":"City: Venice, Address: Oxford Street"}
+```
+
+---
+
+##### resource: `/city-details/:cityName/:postcode`
+##### version: `3.0`
+##### curl request:
+```
+curl -v -X GET|DELETE|POST "[ENVIRONMENT-DOMAIN]/api-platform-test/details/Venice/30016" -H 'Accept: application/vnd.hmrc.3.0+json' -H "Cache-Control: no-cache"
+```
+##### response code status: `200 OK`
+##### response body:
+```
+{"uri":"/city-details/Venice/30016","method":"GET|DELETE|POST","resourceDetails":"City: Venice, Postcode: 30016"}
+```
+
+---
 
 ### Unit tests
 ```
@@ -89,4 +118,3 @@ sbt test it:test
 ### License
 
 This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html")
-
