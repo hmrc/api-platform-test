@@ -29,6 +29,14 @@
         "status": "PUBLISHED"
       },
       {
+        "version": "2.1",
+        "status": "PUBLISHED"
+      },
+      {
+        "version": "2.2",
+        "status": "PUBLISHED"
+      },
+      {
         "version": "3.0",
         "status": "PUBLISHED"
       }
