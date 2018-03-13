@@ -13,6 +13,11 @@
       "key": "write:api-platform-test",
       "name": "Write API Platform Test",
       "description": "Write API Platform Test"
+    },
+    {
+      "key": "catch-the-mouse",
+      "name": "catch-the-mouse scope",
+      "description": "dummy scope for APSR-611"
     }
   ],
   "api": {
