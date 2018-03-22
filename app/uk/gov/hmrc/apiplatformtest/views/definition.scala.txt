@@ -35,7 +35,7 @@
       },
       {
         "version": "2.1",
-        "status": "PUBLISHED"
+        "status": "DEPRECATED"
       },
       {
         "version": "2.2",
