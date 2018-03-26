@@ -21,4 +21,3 @@ GET        /ni/*remaining                                  uk.gov.hmrc.apiplatfo
 PUT        /ni/*remaining                                  uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(remaining)
 POST       /ni/*remaining                                  uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(remaining)
 
-GET        /check/fakeip                                   uk.gov.hmrc.apiplatformtest.controllers.CheckFakeIpController.handle

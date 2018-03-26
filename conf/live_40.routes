@@ -1,0 +1,3 @@
+# API 4.0 routes
+
+GET        /check/location                                 uk.gov.hmrc.apiplatformtest.controllers.CheckFakeIpController.handle
