@@ -20,3 +20,5 @@ PUT        /hello/family/:givenName/preference             uk.gov.hmrc.apiplatfo
 GET        /ni/*remaining                                  uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(remaining)
 PUT        /ni/*remaining                                  uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(remaining)
 POST       /ni/*remaining                                  uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(remaining)
+
+GET        /check/fakeip                                   uk.gov.hmrc.apiplatformtest.controllers.CheckFakeIpController.handle
