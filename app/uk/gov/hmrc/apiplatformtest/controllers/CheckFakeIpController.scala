@@ -16,9 +16,6 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import java.util.UUID
-
-import com.sun.corba.se.spi.ior.ObjectId
 import play.api.libs.json.Json
 import play.api.mvc.Action
 import uk.gov.hmrc.play.http.HeaderCarrier
