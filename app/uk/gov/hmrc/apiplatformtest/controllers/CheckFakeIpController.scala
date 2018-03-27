@@ -16,8 +16,6 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import java.util.UUID
-
 import play.api.libs.json.Json
 import play.api.mvc.Action
 import uk.gov.hmrc.play.http.HeaderCarrier
@@ -34,12 +32,27 @@ trait CheckFakeIpController extends BaseController {
 
   implicit val hc: HeaderCarrier
 
+  // Random generator
+  private val random = new scala.util.Random
+
+  // Generate a random string of length n from the given alphabet
+  private def randomString(alphabet: String)(n: Int): String =
+    Stream.continually(random.nextInt(alphabet.size)).map(alphabet).take(n).mkString
+
+  // Generate a random hex string of length n
+  private def randomHexString(n: Int) =
+    randomString("0123456789abcdef")(n)
+
+  private def fakeObjectId() = {
+    randomHexString(24)
+  }
+
   def handle = Action.async {
     def bit() = (Random.nextInt(250)+1).toString;
-    val id = UUID.randomUUID().toString
+    val fakeId = fakeObjectId()
     val fakeNino = Random.nextString(9)
-    val ip = s"${bit()}.${bit()}.${bit()}.${bit()}"
-    Future.successful(Ok(Json.toJson("""{ "message": "CheckFakeIp" }""")).withHeaders( (LOCATION,s"https://${ip}:8243/self-assessment/ni/$fakeNino/self-employments/$id") ))
+    val fakeIp = s"${bit()}.${bit()}.${bit()}.${bit()}"
+    Future.successful(Ok(Json.toJson("""{ "message": "CheckFakeIp" }""")).withHeaders( (LOCATION,s"https://${fakeIp}:8243/self-assessment/ni/$fakeNino/self-employments/$fakeId") ))
   }
 }
 
