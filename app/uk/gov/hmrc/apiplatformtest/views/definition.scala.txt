@@ -48,6 +48,10 @@
       {
         "version": "4.0",
         "status": "PUBLISHED"
+      },
+      {
+        "version": "5.0",
+        "status": "PUBLISHED"
       }
     ]
   }
