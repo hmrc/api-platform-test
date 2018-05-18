@@ -23,14 +23,15 @@ import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 class HeadersControllerSpec extends UnitSpec with WithFakeApplication {
 
-  implicit lazy val materializer: Materializer = fakeApplication.materializer
+  private implicit lazy val materializer: Materializer = fakeApplication.materializer
 
   private val requestIdHeader = "X-REQUEST-ID"
   private val clientIdHeader = "x_Client_id"
   private val dummyHeader = "DUMMY"
 
   "GET /headers" should {
-    val idsInRequest = FakeRequest("GET", "/headers")
+
+    val request = FakeRequest("GET", "/headers")
       .withHeaders(
         dummyHeader -> dummyHeader,
         requestIdHeader -> "1234",
@@ -38,17 +39,19 @@ class HeadersControllerSpec extends UnitSpec with WithFakeApplication {
         HeaderNames.ACCEPT -> MimeTypes.JSON)
 
     "return expected headers" in {
-      val result = await(HeadersController.handle()(idsInRequest))
+      val result = await(HeadersController.handle()(request))
       status(result) shouldBe Status.OK
 
       val responseBody = jsonBodyOf(result).toString()
       responseBody shouldBe s"""{"request":{"name":"$requestIdHeader","value":"1234"},"client":{"name":"$clientIdHeader","value":"ABCD"}}"""
       responseBody should not contain dummyHeader
 
-      val responseHeaders = result.header.headers.keySet
-      responseHeaders should contain (requestIdHeader)
-      responseHeaders should contain (clientIdHeader)
+      val headersInTheResponse = result.header.headers.keySet
+      headersInTheResponse should contain (requestIdHeader)
+      headersInTheResponse should contain (clientIdHeader)
+      headersInTheResponse should not contain dummyHeader
     }
 
   }
+
 }

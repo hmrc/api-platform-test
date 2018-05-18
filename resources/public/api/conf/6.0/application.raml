@@ -23,3 +23,10 @@ uses:
     get:
       displayName: dummy resource
       is: [headers.acceptHeader]
+
+  /restricted-headers:
+    get:
+      displayName: dummy resource
+      is: [headers.acceptHeader]
+      (annotations.scope): "catch-the-mouse"
+      securedBy: [ sec.oauth_2_0: { scopes: [ "catch-the-mouse" ] } ]
