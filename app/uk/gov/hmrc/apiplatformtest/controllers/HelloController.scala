@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc.Action
 import uk.gov.hmrc.play.http.HeaderCarrier
@@ -27,7 +28,8 @@ trait HelloController extends BaseController {
 
   implicit val hc: HeaderCarrier
 
-  def handle = Action.async {
+  def handle = Action.async { implicit request =>
+    Logger.info(s"Headers :${request.headers}")
     Future.successful(Ok(Json.toJson("""{ "message": "Hello World" }""")))
   }
 
