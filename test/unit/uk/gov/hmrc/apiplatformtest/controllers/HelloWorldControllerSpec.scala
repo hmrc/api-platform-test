@@ -16,11 +16,15 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import play.api.http.Status
+import akka.stream.Materializer
+import play.api.Logger
+import play.api.http.{HeaderNames, MimeTypes, Status}
 import play.api.test.FakeRequest
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication {
+
+  implicit lazy val materializer: Materializer = fakeApplication.materializer
 
   val fakeRequest = FakeRequest("GET", "/")
   val RequestId = "X-REQUEST-ID"
@@ -34,10 +38,16 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication {
   }
 
   "GET /hello/world" should {
-    val idsInRequest = FakeRequest("GET", "/hello/world").withHeaders(RequestId -> "1234", ClientId -> "ABCD" )
+    val idsInRequest = FakeRequest("GET", "/hello/world")
+      .withHeaders(
+        RequestId -> "1234",
+        ClientId -> "ABCD",
+        HeaderNames.ACCEPT -> MimeTypes.JSON)
+
     "return expected headers" in {
-      val result = HelloController.handle()(idsInRequest)
+      val result = await(HelloController.handle()(idsInRequest))
       status(result) shouldBe Status.OK
+      Logger.info(jsonBodyOf(result).toString())
       result.header.headers.keySet should contain (RequestId)
       result.header.headers.keySet should contain (ClientId)
     }
