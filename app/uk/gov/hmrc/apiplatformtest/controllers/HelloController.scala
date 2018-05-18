@@ -17,26 +17,51 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import play.api.Logger
-import play.api.libs.json.Json
+import play.api.libs.json._
 import play.api.mvc.Action
 import uk.gov.hmrc.play.http.HeaderCarrier
 import uk.gov.hmrc.play.microservice.controller.BaseController
 
 import scala.concurrent.Future
 
+
+object HelloControllerDomain {
+  case class IdField(name: String, value: String)
+  case class Payload(message: String, request: IdField, client: IdField)
+
+  implicit val idFieldJF = Json.format[IdField]
+  implicit val payloadJF = Json.format[Payload]
+}
+
+
 trait HelloController extends BaseController {
+  import HelloControllerDomain._
 
   implicit val hc: HeaderCarrier
 
   def handle = Action.async { implicit request =>
+
     def headersWeWant(headerName: String): Boolean = {
       val h = headerName.toUpperCase
 
       (h.contains("REQUEST") || h.contains("CLIENT")) && h.contains("ID")
     }
 
+    def findIdHeader(headerName: String): (String,String) = {
+      request.headers.headers
+        .filter(p => p._1.toUpperCase.contains(headerName.toUpperCase))
+        .filter(p => p._1.toUpperCase.endsWith("ID"))
+        .headOption
+        .getOrElse( ("Absent", "-") )
+    }
+
     Logger.info(s"Headers :${request.headers}")
-    Future.successful(Ok(Json.toJson("""{ "message": "Hello World" }""")).withHeaders(request.headers.headers.filter(p => headersWeWant(p._1)): _*))
+    val requestId = findIdHeader("REQUEST")
+    val clientId = findIdHeader("CLIENT")
+    val response = Payload( "Hello World", IdField(requestId._1, requestId._2), IdField(clientId._1, clientId._2))
+
+    Future.successful(Ok(Json.toJson(response))
+      .withHeaders(request.headers.headers.filter(p => headersWeWant(p._1)): _*))
   }
 
   def handleWithParam(param: String) = Action.async {
