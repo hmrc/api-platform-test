@@ -29,8 +29,14 @@ trait HelloController extends BaseController {
   implicit val hc: HeaderCarrier
 
   def handle = Action.async { implicit request =>
+    def headersWeWant(headerName: String): Boolean = {
+      val h = headerName.toUpperCase
+
+      (h.contains("REQUEST") || h.contains("CLIENT")) && h.contains("ID")
+    }
+
     Logger.info(s"Headers :${request.headers}")
-    Future.successful(Ok(Json.toJson("""{ "message": "Hello World" }""")))
+    Future.successful(Ok(Json.toJson("""{ "message": "Hello World" }""")).withHeaders(request.headers.headers.filter(p => headersWeWant(p._1)): _*))
   }
 
   def handleWithParam(param: String) = Action.async {

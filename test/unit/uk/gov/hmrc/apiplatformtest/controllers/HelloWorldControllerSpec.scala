@@ -23,6 +23,8 @@ import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication {
 
   val fakeRequest = FakeRequest("GET", "/")
+  val RequestId = "X-REQUEST-ID"
+  val ClientId = "x_Client_id"
 
   "GET /" should {
     "return 200" in {
@@ -31,4 +33,13 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication {
     }
   }
 
+  "GET /hello/world" should {
+    val idsInRequest = FakeRequest("GET", "/hello/world").withHeaders(RequestId -> "1234", ClientId -> "ABCD" )
+    "return expected headers" in {
+      val result = HelloController.handle()(idsInRequest)
+      status(result) shouldBe Status.OK
+      result.header.headers.keySet should contain (RequestId)
+      result.header.headers.keySet should contain (ClientId)
+    }
+  }
 }
