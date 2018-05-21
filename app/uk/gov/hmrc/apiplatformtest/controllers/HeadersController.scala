@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import play.api.Logger
 import play.api.libs.json._
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.http.HeaderCarrier
@@ -53,7 +52,6 @@ trait HeadersController extends BaseController {
         .getOrElse( ("Absent", "-") )
     }
 
-    Logger.info(s"Headers :${request.headers}")
     val requestId = findIdHeader("REQUEST")
     val clientId = findIdHeader("CLIENT")
     val response = Payload(IdField(requestId._1, requestId._2), IdField(clientId._1, clientId._2))

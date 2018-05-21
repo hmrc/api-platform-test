@@ -1,3 +1,4 @@
 # API 6.0 routes
 
 GET        /headers                                uk.gov.hmrc.apiplatformtest.controllers.HeadersController.handle()
+GET        /restricted-headers                     uk.gov.hmrc.apiplatformtest.controllers.HeadersController.handle()
