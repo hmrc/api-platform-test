@@ -17,7 +17,9 @@
 package uk.gov.hmrc.apiplatformtest.connectors
 
 import play.api.Logger
+import play.api.http.ContentTypes.JSON
 import play.api.libs.json.Json
+import play.mvc.Http.HeaderNames.CONTENT_TYPE
 import uk.gov.hmrc.apiplatformtest.config.{AppContext, WSHttp}
 import uk.gov.hmrc.play.http.{HeaderCarrier, HttpPost}
 
@@ -36,27 +38,22 @@ trait ServiceLocatorConnector {
   val serviceUrl: String
   val handlerOK: () => Unit
   val handlerError: Throwable => Unit
-
   val metadata: Option[Map[String, String]]
-
-
   val http: HttpPost
-
 
   def register(implicit hc: HeaderCarrier): Future[Boolean] = {
     val registration = Registration(appName, appUrl, metadata)
-    http.POST(s"$serviceUrl/registration", registration, Seq("Content-Type" -> "application/json")) map {
-      _ =>
-        handlerOK()
-        true
+    http.POST(s"$serviceUrl/registration", registration, Seq(CONTENT_TYPE -> JSON)) map { _ =>
+      handlerOK()
+      true
     } recover {
       case e: Throwable =>
         handlerError(e)
         false
     }
   }
-}
 
+}
 
 object ServiceLocatorConnector extends ServiceLocatorConnector {
   override lazy val appName = AppContext.appName
@@ -67,5 +64,3 @@ object ServiceLocatorConnector extends ServiceLocatorConnector {
   override val handlerError: Throwable => Unit = e => Logger.error(s"Service could not register on the service locator", e)
   override val metadata: Option[Map[String, String]] = Some(Map("third-party-api" -> "true"))
 }
-
-
