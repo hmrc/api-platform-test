@@ -16,41 +16,40 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import play.api.http.ContentTypes.XML
+import play.api.http.ContentTypes.JSON
 import play.api.http.HeaderNames.{ACCEPT, CONTENT_TYPE}
 import play.api.http.Status.{OK, UNSUPPORTED_MEDIA_TYPE}
+import play.api.libs.json.Json.parse
 import play.api.test.FakeRequest
-import uk.gov.hmrc.apiplatformtest.controllers.XmlController.{VndHmrcXml50, handleXmlPost}
+import uk.gov.hmrc.apiplatformtest.controllers.JsonController.{handleJsonPost, VndHmrcJson50}
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-import scala.xml.NodeSeq
-
-class XmlControllerSpec extends UnitSpec with WithFakeApplication {
+class JsonControllerSpec extends UnitSpec with WithFakeApplication {
 
   implicit private val mat = fakeApplication.materializer
 
-  private val requestBody: NodeSeq = <Pong>hello</Pong>
-  private val request = FakeRequest("POST", "/xml").withBody(requestBody)
+  private val payload = """{"firstName":"Alvise","surname":"Fransescoli","dateOfBirth":"04-01-1731"}"""
+  private val request = FakeRequest("POST", "/json").withBody(parse(payload))
 
-  "POST /xml with good xml" should {
+  "POST /json with good json" should {
 
     "return 200 with expected response body" in {
       val req = request.withHeaders(
-        CONTENT_TYPE -> XML,
-        ACCEPT -> VndHmrcXml50)
+        CONTENT_TYPE -> JSON,
+        ACCEPT -> VndHmrcJson50)
 
-      val result = await(handleXmlPost().apply(req))
+      val result = await(handleJsonPost()(req))
 
       status(result) shouldBe OK
-      bodyOf(result) shouldBe <Ping><Pong>hello</Pong></Ping>.toString()
+      bodyOf(result) shouldBe payload
     }
 
     "return 415 when using a wrong Accept header" in {
       val req = request.withHeaders(
-        CONTENT_TYPE -> XML,
-        ACCEPT -> XML)
+        CONTENT_TYPE -> JSON,
+        ACCEPT -> JSON)
 
-      val result = await(handleXmlPost()(req))
+      val result = await(handleJsonPost()(req))
 
       status(result) shouldBe UNSUPPORTED_MEDIA_TYPE
       bodyOf(result) shouldBe ""

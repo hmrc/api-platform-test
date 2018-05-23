@@ -16,10 +16,9 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-sealed abstract class ErrorResponse(
-                                     val httpStatusCode: Int,
-                                     val errorCode: String,
-                                     val message: String)
+sealed abstract class ErrorResponse(val httpStatusCode: Int,
+                                    val errorCode: String,
+                                    val message: String)
 
 case object ErrorSaUtrInvalid extends ErrorResponse(400,"SA_UTR_INVALID", "The provided SA UTR is invalid")
 case object ErrorTaxYearInvalid extends ErrorResponse(400,"TAX_YEAR_INVALID", "The provided Tax Year is invalid")

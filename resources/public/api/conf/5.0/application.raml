@@ -19,7 +19,26 @@ uses:
   types: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/types.raml
 
 /api-platform-test:
-    /xml:
-      post:
-        displayName: Check an XML post
-        is: [headers.acceptHeader]
+  /xml:
+    post:
+      displayName: Check an open XML Post request
+      is: [headers.acceptHeader]
+
+  /json:
+    post:
+      displayName: Check an open JSON Post request
+      is: [headers.acceptHeader]
+
+  /restricted-xml:
+    post:
+      displayName: Check a user-restricted XML Post request
+      is: [headers.acceptHeader]
+      (annotations.scope): "catch-the-mouse"
+      securedBy: [ sec.oauth_2_0: { scopes: [ "catch-the-mouse" ] } ]
+
+  /restricted-json:
+    post:
+      displayName: Check a user-restricted JSON Post request
+      is: [headers.acceptHeader]
+      (annotations.scope): "catch-the-mouse"
+      securedBy: [ sec.oauth_2_0: { scopes: [ "catch-the-mouse" ] } ]

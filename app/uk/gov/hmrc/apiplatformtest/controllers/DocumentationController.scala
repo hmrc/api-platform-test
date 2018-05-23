@@ -17,19 +17,21 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import controllers.AssetsBuilder
-import play.api.http.{HttpErrorHandler, LazyHttpErrorHandler}
-import play.api.mvc.Action
+import play.api.http.{ContentTypes, HeaderNames, HttpErrorHandler, LazyHttpErrorHandler}
+import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.apiplatformtest.config.{ApiAccess, AppContext}
 import uk.gov.hmrc.apiplatformtest.views.txt
 import uk.gov.hmrc.play.microservice.controller.BaseController
 
-class DocumentationController(httpErrorHandler: HttpErrorHandler, appContext: AppContext) extends AssetsBuilder(httpErrorHandler) with BaseController {
+class DocumentationController(httpErrorHandler: HttpErrorHandler, appContext: AppContext)
+  extends AssetsBuilder(httpErrorHandler) with BaseController {
 
   def definition = Action {
-    Ok(txt.definition(ApiAccess.build(appContext.access))).withHeaders("Content-Type" -> "application/json")
+    Ok(txt.definition(ApiAccess.build(appContext.access)))
+      .withHeaders(HeaderNames.CONTENT_TYPE -> ContentTypes.JSON)
   }
 
-  def raml(version: String, file: String) = {
+  def raml(version: String, file: String): Action[AnyContent] = {
     super.at(s"/public/api/conf/$version", file)
   }
 }
