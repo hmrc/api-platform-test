@@ -17,7 +17,7 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import play.api.libs.json.Json
-import play.api.mvc.Action
+import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.http.HeaderCarrier
 import uk.gov.hmrc.play.microservice.controller.BaseController
 
@@ -37,7 +37,7 @@ trait CheckFakeIpController extends BaseController {
 
   // Generate a random string of length n from the given alphabet
   private def randomString(alphabet: String)(n: Int): String =
-    Stream.continually(random.nextInt(alphabet.size)).map(alphabet).take(n).mkString
+    Stream.continually(random.nextInt(alphabet.length)).map(alphabet).take(n).mkString
 
   // Generate a random hex string of length n
   private def randomHexString(n: Int) =
@@ -47,15 +47,15 @@ trait CheckFakeIpController extends BaseController {
     randomHexString(24)
   }
 
-  def handle = Action.async {
-    def bit() = (Random.nextInt(250)+1).toString;
+  def handle: Action[AnyContent] = Action.async {
+    def bit() = (Random.nextInt(250)+1).toString
     val fakeId = fakeObjectId()
     val fakeNino = Random.nextString(9)
     val fakeIp = s"${bit()}.${bit()}.${bit()}.${bit()}"
-    Future.successful(Ok(Json.toJson("""{ "message": "CheckFakeIp" }""")).withHeaders( (LOCATION,s"https://${fakeIp}:8243/self-assessment/ni/$fakeNino/self-employments/$fakeId") ))
+    Future.successful(Ok(Json.toJson("""{ "message": "CheckFakeIp" }"""))
+      .withHeaders(LOCATION -> s"https://$fakeIp:8243/self-assessment/ni/$fakeNino/self-employments/$fakeId"))
   }
 }
-
 
 object CheckFakeIpController extends CheckFakeIpController {
   override implicit val hc: HeaderCarrier = HeaderCarrier()

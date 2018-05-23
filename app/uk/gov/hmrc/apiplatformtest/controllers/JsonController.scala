@@ -16,29 +16,30 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc._
 import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future.successful
-import scala.xml.NodeSeq
 
-trait XmlController extends CommonController {
+trait JsonController extends CommonController {
 
-  import XmlController._
+  import JsonController._
 
-  final def handleXmlPost(): Action[NodeSeq] =
-    Action.async(BodyParsers.parse.xml) {
-      implicit request: Request[NodeSeq] =>
-        render.async {
-          case AcceptsXml50() => successful(Ok(<Ping>{request.body.head}</Ping>).as(XML))
-          case _ => successful(UnsupportedMediaType)
-        }
+  final def handleJsonPost(): Action[JsValue] = {
+    Action.async(BodyParsers.parse.json) { implicit request =>
+      render.async {
+        case AcceptsJson50() => successful(Ok(Json.toJson(request.body)))
+        case _ => successful(UnsupportedMediaType)
+      }
     }
+  }
+
 }
 
-object XmlController extends XmlController {
+object JsonController extends JsonController {
   override implicit val hc: HeaderCarrier = HeaderCarrier()
 
-  val VndHmrcXml50: String = "application/vnd.hmrc.5.0+xml"
-  val AcceptsXml50 = Accepting(VndHmrcXml50)
+  val VndHmrcJson50: String = "application/vnd.hmrc.5.0+json"
+  val AcceptsJson50 = Accepting(VndHmrcJson50)
 }

@@ -1,4 +1,7 @@
 # API 5.0 routes
 
-
 POST        /xml                                uk.gov.hmrc.apiplatformtest.controllers.XmlController.handleXmlPost()
+POST        /restricted-xml                     uk.gov.hmrc.apiplatformtest.controllers.XmlController.handleXmlPost()
+
+POST        /json                               uk.gov.hmrc.apiplatformtest.controllers.JsonController.handleJsonPost()
+POST        /restricted-json                    uk.gov.hmrc.apiplatformtest.controllers.JsonController.handleJsonPost()

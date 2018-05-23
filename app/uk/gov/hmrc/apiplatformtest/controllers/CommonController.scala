@@ -17,28 +17,29 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import play.api.libs.json.Json
-import play.api.mvc.{AnyContent, Request}
+import play.api.mvc.{AnyContent, Request, Result}
 import uk.gov.hmrc.apiplatformtest.models.DummyAnswer
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatDummyAnswer
 import uk.gov.hmrc.play.http.HeaderCarrier
 import uk.gov.hmrc.play.microservice.controller.BaseController
 
+import scala.concurrent.Future
 import scala.concurrent.Future.successful
 
 trait CommonController extends BaseController {
 
   implicit val hc: HeaderCarrier
 
-  protected def result(status: Status, resource: String, request: Request[AnyContent]) = {
+  protected def result(status: Status, resource: String, request: Request[AnyContent]): Future[Result] = {
     val answer = DummyAnswer(uri = request.uri, method = request.method, resourceDetails = resource)
     successful(status(Json.toJson(answer)))
   }
 
-  protected def success(resource: String)(implicit request: Request[AnyContent]) = {
+  protected def success(resource: String)(implicit request: Request[AnyContent]): Future[Result] = {
     result(Ok, resource, request)
   }
 
-  protected def failure(resource: String)(implicit request: Request[AnyContent]) = {
+  protected def failure(resource: String)(implicit request: Request[AnyContent]): Future[Result] = {
     result(NotImplemented, resource, request)
   }
 
