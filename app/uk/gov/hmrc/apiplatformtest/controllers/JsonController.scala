@@ -16,25 +16,35 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json._
+import play.api.Logger
 import play.api.mvc._
+import uk.gov.hmrc.apiplatformtest.services.HashingAlgorithm
 import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future.successful
 
 trait JsonController extends CommonController {
-
+  
   import JsonController._
-
+  
   final def handleJsonPost(): Action[JsValue] = {
     Action.async(BodyParsers.parse.json) { implicit request =>
       render.async {
         case AcceptsJson50() => successful(Ok(Json.toJson(request.body)))
-        case _ => successful(UnsupportedMediaType)
+        case _               => successful(UnsupportedMediaType)
       }
     }
   }
-
+  
+  final def handleNRSJsonPost(): Action[String] = {
+    Action(BodyParsers.parse.text) { implicit request =>
+      render {
+        case AcceptsJson50() => Ok(Json.obj("hash" -> JsString(HashingAlgorithm.sha256Hash(request.body))))
+        case _               => UnsupportedMediaType
+      }
+    }
+  }
 }
 
 object JsonController extends JsonController {

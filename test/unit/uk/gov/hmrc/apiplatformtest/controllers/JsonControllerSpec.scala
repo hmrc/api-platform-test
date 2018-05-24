@@ -19,9 +19,10 @@ package uk.gov.hmrc.apiplatformtest.controllers
 import play.api.http.ContentTypes.JSON
 import play.api.http.HeaderNames.{ACCEPT, CONTENT_TYPE}
 import play.api.http.Status.{OK, UNSUPPORTED_MEDIA_TYPE}
+import play.api.libs.json.Json
 import play.api.libs.json.Json.parse
 import play.api.test.FakeRequest
-import uk.gov.hmrc.apiplatformtest.controllers.JsonController.{handleJsonPost, VndHmrcJson50}
+import uk.gov.hmrc.apiplatformtest.controllers.JsonController._
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 class JsonControllerSpec extends UnitSpec with WithFakeApplication {
@@ -54,7 +55,38 @@ class JsonControllerSpec extends UnitSpec with WithFakeApplication {
       status(result) shouldBe UNSUPPORTED_MEDIA_TYPE
       bodyOf(result) shouldBe ""
     }
-
   }
 
+  "POST to NRS endpoint returns valid SHA-256 without effecting the payload" should {
+    "returns 93A23971A914E5EACBF0A8D25154CDA309C3C1C72FBB9914D47C60F3CB681588 from hello world" in {
+      val req = FakeRequest("POST", "/nrs-json")
+        .withBody("""{"hello":"world"}""")
+        .withHeaders(
+          CONTENT_TYPE -> "text/plain",
+          ACCEPT -> VndHmrcJson50)
+      
+      val result = await(handleNRSJsonPost()(req))
+      
+  
+      status(result) shouldBe OK
+      (Json.parse(bodyOf(result)) \ "hash").validate[String].get shouldBe "93A23971A914E5EACBF0A8D25154CDA309C3C1C72FBB9914D47C60F3CB681588"
+    }
+  
+    "returns 3DC606AA0263D3EBC41F34C55C5545A6C346FD4B47DB2AC746DADF7F958201E5 from hello world with spacing" in {
+      val req = FakeRequest("POST", "/nrs-json")
+          .withBody(""" { "hello" : "world" } """)
+          .withHeaders(
+                        CONTENT_TYPE -> "text/plain",
+                        ACCEPT -> VndHmrcJson50)
+    
+      val result = await(handleNRSJsonPost()(req))
+    
+    
+      status(result) shouldBe OK
+      val hash = (Json.parse(bodyOf(result)) \ "hash").validate[String].get
+      hash should not be "93A23971A914E5EACBF0A8D25154CDA309C3C1C72FBB9914D47C60F3CB681588"
+      hash shouldBe "3DC606AA0263D3EBC41F34C55C5545A6C346FD4B47DB2AC746DADF7F958201E5"
+    }
+
+  }
 }
