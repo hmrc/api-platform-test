@@ -42,3 +42,10 @@ uses:
       is: [headers.acceptHeader]
       (annotations.scope): "catch-the-mouse"
       securedBy: [ sec.oauth_2_0: { scopes: [ "catch-the-mouse" ] } ]
+
+  /nrs-json:
+    post:
+      displayName: Check a user-restricted JSON Post request does not affect hash
+      is: [headers.acceptHeader]
+      (annotations.scope): "catch-the-mouse"
+      securedBy: [ sec.oauth_2_0: { scopes: [ "catch-the-mouse" ] } ]
