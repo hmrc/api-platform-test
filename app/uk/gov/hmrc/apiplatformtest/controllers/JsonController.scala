@@ -16,18 +16,21 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import play.api.libs.json._
+import javax.inject.{Inject, Singleton}
+
+import akka.stream.Materializer
 import play.api.Logger
+import play.api.libs.json._
 import play.api.mvc._
 import uk.gov.hmrc.apiplatformtest.services.HashingAlgorithm
-import uk.gov.hmrc.play.http.HeaderCarrier
+import uk.gov.hmrc.play.microservice.controller.BaseController
 
-import scala.concurrent.Future.successful
+import scala.concurrent.Future._
 
-trait JsonController extends CommonController {
-  
+@Singleton
+class JsonController @Inject()(implicit mat: Materializer) extends BaseController {
   import JsonController._
-  
+
   final def handleJsonPost(): Action[JsValue] = {
     Action.async(BodyParsers.parse.json) { implicit request =>
       render.async {
@@ -38,18 +41,14 @@ trait JsonController extends CommonController {
   }
   
   final def handleNRSJsonPost(): Action[String] = {
-    Action(BodyParsers.parse.text) { implicit request =>
-      render {
-        case AcceptsJson50() => Ok(Json.obj("hash" -> JsString(HashingAlgorithm.sha256Hash(request.body))))
-        case _               => UnsupportedMediaType
-      }
+    Action(BodyParsers.parse.tolerantText) { implicit request =>
+      val hash = HashingAlgorithm.sha256Hash(request.body)
+      Ok(Json.obj("hash" -> hash))
     }
   }
 }
 
-object JsonController extends JsonController {
-  override implicit val hc: HeaderCarrier = HeaderCarrier()
-
+object JsonController {
   val VndHmrcJson50: String = "application/vnd.hmrc.5.0+json"
   val AcceptsJson50 = Accepting(VndHmrcJson50)
 }
