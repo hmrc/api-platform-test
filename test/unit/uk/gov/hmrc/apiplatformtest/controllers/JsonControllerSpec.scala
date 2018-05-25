@@ -29,6 +29,8 @@ class JsonControllerSpec extends UnitSpec with WithFakeApplication {
 
   implicit private val mat = fakeApplication.materializer
 
+  private val controller = new JsonController()
+
   private val payload = """{"firstName":"Alvise","surname":"Fransescoli","dateOfBirth":"04-01-1731"}"""
   private val request = FakeRequest("POST", "/json").withBody(parse(payload))
 
@@ -39,7 +41,7 @@ class JsonControllerSpec extends UnitSpec with WithFakeApplication {
         CONTENT_TYPE -> JSON,
         ACCEPT -> VndHmrcJson50)
 
-      val result = await(handleJsonPost()(req))
+      val result = await(controller.handleJsonPost()(req))
 
       status(result) shouldBe OK
       bodyOf(result) shouldBe payload
@@ -50,7 +52,7 @@ class JsonControllerSpec extends UnitSpec with WithFakeApplication {
         CONTENT_TYPE -> JSON,
         ACCEPT -> JSON)
 
-      val result = await(handleJsonPost()(req))
+      val result = await(controller.handleJsonPost()(req))
 
       status(result) shouldBe UNSUPPORTED_MEDIA_TYPE
       bodyOf(result) shouldBe ""
@@ -65,7 +67,7 @@ class JsonControllerSpec extends UnitSpec with WithFakeApplication {
           CONTENT_TYPE -> "text/plain",
           ACCEPT -> VndHmrcJson50)
       
-      val result = await(handleNRSJsonPost()(req))
+      val result = await(controller.handleNRSJsonPost()(req))
       
   
       status(result) shouldBe OK
@@ -79,7 +81,7 @@ class JsonControllerSpec extends UnitSpec with WithFakeApplication {
                         CONTENT_TYPE -> "text/plain",
                         ACCEPT -> VndHmrcJson50)
     
-      val result = await(handleNRSJsonPost()(req))
+      val result = await(controller.handleNRSJsonPost()(req))
     
     
       status(result) shouldBe OK
