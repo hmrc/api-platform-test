@@ -24,7 +24,7 @@ import uk.gov.hmrc.apiplatformtest.services.HashingAlgorithm
 import uk.gov.hmrc.play.microservice.controller.BaseController
 
 @Singleton
-class NsrController @Inject()(implicit mat: Materializer) extends BaseController {
+class NrsController @Inject()(implicit mat: Materializer) extends BaseController {
 
   final def handleNrsPost(): Action[String] = {
     Action(BodyParsers.parse.tolerantText) { implicit request =>

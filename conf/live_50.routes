@@ -6,4 +6,4 @@ POST        /restricted-xml                     uk.gov.hmrc.apiplatformtest.cont
 POST        /json                               @uk.gov.hmrc.apiplatformtest.controllers.JsonController.handleJsonPost()
 POST        /restricted-json                    @uk.gov.hmrc.apiplatformtest.controllers.JsonController.handleJsonPost()
 
-POST        /nrs                                @uk.gov.hmrc.apiplatformtest.controllers.NsrController.handleNrsPost()
+POST        /nrs                                @uk.gov.hmrc.apiplatformtest.controllers.NrsController.handleNrsPost()

@@ -23,11 +23,11 @@ import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-class NsrControllerSpec extends UnitSpec with WithFakeApplication {
+class NrsControllerSpec extends UnitSpec with WithFakeApplication {
 
   implicit private val mat = fakeApplication.materializer
 
-  private val controller = new NsrController()
+  private val controller = new NrsController()
 
   "POST to NRS endpoint returns valid SHA-256 without effecting the payload" should {
 
