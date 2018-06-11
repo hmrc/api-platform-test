@@ -21,31 +21,36 @@ uses:
 /api-platform-test:
   /xml:
     post:
-      displayName: Check an open XML Post request
+      displayName: Open XML Post endpoint that returns the incoming request body
       is: [headers.acceptHeader]
 
   /json:
     post:
-      displayName: Check an open JSON Post request
+      displayName: Open JSON Post endpoint that returns the incoming request body
+      is: [headers.acceptHeader]
+
+  /nrs:
+    post:
+      displayName: Open Post endpoint that returns SHA-256 hash of the incoming request body
       is: [headers.acceptHeader]
 
   /restricted-xml:
     post:
-      displayName: Check a user-restricted XML Post request
+      displayName: User-restricted XML Post endpoint that returns the incoming request body
       is: [headers.acceptHeader]
       (annotations.scope): "catch-the-mouse"
       securedBy: [ sec.oauth_2_0: { scopes: [ "catch-the-mouse" ] } ]
 
   /restricted-json:
     post:
-      displayName: Check a user-restricted JSON Post request
+      displayName: User-restricted JSON Post endpoint that returns the incoming request body
       is: [headers.acceptHeader]
       (annotations.scope): "catch-the-mouse"
       securedBy: [ sec.oauth_2_0: { scopes: [ "catch-the-mouse" ] } ]
 
-  /nrs:
+  /restricted-nrs:
     post:
-      displayName: Check a user-restricted Post request does not have the incoming payload altered
+      displayName: User-restricted Post endpoint that returns SHA-256 hash of the incoming request body
       is: [headers.acceptHeader]
       (annotations.scope): "catch-the-mouse"
       securedBy: [ sec.oauth_2_0: { scopes: [ "catch-the-mouse" ] } ]
