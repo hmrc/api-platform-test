@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-import play.sbt.PlayImport._
 import play.core.PlayVersion
-import sbt.Tests.{SubProcess, Group}
-import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
+import play.sbt.PlayImport._
 import uk.gov.hmrc.DefaultBuildSettings._
 import uk.gov.hmrc.SbtAutoBuildPlugin
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin
+import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
 import uk.gov.hmrc.versioning.SbtGitVersioning
 
 val appName = "api-platform-test"
@@ -37,10 +36,10 @@ lazy val compile = Seq(
   "uk.gov.hmrc" %% "play-url-binders" % "2.1.0",
   "uk.gov.hmrc" %% "play-config" % "4.3.0",
   "uk.gov.hmrc" %% "logback-json-logger" % "3.1.0",
-  "uk.gov.hmrc" %% "domain" % "4.1.0"
+  "uk.gov.hmrc" %% "domain" % "5.1.0"
 )
 
-lazy val scope: String = "test, it"
+lazy val scope: String = "test"
 
 lazy val test = Seq(
   "uk.gov.hmrc" %% "hmrctest" % "3.0.0" % scope,
@@ -70,27 +69,16 @@ lazy val microservice = (project in file("."))
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false)
   )
   .settings(
-    Keys.fork in Test := false,
+    testOptions in Test := Seq(Tests.Filter(_ => true)),// this removes duplicated lines in HTML reports
     unmanagedSourceDirectories in Test := Seq((baseDirectory in Test).value / "test" / "unit"),
     addTestReportOption(Test, "test-reports")
-  )
-  .configs(IntegrationTest)
-  .settings(inConfig(IntegrationTest)(Defaults.itSettings): _*)
-  .settings(
-    Keys.fork in IntegrationTest := false,
-    unmanagedSourceDirectories in IntegrationTest := Seq((baseDirectory in IntegrationTest).value / "test" / "it"),
-    addTestReportOption(IntegrationTest, "int-test-reports"),
-    testGrouping in IntegrationTest := oneForkedJvmPerTest((definedTests in IntegrationTest).value),
-    parallelExecution in IntegrationTest := false,
-    libraryDependencies ++= test
   )
   .settings(resolvers ++= Seq(
     Resolver.bintrayRepo("hmrc", "releases"),
     Resolver.jcenterRepo
   ))
 
-
-def oneForkedJvmPerTest(tests: Seq[TestDefinition]) =
-  tests map {
-    test => Group(test.name, Seq(test), SubProcess(ForkOptions(runJVMOptions = Seq("-Dtest.name=" + test.name))))
-  }
+// Coverage configuration
+coverageMinimum := 15
+coverageFailOnMinimum := true
+coverageExcludedPackages := "<empty>;com.kenshoo.play.metrics.*;.*definition.*;prod.*;testOnlyDoNotUseInAppConf.*;app.*;uk.gov.hmrc.BuildInfo"
