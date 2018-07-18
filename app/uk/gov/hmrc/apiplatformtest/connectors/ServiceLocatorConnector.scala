@@ -21,10 +21,10 @@ import play.api.http.ContentTypes.JSON
 import play.api.libs.json.Json
 import play.mvc.Http.HeaderNames.CONTENT_TYPE
 import uk.gov.hmrc.apiplatformtest.config.{AppContext, WSHttp}
-import uk.gov.hmrc.play.http.{HeaderCarrier, HttpPost}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import uk.gov.hmrc.http.{ HeaderCarrier, HttpPost }
 
 case class Registration(serviceName: String, serviceUrl: String, metadata:Option[Map[String, String]] = None)
 

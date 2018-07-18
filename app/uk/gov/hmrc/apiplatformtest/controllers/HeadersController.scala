@@ -18,10 +18,10 @@ package uk.gov.hmrc.apiplatformtest.controllers
 
 import play.api.libs.json._
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.play.http.HeaderCarrier
 import uk.gov.hmrc.play.microservice.controller.BaseController
 
 import scala.concurrent.Future
+import uk.gov.hmrc.http.HeaderCarrier
 
 
 object HeadersControllerDomain {

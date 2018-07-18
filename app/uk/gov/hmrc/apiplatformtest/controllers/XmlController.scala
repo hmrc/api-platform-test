@@ -17,10 +17,10 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import play.api.mvc._
-import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future.successful
 import scala.xml.NodeSeq
+import uk.gov.hmrc.http.HeaderCarrier
 
 trait XmlController extends CommonController {
 
