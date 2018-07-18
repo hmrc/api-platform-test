@@ -26,16 +26,10 @@ val appName = "api-platform-test"
 
 lazy val appDependencies: Seq[ModuleID] = compile ++ test
 
-// TODO: upgrade dependencies and upgrade Auth libraries
-
 lazy val compile = Seq(
   ws,
-  "uk.gov.hmrc" %% "microservice-bootstrap" % "5.15.0",
-  "uk.gov.hmrc" %% "play-authorisation" % "4.3.0",
-  "uk.gov.hmrc" %% "play-health" % "2.1.0",
+  "uk.gov.hmrc" %% "microservice-bootstrap" % "6.18.0",
   "uk.gov.hmrc" %% "play-url-binders" % "2.1.0",
-  "uk.gov.hmrc" %% "play-config" % "4.3.0",
-  "uk.gov.hmrc" %% "logback-json-logger" % "3.1.0",
   "uk.gov.hmrc" %% "domain" % "5.1.0"
 )
 
