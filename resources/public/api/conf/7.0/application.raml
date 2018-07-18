@@ -1,7 +1,7 @@
 #%RAML 1.0
 ---
 title: API Platform Test
-version: 6.0
+version: 7.0
 
 protocols: [ HTTPS ]
 baseUri: https://api.service.hmrc.gov.uk/
@@ -19,14 +19,7 @@ uses:
   types: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/types.raml
 
 /api-platform-test:
-  /headers:
+  /fraud-prevention:
     get:
-      displayName: Dummy open resource that checks if the request headers are propagated to the controller
+      displayName: Dummy open resource that validate required TxM headers
       is: [headers.acceptHeader]
-
-  /restricted-headers:
-    get:
-      displayName: Dummy user-restricted resource that checks if the request headers are propagated to the controller
-      is: [headers.acceptHeader]
-      (annotations.scope): "catch-the-mouse"
-      securedBy: [ sec.oauth_2_0: { scopes: [ "catch-the-mouse" ] } ]
