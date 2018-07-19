@@ -28,6 +28,7 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test
 
 lazy val compile = Seq(
   ws,
+  "uk.gov.hmrc" %% "fraud-prevention" % "0.2.0",
   "uk.gov.hmrc" %% "microservice-bootstrap" % "6.18.0",
   "uk.gov.hmrc" %% "play-url-binders" % "2.1.0",
   "uk.gov.hmrc" %% "domain" % "5.1.0"
@@ -73,6 +74,6 @@ lazy val microservice = (project in file("."))
   ))
 
 // Coverage configuration
-coverageMinimum := 15
+coverageMinimum := 17
 coverageFailOnMinimum := true
 coverageExcludedPackages := "<empty>;com.kenshoo.play.metrics.*;.*definition.*;prod.*;testOnlyDoNotUseInAppConf.*;app.*;uk.gov.hmrc.BuildInfo"

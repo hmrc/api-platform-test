@@ -26,7 +26,7 @@ trait AppContext extends ServicesConfig {
   lazy val appUrl = configuration.getString("appUrl").getOrElse(throw new RuntimeException("appUrl is not configured"))
   lazy val serviceLocatorUrl: String = baseUrl("service-locator")
   lazy val registrationEnabled: Boolean = configuration.getBoolean(s"${env}.microservice.services.service-locator.enabled").getOrElse(true)
-  lazy val access = configuration.getConfig(s"api.access")
+  lazy val access = configuration.getConfig("api.access")
 }
 
 object AppContext extends AppContext {
