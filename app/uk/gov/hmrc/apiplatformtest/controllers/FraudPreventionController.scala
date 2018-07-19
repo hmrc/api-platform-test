@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import javax.inject.Singleton
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatNoFraudAnswer
@@ -26,8 +25,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.Future.successful
 
-@Singleton
-class FraudPreventionController extends CommonController {
+trait FraudPreventionController extends CommonController {
 
   override implicit val hc: HeaderCarrier = HeaderCarrier()
 
