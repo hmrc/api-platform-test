@@ -30,7 +30,6 @@ trait FraudPreventionController extends CommonController {
   override implicit val hc: HeaderCarrier = HeaderCarrier()
 
   lazy private val requiredHeaders = List("Gov-Client-Public-Port")
-
   lazy private val fraudPreventionFilter = AntiFraudHeadersValidatorActionFilter.actionFilterFromHeaderNames(requiredHeaders)
 
 
