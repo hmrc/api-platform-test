@@ -31,12 +31,13 @@ trait FraudPreventionController extends CommonController {
 
   lazy private val requiredHeaders = List("Gov-Client-Public-Port")
 
-  def handleFraud(): Action[AnyContent] = {
-   (Action andThen AntiFraudHeadersValidatorActionFilter.actionFilterFromHeaderNames(requiredHeaders)).async { implicit request =>
-      successful(
-        Ok(Json.toJson(NoFraudAnswer("All required headers have been sent correctly in the request.")))
-      )
-    }
+  lazy private val fraudPreventionFilter = AntiFraudHeadersValidatorActionFilter.actionFilterFromHeaderNames(requiredHeaders)
+
+
+  def handleFraud(): Action[AnyContent] = fraudPreventionFilter.async { implicit request =>
+    successful(
+      Ok(Json.toJson(NoFraudAnswer("All required headers have been sent correctly in the request.")))
+    )
   }
 
 }
