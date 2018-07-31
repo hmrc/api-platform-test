@@ -17,26 +17,42 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.{Action, AnyContent, Request, Result}
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatNoFraudAnswer
 import uk.gov.hmrc.apiplatformtest.models.NoFraudAnswer
-import uk.gov.hmrc.fraudprevention.AntiFraudHeadersValidatorActionFilter
+import uk.gov.hmrc.fraudprevention.headervalidators.impl._
+import uk.gov.hmrc.fraudprevention.model.{ErrorConversion, ErrorResponse}
+import uk.gov.hmrc.fraudprevention.{AntiFraudHeadersValidator, AntiFraudHeadersValidatorActionFilter}
 import uk.gov.hmrc.http.HeaderCarrier
 
+import scala.concurrent.Future
 import scala.concurrent.Future.successful
 
-trait FraudPreventionController extends CommonController {
+trait FraudPreventionController extends ErrorConversion with CommonController {
 
   override implicit val hc: HeaderCarrier = HeaderCarrier()
 
-  lazy private val requiredHeaders = List("Gov-Client-Public-Port")
-  lazy private val fraudPreventionFilter = AntiFraudHeadersValidatorActionFilter.actionFilterFromHeaderNames(requiredHeaders)
+  lazy private val requiredHeaderValidators = List(GovClientColourDepthHeaderValidator, GovClientPublicPortHeaderValidator)
 
+  lazy private val fraudPreventionFilter = AntiFraudHeadersValidatorActionFilter.actionFilterFromHeaderValidators(requiredHeaderValidators)
 
-  def handleFraud(): Action[AnyContent] = fraudPreventionFilter.async { implicit request =>
+  private def success: Future[Result] = {
     successful(
       Ok(Json.toJson(NoFraudAnswer("All required headers have been sent correctly in the request.")))
     )
+  }
+
+  def handleFraudWithFilter(): Action[AnyContent] = fraudPreventionFilter.async { implicit request: Request[AnyContent] =>
+    success
+  }
+
+  def handleFraud(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+
+    AntiFraudHeadersValidator.validate(requiredHeaderValidators)(request) match {
+      case Right(_) => success
+      case Left(errors: List[String]) => successful(ErrorResponse(errors))
+    }
+
   }
 
 }
