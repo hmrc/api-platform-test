@@ -1,0 +1,3 @@
+# API 2.3 routes
+
+GET        /privileged                                   uk.gov.hmrc.apiplatformtest.controllers.PrivilegedApiController.handlePrivilegedAccess()

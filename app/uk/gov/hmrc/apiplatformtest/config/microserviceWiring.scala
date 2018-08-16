@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.apiplatformtest.config
 
+import uk.gov.hmrc.auth.core.PlayAuthConnector
 import uk.gov.hmrc.http._
 import uk.gov.hmrc.http.hooks.HttpHooks
 import uk.gov.hmrc.play.audit.http.HttpAuditing
@@ -45,4 +46,9 @@ object MicroserviceAuditConnector extends AuditConnector with RunMode {
 
 object MicroserviceAuthConnector extends AuthConnector with ServicesConfig with WSHttp {
   override val authBaseUrl: String = baseUrl("auth")
+}
+
+object AuthClientAuthConnector extends PlayAuthConnector with ServicesConfig {
+  val serviceUrl: String = baseUrl("auth")
+  val http: HttpPost = WSHttp
 }
