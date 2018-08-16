@@ -31,7 +31,7 @@ trait PrivilegedApiController extends CommonController with AuthorisedFunctions 
   override implicit val hc: HeaderCarrier = HeaderCarrier()
   override val authConnector: AuthConnector = AuthClientAuthConnector
 
-  def handlePrivilegedApplication(): Action[AnyContent] = Action.async { implicit request =>
+  def handlePrivilegedAccess(): Action[AnyContent] = Action.async { implicit request =>
     authorised(AuthProviders(PrivilegedApplication)) {
       successful(
         Ok(Json.toJson("Request coming from a privileged application"))
