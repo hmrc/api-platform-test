@@ -21,7 +21,7 @@ import play.api.mvc.{Action, AnyContent, Result}
 import uk.gov.hmrc.apiplatformtest.config.AuthClientAuthConnector
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatPrivilegedAccessAnswer
 import uk.gov.hmrc.apiplatformtest.models.PrivilegedAccessAnswer
-import uk.gov.hmrc.auth.core.AuthProvider.PrivilegedApplication
+import uk.gov.hmrc.auth.core.AuthProvider.{GovernmentGateway, OneTimeLogin, PrivilegedApplication, Verify}
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._
 import uk.gov.hmrc.play.microservice.controller.BaseController
@@ -41,7 +41,7 @@ trait PrivilegedApiController extends BaseController with AuthorisedFunctions {
   }
 
   def handlePrivilegedAccess(): Action[AnyContent] = Action.async { implicit request =>
-    authorised(AuthProviders(PrivilegedApplication)) {
+    authorised(AuthProviders(PrivilegedApplication, GovernmentGateway, Verify, OneTimeLogin)) {
       successful(fromPrivilegedApplication)
     } recover {
       case _: UnsupportedAuthProvider => fromNonPrivilegedApplication
