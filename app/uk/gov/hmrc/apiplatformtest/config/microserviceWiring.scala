@@ -49,6 +49,6 @@ object MicroserviceAuthConnector extends AuthConnector with ServicesConfig with 
 }
 
 object AuthClientAuthConnector extends PlayAuthConnector with ServicesConfig {
-  val serviceUrl: String = baseUrl("auth")
-  val http: HttpPost = WSHttp
+  override val serviceUrl: String = baseUrl("auth")
+  override val http: HttpPost = WSHttp
 }

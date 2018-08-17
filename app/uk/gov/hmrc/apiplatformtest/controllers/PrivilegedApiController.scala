@@ -20,25 +20,25 @@ import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.apiplatformtest.config.AuthClientAuthConnector
 import uk.gov.hmrc.auth.core.AuthProvider.PrivilegedApplication
-import uk.gov.hmrc.auth.core.{AuthConnector, AuthProviders, AuthorisedFunctions}
+import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._
 import uk.gov.hmrc.play.microservice.controller.BaseController
 
 import scala.concurrent.Future.successful
 
 trait PrivilegedApiController extends BaseController with AuthorisedFunctions {
+
   override val authConnector: AuthConnector = AuthClientAuthConnector
 
   def handlePrivilegedAccess(): Action[AnyContent] = Action.async { implicit request =>
     authorised(AuthProviders(PrivilegedApplication)) {
       successful(
         Ok(Json.toJson("Request coming from a privileged application"))
-      )
+      ) recover {
+        case _: UnsupportedAuthProvider => Forbidden("Only privileged applications can access this endpoint")
+      }
     }
   }
-    // TODO: add recover ( 401) for non priv apps
-    // TODO: add unit tests
-    // TODO: add acceptance tests
 }
 
 object PrivilegedApiController extends PrivilegedApiController
