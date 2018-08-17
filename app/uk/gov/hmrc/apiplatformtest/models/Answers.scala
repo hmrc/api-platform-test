@@ -19,3 +19,5 @@ package uk.gov.hmrc.apiplatformtest.models
 case class DummyAnswer(uri: String, method: String, resourceDetails: String)
 
 case class NoFraudAnswer(message: String)
+
+case class PrivilegedAccessAnswer(message: String)
