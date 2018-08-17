@@ -42,9 +42,9 @@ trait PrivilegedApiController extends BaseController with AuthorisedFunctions {
 
   def handlePrivilegedAccess(): Action[AnyContent] = Action.async { implicit request =>
     authorised(AuthProviders(PrivilegedApplication)) {
-      successful(fromPrivilegedApplication).recoverWith {
-        case _: UnsupportedAuthProvider => successful(fromNonPrivilegedApplication)
-      }
+      successful(fromPrivilegedApplication)
+    } recover {
+      case _: UnsupportedAuthProvider => fromNonPrivilegedApplication
     }
   }
 
