@@ -17,7 +17,7 @@
 package uk.gov.hmrc.apiplatformtest.config
 
 import play.api.Configuration
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class ApiAccess(`type`: String, whitelistedApplicationIds: Option[Seq[String]])
 
@@ -26,5 +26,5 @@ object ApiAccess {
     `type` = config.flatMap(_.getString(s"version-$version.type")).getOrElse("PRIVATE"),
     whitelistedApplicationIds = config.flatMap(_.getStringSeq(s"version-$version.whitelistedApplicationIds")).orElse(Some(Seq.empty)))
 
-  implicit val apiAccessFmt = Json.format[ApiAccess]
+  implicit val apiAccessFmt: OFormat[ApiAccess] = Json.format[ApiAccess]
 }
