@@ -32,14 +32,18 @@ trait FraudPreventionController extends ErrorConversion with CommonController {
 
   override implicit val hc: HeaderCarrier = HeaderCarrier()
 
-  lazy private val requiredHeaderValidators = List(GovClientColourDepthHeaderValidator, GovClientPublicPortHeaderValidator)
-
+  lazy val requiredHeaderValidators = List(GovClientColourDepthHeaderValidator, GovClientPublicPortHeaderValidator)
   lazy private val fraudPreventionFilter = AntiFraudHeadersValidatorActionFilter.actionFilterFromHeaderValidators(requiredHeaderValidators)
+  lazy private val filterWithDefaultHeaders = AntiFraudHeadersValidatorActionFilter.actionFilterWithDefaultHeaders
 
   private def success: Future[Result] = {
     successful(
       Ok(Json.toJson(NoFraudAnswer("All required headers have been sent correctly in the request.")))
     )
+  }
+
+  def handleFraudWithDefaultHeadersFilter(): Action[AnyContent] = filterWithDefaultHeaders.async { implicit request: Request[AnyContent] =>
+    success
   }
 
   def handleFraudWithFilter(): Action[AnyContent] = fraudPreventionFilter.async { implicit request: Request[AnyContent] =>

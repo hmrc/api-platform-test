@@ -16,24 +16,36 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import akka.stream.Materializer
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import uk.gov.hmrc.fraudprevention.headervalidators.impl._
-import uk.gov.hmrc.fraudprevention.model.{ErrorConversion, ErrorResponse}
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatNoFraudAnswer
 import uk.gov.hmrc.apiplatformtest.models.NoFraudAnswer
+import uk.gov.hmrc.fraudprevention.headervalidators.impl._
+import uk.gov.hmrc.fraudprevention.model.{ErrorConversion, ErrorResponse}
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 class FraudPreventionControllerSpec extends UnitSpec with WithFakeApplication with ErrorConversion {
 
-  private implicit val materializer = fakeApplication.materializer
+  private implicit val materializer: Materializer = fakeApplication.materializer
 
   private lazy val fakeRequest = FakeRequest()
 
+  private val defaultHeaderValidators = List(
+    GovClientDeviceIdHeaderValidator, GovClientUserIdHeaderValidator, GovClientTimezoneHeaderValidator,
+    GovClientLocalIpHeaderValidator, GovVendorVersionHeaderValidator, GovVendorLicenseIdHeaderValidator,
+    GovClientConnectionMethodHeaderValidator
+  )
+
+  private val underTest: FraudPreventionController = new FraudPreventionController {
+    override lazy val requiredHeaderValidators: List[BasicHeaderValidator] = defaultHeaderValidators
+  }
+
   private val controllerRouteFunctions = Map(
-    "handleFraud()()" -> FraudPreventionController.handleFraud(),
-    "handleFraudWithFilter()()" -> FraudPreventionController.handleFraudWithFilter())
+    "handleFraud" -> underTest.handleFraud(),
+    "handleFraudWithFilter" -> underTest.handleFraudWithFilter(),
+    "handleFraudWithDefaultHeadersFilter" -> underTest.handleFraudWithDefaultHeadersFilter())
 
   controllerRouteFunctions.foreach { f =>
 
@@ -41,40 +53,45 @@ class FraudPreventionControllerSpec extends UnitSpec with WithFakeApplication wi
 
       "block requests missing required headers" in {
         val result = f._2(fakeRequest)
+
         status(result) shouldBe Status.PRECONDITION_FAILED
-        val expectedAnswer = ErrorResponse(List("Header Gov-Client-Colour-Depth is missing", "Header Gov-Client-Public-Port is missing"))
+        val expectedAnswer = ErrorResponse(List(""))
         await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
       }
 
       "block requests with unexpected values for required headers" in {
         val request = fakeRequest.withHeaders(
-          GovClientPublicPortHeaderValidator.headerName -> "-1",
-          GovClientColourDepthHeaderValidator.headerName -> "12"
+          defaultHeaderValidators.head.headerName -> "" ::
+          defaultHeaderValidators.tail.map(hd => hd.headerName -> "value"):_*
         )
+
         val result = f._2(request)
+
         status(result) shouldBe Status.PRECONDITION_FAILED
-        val expectedAnswer = ErrorResponse(List("Invalid port number for header Gov-Client-Public-Port: -1"))
+        val expectedAnswer = ErrorResponse(List("Gov-Client-Device-ID must not be empty"))
         await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
       }
 
       "block requests that has multiple values for required headers that must have one value only" in {
         val request = fakeRequest.withHeaders(
-          GovClientPublicPortHeaderValidator.headerName -> "8080",
-          GovClientPublicPortHeaderValidator.headerName -> "9000",
-          GovClientColourDepthHeaderValidator.headerName -> "12"
+          defaultHeaderValidators.head.headerName -> "test" ::
+          defaultHeaderValidators.map(hd => hd.headerName -> "value"):_*
         )
+
         val result = f._2(request)
+
         status(result) shouldBe Status.PRECONDITION_FAILED
-        val expectedAnswer = ErrorResponse(List("Multiple values for header Gov-Client-Public-Port"))
+        val expectedAnswer = ErrorResponse(List("Multiple values for header Gov-Client-Device-ID"))
         await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
       }
 
       "proxy requests that have valid values for all required headers" in {
         val request = fakeRequest.withHeaders(
-          GovClientPublicPortHeaderValidator.headerName -> "21",
-          GovClientColourDepthHeaderValidator.headerName -> "36"
+          defaultHeaderValidators.map(hd => hd.headerName -> "value"):_*
         )
+
         val result = f._2(request)
+
         status(result) shouldBe Status.OK
         val expectedAnswer = NoFraudAnswer("All required headers have been sent correctly in the request.")
         await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
