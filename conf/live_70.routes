@@ -1,4 +1,5 @@
 # API 7.0 routes
 
-GET        /fraud-prevention-filter             uk.gov.hmrc.apiplatformtest.controllers.FraudPreventionController.handleFraudWithFilter()
-GET        /fraud-prevention                    uk.gov.hmrc.apiplatformtest.controllers.FraudPreventionController.handleFraud()
+GET  /fraud-prevention                           uk.gov.hmrc.apiplatformtest.controllers.FraudPreventionController.handleFraud()
+GET  /fraud-prevention-filter                    uk.gov.hmrc.apiplatformtest.controllers.FraudPreventionController.handleFraudWithFilter()
+GET  /fraud-prevention-filter/default-headers    uk.gov.hmrc.apiplatformtest.controllers.FraudPreventionController.handleFraudWithDefaultHeadersFilter()
