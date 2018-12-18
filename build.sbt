@@ -30,18 +30,19 @@ lazy val compile = Seq(
   ws,
   "uk.gov.hmrc" %% "fraud-prevention" % "0.10.0",
   "uk.gov.hmrc" %% "microservice-bootstrap" % "6.18.0",
-  "uk.gov.hmrc" %% "domain" % "5.1.0",
-  "uk.gov.hmrc" %% "auth-client" % "2.6.0"
+  "uk.gov.hmrc" %% "domain" % "5.3.0",
+  "uk.gov.hmrc" %% "auth-client" % "2.17.0-play-25"
 )
 
 lazy val scope: String = "test"
 
 lazy val test = Seq(
-  "uk.gov.hmrc" %% "hmrctest" % "3.0.0" % scope,
+  "uk.gov.hmrc" %% "hmrctest" % "3.3.0" % scope,
   "org.scalatest" %% "scalatest" % "2.2.6" % scope,
   "org.pegdown" % "pegdown" % "1.6.0" % scope,
   "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
   "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.1" % scope,
+  "org.mockito" % "mockito-core" % "1.10.19" % scope,
   "com.github.tomakehurst" % "wiremock" % "2.10.1" % scope exclude("org.apache.httpcomponents","httpclient") exclude("org.apache.httpcomponents","httpcore")
 )
 
