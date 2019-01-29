@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
 
 package uk.gov.hmrc.apiplatformtest.config
 
-import play.api.{Configuration, Play}
-import play.api.Mode.Mode
+import play.api.Configuration
 import play.api.Play._
 import uk.gov.hmrc.play.config.ServicesConfig
 
@@ -32,8 +31,4 @@ trait AppContext extends ServicesConfig {
 
 object AppContext extends AppContext {
   val configuration = current.configuration
-
-  override protected def mode: Mode = Play.current.mode
-
-  override protected def runModeConfiguration: Configuration = Play.current.configuration
 }
