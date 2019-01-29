@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,9 @@
 
 package uk.gov.hmrc.apiplatformtest.config
 
+import com.typesafe.config.Config
+import play.api.Mode.Mode
+import play.api.{Configuration, Play}
 import uk.gov.hmrc.auth.core.PlayAuthConnector
 import uk.gov.hmrc.http._
 import uk.gov.hmrc.http.hooks.HttpHooks
@@ -38,17 +41,38 @@ trait WSHttp extends HttpGet with WSGet
   with HttpPatch with WSPatch
   with Hooks with AppName
 
-object WSHttp extends WSHttp
+object WSHttp extends WSHttp {
+  override protected def appNameConfiguration: Configuration = Play.current.configuration
+
+  override protected def configuration: Option[Config] = Some(Play.current.configuration.underlying)
+
+}
 
 object MicroserviceAuditConnector extends AuditConnector with RunMode {
   override lazy val auditingConfig = LoadAuditingConfig(s"$env.auditing")
+
+  override protected def mode: Mode = Play.current.mode
+
+  override protected def runModeConfiguration: Configuration = Play.current.configuration
 }
 
 object MicroserviceAuthConnector extends AuthConnector with ServicesConfig with WSHttp {
   override val authBaseUrl: String = baseUrl("auth")
+
+  override protected def mode: Mode = Play.current.mode
+
+  override protected def runModeConfiguration: Configuration = Play.current.configuration
+
+  override protected def appNameConfiguration: Configuration = Play.current.configuration
+
+  override protected def configuration: Option[Config] = Some(Play.current.configuration.underlying)
 }
 
 object AuthClientAuthConnector extends PlayAuthConnector with ServicesConfig {
   override val serviceUrl: String = baseUrl("auth")
   override val http: HttpPost = WSHttp
+
+  override protected def mode: Mode = Play.current.mode
+
+  override protected def runModeConfiguration: Configuration = Play.current.configuration
 }
