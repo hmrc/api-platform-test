@@ -18,6 +18,7 @@ package uk.gov.hmrc.apiplatformtest.config
 
 import com.typesafe.config.Config
 import net.ceedubs.ficus.Ficus._
+import play.api.Mode.Mode
 import play.api._
 import uk.gov.hmrc.apiplatformtest.connectors.ServiceLocatorConnector
 import uk.gov.hmrc.play.auth.controllers.AuthParamsControllerConfig
@@ -25,7 +26,7 @@ import uk.gov.hmrc.play.auth.microservice.filters.AuthorisationFilter
 import uk.gov.hmrc.play.config.{AppName, ControllerConfig, RunMode}
 import uk.gov.hmrc.play.microservice.bootstrap.DefaultMicroserviceGlobal
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.microservice.filters.{ AuditFilter, LoggingFilter, MicroserviceFilterSupport }
+import uk.gov.hmrc.play.microservice.filters.{AuditFilter, LoggingFilter, MicroserviceFilterSupport}
 
 trait ServiceLocatorRegistration extends GlobalSettings with RunMode {
 
@@ -55,6 +56,8 @@ object AuthParamsControllerConfiguration extends AuthParamsControllerConfig {
 object MicroserviceAuditFilter extends AuditFilter with AppName with MicroserviceFilterSupport {
   override val auditConnector = MicroserviceAuditConnector
   override def controllerNeedsAuditing(controllerName: String): Boolean = ControllerConfiguration.paramsForController(controllerName).needsAuditing
+
+  override protected def appNameConfiguration: Configuration = Play.current.configuration
 }
 
 object MicroserviceLoggingFilter extends LoggingFilter with MicroserviceFilterSupport {
@@ -83,4 +86,8 @@ object MicroserviceGlobal extends DefaultMicroserviceGlobal with RunMode with Mi
   override val slConnector: ServiceLocatorConnector = ServiceLocatorConnector
 
   override implicit val hc: HeaderCarrier = HeaderCarrier()
+
+  override protected def mode: Mode = Play.current.mode
+
+  override protected def runModeConfiguration: Configuration = Play.current.configuration
 }
