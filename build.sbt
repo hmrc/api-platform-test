@@ -32,7 +32,9 @@ lazy val compile = Seq(
   "uk.gov.hmrc" %% "microservice-bootstrap" % "9.1.0",
   "uk.gov.hmrc" %% "domain" % "5.3.0",
   "uk.gov.hmrc" %% "auth-client" % "2.17.0-play-25",
-  "uk.gov.hmrc" %% "logback-json-logger" % "4.0.0"
+  "ch.qos.logback" % "logback-classic" % "1.2.3",
+  "uk.gov.hmrc" %% "logback-json-logger" % "4.2.0"
+
 )
 
 lazy val scope: String = "test"
