@@ -29,7 +29,7 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test
 lazy val compile = Seq(
   ws,
   "uk.gov.hmrc" %% "fraud-prevention" % "0.10.0",
-  "uk.gov.hmrc" %% "microservice-bootstrap" % "9.1.0",
+  "uk.gov.hmrc" %% "microservice-bootstrap" % "10.6.0",
   "uk.gov.hmrc" %% "domain" % "5.3.0",
   "uk.gov.hmrc" %% "auth-client" % "2.17.0-play-25",
   "ch.qos.logback" % "logback-classic" % "1.2.3",

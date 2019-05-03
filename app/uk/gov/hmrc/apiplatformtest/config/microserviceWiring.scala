@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.apiplatformtest.config
 
+import akka.actor.ActorSystem
 import com.typesafe.config.Config
 import play.api.Mode.Mode
 import play.api.{Configuration, Play}
@@ -46,6 +47,9 @@ object WSHttp extends WSHttp {
 
   override protected def configuration: Option[Config] = Some(Play.current.configuration.underlying)
 
+  override protected def actorSystem: ActorSystem = Play.current.actorSystem
+
+
 }
 
 object MicroserviceAuditConnector extends AuditConnector with RunMode {
@@ -66,6 +70,9 @@ object MicroserviceAuthConnector extends AuthConnector with ServicesConfig with 
   override protected def appNameConfiguration: Configuration = Play.current.configuration
 
   override protected def configuration: Option[Config] = Some(Play.current.configuration.underlying)
+
+  override protected def actorSystem: ActorSystem = Play.current.actorSystem
+
 }
 
 object AuthClientAuthConnector extends PlayAuthConnector with ServicesConfig {
