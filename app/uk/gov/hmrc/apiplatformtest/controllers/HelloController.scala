@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.microservice.controller.BaseController
@@ -27,7 +28,8 @@ trait HelloController extends BaseController {
 
   implicit val hc: HeaderCarrier
 
-  def handle: Action[AnyContent] = Action.async {
+  def handle: Action[AnyContent] = Action.async { request =>
+    Logger.info(s"Application ID: ${request.headers.get("x-application-id").getOrElse("Not Found")}")
     Future.successful(Ok(Json.toJson("""{ "message": "Hello World" }""")))
   }
 
