@@ -29,8 +29,8 @@ trait HelloController extends BaseController {
   implicit val hc: HeaderCarrier
 
   def handle: Action[AnyContent] = Action.async { request =>
-    Logger.info(s"Application ID: ${request.headers.get("x-application-id").getOrElse("Not Found")}")
-    Future.successful(Ok(Json.toJson("""{ "message": "Hello World" }""")))
+    Logger.warn(s"Application ID: ${request.headers.get("x-application-id").getOrElse("Not Found")}")
+    Future.successful(Ok(Json.toJson(s"""{ "message": "Hello Application ${request.headers.get("x-application-id").getOrElse("Not Found")}" }""")))
   }
 
   def handleWithParam(param: String): Action[AnyContent] = Action.async {
