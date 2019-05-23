@@ -27,7 +27,7 @@
     "versions": [
       {
         "version": "1.0",
-        "status": "DEPRECATED"
+        "status": "PUBLISHED"
       },
       {
         "version": "2.0",
