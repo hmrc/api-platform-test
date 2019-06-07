@@ -27,43 +27,43 @@
     "versions": [
       {
         "version": "1.0",
-        "status": "PUBLISHED"
+        "status": "STABLE"
       },
       {
         "version": "2.0",
-        "status": "PUBLISHED"
+        "status": "STABLE"
       },
       {
         "version": "2.1",
-        "status": "PUBLISHED"
+        "status": "STABLE"
       },
       {
         "version": "2.2",
-        "status": "PUBLISHED"
+        "status": "STABLE"
       },
       {
         "version": "2.3",
-        "status": "PUBLISHED"
+        "status": "STABLE"
       },
       {
         "version": "3.0",
-        "status": "PUBLISHED"
+        "status": "STABLE"
       },
       {
         "version": "4.0",
-        "status": "PUBLISHED"
+        "status": "STABLE"
       },
       {
         "version": "5.0",
-        "status": "PUBLISHED"
+        "status": "STABLE"
       },
       {
         "version": "6.0",
-        "status": "PUBLISHED"
+        "status": "STABLE"
       },
       {
         "version": "7.0",
-        "status": "PUBLISHED"
+        "status": "STABLE"
       }
     ]
   }
