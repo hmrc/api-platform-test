@@ -27,43 +27,53 @@
     "versions": [
       {
         "version": "1.0",
-        "status": "STABLE"
+        "status": "STABLE",
+        "endpointsEnabled": true
       },
       {
         "version": "2.0",
-        "status": "STABLE"
+        "status": "STABLE",
+        "endpointsEnabled": true
       },
       {
         "version": "2.1",
-        "status": "STABLE"
+        "status": "STABLE",
+        "endpointsEnabled": true
       },
       {
         "version": "2.2",
-        "status": "STABLE"
+        "status": "STABLE",
+        "endpointsEnabled": true
       },
       {
         "version": "2.3",
-        "status": "STABLE"
+        "status": "STABLE",
+        "endpointsEnabled": true
       },
       {
         "version": "3.0",
-        "status": "STABLE"
+        "status": "STABLE",
+        "endpointsEnabled": true
       },
       {
         "version": "4.0",
-        "status": "STABLE"
+        "status": "STABLE",
+        "endpointsEnabled": true
       },
       {
         "version": "5.0",
-        "status": "STABLE"
+        "status": "STABLE",
+        "endpointsEnabled": true
       },
       {
         "version": "6.0",
-        "status": "STABLE"
+        "status": "STABLE",
+        "endpointsEnabled": true
       },
       {
         "version": "7.0",
-        "status": "STABLE"
+        "status": "STABLE",
+        "endpointsEnabled": true
       }
     ]
   }
