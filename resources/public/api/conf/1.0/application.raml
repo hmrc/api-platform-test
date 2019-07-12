@@ -35,6 +35,12 @@ uses:
               {
                 "message": "Hello World"
               }
+    /dave:
+      get:
+        displayName: Get hello Dave
+        is: [headers.acceptHeader]
+        (annotations.scope): "catch-the-mouse"
+        securedBy: [ sec.oauth_2_0: { scopes: [ "catch-the-mouse" ] } ]
     /friend:
       get:
         displayName: Get hello friend

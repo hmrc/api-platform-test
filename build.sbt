@@ -30,8 +30,8 @@ lazy val compile = Seq(
   ws,
   "uk.gov.hmrc" %% "fraud-prevention" % "0.10.0",
   "uk.gov.hmrc" %% "microservice-bootstrap" % "10.6.0",
-  "uk.gov.hmrc" %% "domain" % "5.3.0",
-  "uk.gov.hmrc" %% "auth-client" % "2.17.0-play-25",
+  "uk.gov.hmrc" %% "domain" % "5.6.0-play-25",
+  "uk.gov.hmrc" %% "auth-client" % "2.23.0-play-25",
   "ch.qos.logback" % "logback-classic" % "1.2.3",
   "uk.gov.hmrc" %% "logback-json-logger" % "4.2.0"
 
@@ -40,12 +40,12 @@ lazy val compile = Seq(
 lazy val scope: String = "test"
 
 lazy val test = Seq(
-  "uk.gov.hmrc" %% "hmrctest" % "3.3.0" % scope,
+  "uk.gov.hmrc" %% "hmrctest" % "3.9.0-play-25" % scope,
   "org.scalatest" %% "scalatest" % "2.2.6" % scope,
   "org.pegdown" % "pegdown" % "1.6.0" % scope,
   "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
   "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.1" % scope,
-  "org.mockito" % "mockito-core" % "1.10.19" % scope,
+  "org.mockito" % "mockito-core" % "2.13.0" % scope,
   "com.github.tomakehurst" % "wiremock" % "2.10.1" % scope exclude("org.apache.httpcomponents","httpclient") exclude("org.apache.httpcomponents","httpcore")
 )
 
@@ -79,6 +79,6 @@ lazy val microservice = (project in file("."))
   ))
 
 // Coverage configuration
-coverageMinimum := 17
+coverageMinimum := 15
 coverageFailOnMinimum := true
 coverageExcludedPackages := "<empty>;com.kenshoo.play.metrics.*;.*definition.*;prod.*;testOnlyDoNotUseInAppConf.*;app.*;uk.gov.hmrc.BuildInfo"

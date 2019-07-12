@@ -53,7 +53,7 @@ trait CheckFakeIpController extends BaseController {
     val fakeNino = Random.nextString(9)
     val fakeIp = s"${bit()}.${bit()}.${bit()}.${bit()}"
     Future.successful(Ok(Json.toJson("""{ "message": "CheckFakeIp" }"""))
-      .withHeaders(LOCATION -> s"https://$fakeIp:8243/self-assessment/ni/$fakeNino/self-employments/$fakeId"))
+      .withHeaders(LOCATION -> s"/self-assessment/ni/$fakeNino/self-employments/$fakeId"))
   }
 }
 
