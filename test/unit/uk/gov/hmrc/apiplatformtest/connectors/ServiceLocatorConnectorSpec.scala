@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.apiplatformtest.connectors
 
-import org.mockito.Matchers
-import org.mockito.Matchers._
-import org.mockito.Mockito._
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{never, verify, when}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.Writes
@@ -51,7 +51,7 @@ class ServiceLocatorConnectorSpec extends UnitSpec with MockitoSugar with ScalaF
 
       when(connector.http.POST(any[String](), any[Registration](), any[Seq[(String, String)]]())(any[Writes[Registration]](), any[HttpReads[HttpResponse]](), any(), any())).thenReturn(Future.successful(HttpResponse(200)))
       connector.register.futureValue shouldBe true
-      verify(connector.http).POST(Matchers.eq("https://SERVICE_LOCATOR/registration"), Matchers.eq(registration), Matchers.eq(Seq("Content-Type" -> "application/json")))(any[Writes[Registration]](), any[HttpReads[HttpResponse]](), any(), any())
+      verify(connector.http).POST(ArgumentMatchers.eq("https://SERVICE_LOCATOR/registration"), ArgumentMatchers.eq(registration), ArgumentMatchers.eq(Seq("Content-Type" -> "application/json")))(any[Writes[Registration]](), any[HttpReads[HttpResponse]](), any(), any())
       verify(connector.handlerOK).apply()
       verify(connector.handlerError, never).apply(serviceLocatorException)
     }
@@ -63,7 +63,7 @@ class ServiceLocatorConnectorSpec extends UnitSpec with MockitoSugar with ScalaF
       when(connector.http.POST(any[String](), any[Registration](), any[Seq[(String, String)]]())(any[Writes[Registration]](), any[HttpReads[HttpResponse]](), any(), any())).thenReturn(Future.failed(serviceLocatorException))
 
       connector.register.futureValue shouldBe false
-      verify(connector.http).POST(Matchers.eq("https://SERVICE_LOCATOR/registration"), Matchers.eq(registration), Matchers.eq(Seq("Content-Type" -> "application/json")))(any[Writes[Registration]](), any[HttpReads[HttpResponse]](), any(), any())
+      verify(connector.http).POST(ArgumentMatchers.eq("https://SERVICE_LOCATOR/registration"), ArgumentMatchers.eq(registration), ArgumentMatchers.eq(Seq("Content-Type" -> "application/json")))(any[Writes[Registration]](), any[HttpReads[HttpResponse]](), any(), any())
       verify(connector.handlerOK, never).apply()
       verify(connector.handlerError).apply(serviceLocatorException)
     }

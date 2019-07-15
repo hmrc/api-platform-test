@@ -6,6 +6,7 @@ GET        /hello/friend                                   uk.gov.hmrc.apiplatfo
 POST       /hello/friend                                   uk.gov.hmrc.apiplatformtest.controllers.HelloController.handle
 GET        /hello/buddies                                  uk.gov.hmrc.apiplatformtest.controllers.HelloController.handle
 POST       /hello/buddies                                  uk.gov.hmrc.apiplatformtest.controllers.HelloController.handle
+GET        /hello/dave                                     uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleDave
 GET        /hello/family/:givenName                        uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(givenName)
 PUT        /hello/family/:givenName                        uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(givenName)
 GET        /hello/family/:givenName/pets                   uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(givenName)
