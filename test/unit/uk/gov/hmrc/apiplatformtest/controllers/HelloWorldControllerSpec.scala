@@ -28,6 +28,7 @@ import play.api.http.Status.{OK, UNAUTHORIZED}
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
 import play.api.test.FakeRequest
+import uk.gov.hmrc.apiplatformtest.models.Header
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters._
 import uk.gov.hmrc.auth.core.AffinityGroup.Individual
 import uk.gov.hmrc.auth.core._
@@ -100,7 +101,7 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
       (jsonResult \ "description").as[String] shouldBe description
       (jsonResult \ "groupIdentifier").as[String] shouldBe groupIdentifier
       (jsonResult \ "unreadMessageCount").as[Int] shouldBe unreadMessageCount
-      (jsonResult \ "headers").as[Seq[(String, String)]] shouldBe headers
+      (jsonResult \ "headers").as[Seq[Header]] shouldBe headers.map(h => Header(h._1, h._2))
     }
 
     "return 401 if the authorisation fails" in new Setup {

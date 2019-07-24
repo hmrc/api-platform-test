@@ -20,6 +20,7 @@ import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.apiplatformtest.config.AuthClientAuthConnector
+import uk.gov.hmrc.apiplatformtest.models.Header
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.allUserDetails
 import uk.gov.hmrc.auth.core.retrieve.~
@@ -55,7 +56,7 @@ trait HelloController extends BaseController with AuthorisedFunctions {
           "description" -> description,
           "groupIdentifier" -> groupIdentifier,
           "unreadMessageCount" -> unreadMessageCount,
-          "headers" -> request.headers.headers
+          "headers" -> request.headers.headers.map(h => Header(h._1, h._2))
         )))
     } recover {
       case e: AuthorisationException => Unauthorized(Json.obj("errorMessage" -> e.getMessage))

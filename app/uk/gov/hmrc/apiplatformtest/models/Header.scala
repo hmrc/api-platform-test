@@ -16,16 +16,4 @@
 
 package uk.gov.hmrc.apiplatformtest.models
 
-import play.api.libs.json._
-import uk.gov.hmrc.auth.core.retrieve.{AgentInformation, Credentials, Name}
-
-object JsonFormatters {
-
-  implicit val formatDummyAnswer = Json.format[DummyAnswer]
-  implicit val formatNoFraudAnswer = Json.format[NoFraudAnswer]
-  implicit val formatPrivilegedAccessAnswer = Json.format[PrivilegedAccessAnswer]
-  implicit val formatName = Json.format[Name]
-  implicit val formatCredentials = Json.format[Credentials]
-  implicit val formatAgentInformation = Json.format[AgentInformation]
-  implicit val formatHeader = Json.format[Header]
-}
+case class Header(key: String, value: String)
