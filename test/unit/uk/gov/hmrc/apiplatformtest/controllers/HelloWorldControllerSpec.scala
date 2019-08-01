@@ -32,6 +32,7 @@ import uk.gov.hmrc.apiplatformtest.models.Header
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters._
 import uk.gov.hmrc.auth.core.AffinityGroup.Individual
 import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core.retrieve.{AgentInformation, Credentials, Name, ~}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -59,6 +60,8 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
 
   "Hello Dave" should {
     "return 200 with the user details and request headers" in new Setup {
+      private val internalId = randomUUID.toString
+      private val externalId = randomUUID.toString
       private val credentials = Credentials(randomUUID.toString, randomUUID.toString)
       private val name = Name(Some(randomUUID.toString), Some(randomUUID.toString))
       private val dateOfBirth = LocalDate.now
@@ -76,12 +79,12 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
         mockAuthConnector
           .authorise(
             any(),
-            ArgumentMatchers.eq(allUserDetails)
+            ArgumentMatchers.eq(allUserDetails and Retrievals.internalId and Retrievals.externalId)
           )(any(), any())
       ).thenReturn(
-        successful(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(Some(credentials), Some(name)),
+        successful(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(Some(credentials), Some(name)),
           Some(dateOfBirth)), Some(postCode)), Some(email)), Some(affinityGroup)), Some(agentCode)),
-          agentInformation), Some(credentialRole)), Some(description)), Some(groupIdentifier)), Some(unreadMessageCount))
+          agentInformation), Some(credentialRole)), Some(description)), Some(groupIdentifier)), Some(unreadMessageCount)), Some(internalId)), Some(externalId))
         )
       )
 
@@ -89,6 +92,8 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
 
       status(result) shouldBe OK
       val jsonResult: JsValue = jsonBodyOf(result)
+      (jsonResult \ "internalId").as[String] shouldBe internalId
+      (jsonResult \ "externalId").as[String] shouldBe externalId
       (jsonResult \ "credentials").as[Credentials] shouldBe credentials
       (jsonResult \ "name").as[Name] shouldBe name
       (jsonResult \ "dateOfBirth").as[LocalDate] shouldBe dateOfBirth
@@ -109,7 +114,7 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
         mockAuthConnector
           .authorise(
             any(),
-            ArgumentMatchers.eq(allUserDetails)
+            ArgumentMatchers.eq(allUserDetails and Retrievals.internalId and Retrievals.externalId)
           )(any(), any())
       ).thenReturn(failed(InvalidBearerToken()))
 

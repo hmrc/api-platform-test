@@ -22,7 +22,7 @@ import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.apiplatformtest.config.AuthClientAuthConnector
 import uk.gov.hmrc.apiplatformtest.models.Header
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters._
-import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.allUserDetails
+import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.{allUserDetails, externalId, internalId}
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions}
 import uk.gov.hmrc.play.microservice.controller.BaseController
@@ -40,10 +40,12 @@ trait HelloController extends BaseController with AuthorisedFunctions {
   }
 
   def handleDave: Action[AnyContent] = Action.async { implicit request =>
-    authorised().retrieve(allUserDetails) {
+    authorised().retrieve(allUserDetails and internalId and externalId) {
       case credentials ~ name ~ dateOfBirth ~ postCode ~ email ~ affinityGroup ~ agentCode ~ agentInformation ~
-        credentialRole ~ description ~ groupIdentifier ~ unreadMessageCount =>
+        credentialRole ~ description ~ groupIdentifier ~ unreadMessageCount ~ internalId ~ externalId =>
         successful(Ok(Json.obj(
+          "internalId" -> internalId,
+          "externalId" -> externalId,
           "credentials" -> credentials,
           "name" -> name,
           "dateOfBirth" -> dateOfBirth,
