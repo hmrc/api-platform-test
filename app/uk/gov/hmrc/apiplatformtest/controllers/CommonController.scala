@@ -20,7 +20,7 @@ import play.api.libs.json.Json
 import play.api.mvc.{AnyContent, Request, Result}
 import uk.gov.hmrc.apiplatformtest.models.DummyAnswer
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatDummyAnswer
-import uk.gov.hmrc.play.microservice.controller.BaseController
+import uk.gov.hmrc.play.bootstrap.controller.BaseController
 
 import scala.concurrent.Future
 import scala.concurrent.Future.successful

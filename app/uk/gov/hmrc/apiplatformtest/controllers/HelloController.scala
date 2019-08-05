@@ -16,23 +16,25 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import play.api.Logger
+import javax.inject.Inject
+import play.api.Mode.Mode
+import play.api.{Configuration, Logger, Play}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.apiplatformtest.config.AuthClientAuthConnector
 import uk.gov.hmrc.apiplatformtest.models.Header
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.allUserDetails
 import uk.gov.hmrc.auth.core.retrieve.~
-import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions}
-import uk.gov.hmrc.play.microservice.controller.BaseController
+import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions, PlayAuthConnector}
+import uk.gov.hmrc.http.HttpPost
+import uk.gov.hmrc.play.bootstrap.controller.BaseController
+import uk.gov.hmrc.play.config.ServicesConfig
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.successful
 
 trait HelloController extends BaseController with AuthorisedFunctions {
 
-  override val authConnector: AuthConnector = AuthClientAuthConnector
 
   def handle: Action[AnyContent] = Action.async { request =>
     Logger.warn(s"Application ID: ${request.headers.get("x-application-id").getOrElse("Not Found")}")
@@ -72,4 +74,16 @@ trait HelloController extends BaseController with AuthorisedFunctions {
   }
 }
 
-object HelloController extends HelloController
+object AuthClientAuthConnector extends PlayAuthConnector with ServicesConfig {
+  override val serviceUrl: String = baseUrl("auth")
+  override val http: HttpPost = WSHttp
+
+  override protected def mode: Mode = Play.current.mode
+
+  override protected def runModeConfiguration: Configuration = Play.current.configuration
+}
+@Singleton
+class HelloController @Inject() extends HelloController
+{
+  override val authConnector = AuthClientAuthConnector
+}

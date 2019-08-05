@@ -18,19 +18,17 @@ package uk.gov.hmrc.apiplatformtest.controllers
 
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, Result}
-import uk.gov.hmrc.apiplatformtest.config.AuthClientAuthConnector
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatPrivilegedAccessAnswer
 import uk.gov.hmrc.apiplatformtest.models.PrivilegedAccessAnswer
 import uk.gov.hmrc.auth.core.AuthProvider.PrivilegedApplication
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._
-import uk.gov.hmrc.play.microservice.controller.BaseController
+import uk.gov.hmrc.play.bootstrap.controller.BaseController
 
 import scala.concurrent.Future.successful
 
 trait PrivilegedApiController extends BaseController with AuthorisedFunctions {
 
-  override val authConnector: AuthConnector = AuthClientAuthConnector
 
   private def fromPrivilegedApplication: Result = {
     Ok(Json.toJson(PrivilegedAccessAnswer("Request coming from a privileged application")))
@@ -50,4 +48,3 @@ trait PrivilegedApiController extends BaseController with AuthorisedFunctions {
 
 }
 
-object PrivilegedApiController extends PrivilegedApiController
