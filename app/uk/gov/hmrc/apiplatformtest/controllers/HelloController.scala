@@ -16,24 +16,22 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import javax.inject.Inject
-import play.api.Mode.Mode
-import play.api.{Configuration, Logger, Play}
+import javax.inject.{Inject, Singleton}
+import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.apiplatformtest.models.Header
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.allUserDetails
 import uk.gov.hmrc.auth.core.retrieve.~
-import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions, PlayAuthConnector}
-import uk.gov.hmrc.http.HttpPost
+import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions}
 import uk.gov.hmrc.play.bootstrap.controller.BaseController
-import uk.gov.hmrc.play.config.ServicesConfig
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.successful
 
-trait HelloController extends BaseController with AuthorisedFunctions {
+@Singleton
+class HelloController @Inject()(override val authConnector: AuthConnector) extends BaseController with AuthorisedFunctions {
 
 
   def handle: Action[AnyContent] = Action.async { request =>
@@ -72,18 +70,4 @@ trait HelloController extends BaseController with AuthorisedFunctions {
   def handleWithTwoParams(param1: String, param2: String): Action[AnyContent] = Action.async {
     successful(Ok(Json.toJson(s"""{ "message": "$param1 / $param2" }""")))
   }
-}
-
-object AuthClientAuthConnector extends PlayAuthConnector with ServicesConfig {
-  override val serviceUrl: String = baseUrl("auth")
-  override val http: HttpPost = WSHttp
-
-  override protected def mode: Mode = Play.current.mode
-
-  override protected def runModeConfiguration: Configuration = Play.current.configuration
-}
-@Singleton
-class HelloController @Inject() extends HelloController
-{
-  override val authConnector = AuthClientAuthConnector
 }

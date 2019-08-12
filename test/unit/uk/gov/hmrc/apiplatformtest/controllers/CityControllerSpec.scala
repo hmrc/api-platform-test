@@ -25,17 +25,21 @@ import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 class CityControllerSpec extends UnitSpec with WithFakeApplication {
 
+  trait Setup{
+    val underTest = new CityController
+  }
+
   private implicit val materializer = fakeApplication.materializer
 
   "CityController" should {
 
     // tests for the `/city-details/:cityName/address` URL
 
-    "accept the resource `GET /city-details/Leeds/address` " in {
+    "accept the resource `GET /city-details/Leeds/address` " in new Setup {
 
       val request = FakeRequest(method = "GET", path = "/city-details/Leeds/address")
 
-      val result = CityController.showCityAndAddress("Leeds")(request)
+      val result = underTest.showCityAndAddress("Leeds")(request)
 
       status(result) shouldBe Status.OK
 
@@ -48,11 +52,11 @@ class CityControllerSpec extends UnitSpec with WithFakeApplication {
       await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
     }
 
-    "accept the resource `PUT /city-details/Leeds/address` " in {
+    "accept the resource `PUT /city-details/Leeds/address` " in new Setup {
 
       val request = FakeRequest(method = "PUT", path = "/city-details/Leeds/address")
 
-      val result = CityController.showCityAndAddress("Leeds")(request)
+      val result = underTest.showCityAndAddress("Leeds")(request)
 
       status(result) shouldBe Status.OK
 
@@ -67,11 +71,11 @@ class CityControllerSpec extends UnitSpec with WithFakeApplication {
 
     // tests for the `/city-details/:cityName/:postcode` URL
 
-    "accept the resource `GET /city-details/London/SW208HR` " in {
+    "accept the resource `GET /city-details/London/SW208HR` " in new Setup {
 
       val request = FakeRequest(method = "GET", path = "/city-details/London/SW208HR")
 
-      val result = CityController.showCityAndPostcode("London", "SW208HR")(request)
+      val result = underTest.showCityAndPostcode("London", "SW208HR")(request)
 
       status(result) shouldBe Status.OK
 
@@ -84,11 +88,11 @@ class CityControllerSpec extends UnitSpec with WithFakeApplication {
       await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
     }
 
-    "accept the resource `POST /city-details/London/SW208HR` " in {
+    "accept the resource `POST /city-details/London/SW208HR` " in new Setup {
 
       val request = FakeRequest(method = "POST", path = "/city-details/London/SW208HR")
 
-      val result = CityController.showCityAndPostcode("London", "SW208HR")(request)
+      val result = underTest.showCityAndPostcode("London", "SW208HR")(request)
 
       status(result) shouldBe Status.OK
 
@@ -101,11 +105,11 @@ class CityControllerSpec extends UnitSpec with WithFakeApplication {
       await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
     }
 
-    "accept the resource `DELETE /city-details/London/SW208HR` " in {
+    "accept the resource `DELETE /city-details/London/SW208HR` " in new Setup {
 
       val request = FakeRequest(method = "DELETE", path = "/city-details/London/SW208HR")
 
-      val result = CityController.showCityAndPostcode("London", "SW208HR")(request)
+      val result = underTest.showCityAndPostcode("London", "SW208HR")(request)
 
       status(result) shouldBe Status.OK
 

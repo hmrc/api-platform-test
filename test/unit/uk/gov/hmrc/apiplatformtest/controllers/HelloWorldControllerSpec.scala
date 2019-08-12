@@ -45,14 +45,12 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
     implicit val mat: Materializer = fakeApplication.materializer
     implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
     val mockAuthConnector: AuthConnector = mock[AuthConnector]
-    val helloController: HelloController = new HelloController {
-      override val authConnector: AuthConnector = mockAuthConnector
-    }
+    val underTest = new HelloController(mockAuthConnector)
   }
 
   "GET /" should {
     "return 200" in new Setup {
-      private val result = helloController.handle()(FakeRequest("GET", "/"))
+      private val result = underTest.handle()(FakeRequest("GET", "/"))
       status(result) shouldBe OK
     }
   }
@@ -85,7 +83,7 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
         )
       )
 
-      val result: Result = await(helloController.handleDave()(FakeRequest().withHeaders(headers: _*)))
+      val result: Result = await(underTest.handleDave()(FakeRequest().withHeaders(headers: _*)))
 
       status(result) shouldBe OK
       val jsonResult: JsValue = jsonBodyOf(result)
@@ -113,7 +111,7 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
           )(any(), any())
       ).thenReturn(failed(InvalidBearerToken()))
 
-      val result: Result = await(helloController.handleDave()(FakeRequest()))
+      val result: Result = await(underTest.handleDave()(FakeRequest()))
 
       status(result) shouldBe UNAUTHORIZED
       val jsonResult: JsValue = jsonBodyOf(result)

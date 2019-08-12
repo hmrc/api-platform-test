@@ -16,12 +16,13 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import javax.inject.Singleton
 import play.api.libs.json._
 import play.api.mvc.{Action, AnyContent}
+import uk.gov.hmrc.apiplatformtest.controllers.HeadersControllerDomain._
 import uk.gov.hmrc.play.bootstrap.controller.BaseController
 
 import scala.concurrent.Future
-import uk.gov.hmrc.http.HeaderCarrier
 
 
 object HeadersControllerDomain {
@@ -32,11 +33,9 @@ object HeadersControllerDomain {
   implicit val payloadJF = Json.format[Payload]
 }
 
+@Singleton
+class HeadersController extends BaseController {
 
-trait HeadersController extends BaseController {
-  import HeadersControllerDomain._
-
-  implicit val hc: HeaderCarrier
 
   def handle: Action[AnyContent] = Action.async { implicit request =>
 
@@ -67,8 +66,4 @@ trait HeadersController extends BaseController {
   def handleWithTwoParams(param1: String, param2: String): Action[AnyContent] = Action.async {
     Future.successful(Ok(Json.toJson(s"""{ "message": "$param1 / $param2" }""")))
   }
-}
-
-object HeadersController extends HeadersController {
-  override implicit val hc: HeaderCarrier = HeaderCarrier()
 }

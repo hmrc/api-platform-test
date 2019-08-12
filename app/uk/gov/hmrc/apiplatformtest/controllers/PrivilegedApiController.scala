@@ -16,18 +16,20 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import javax.inject.{Inject, Singleton}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, Result}
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatPrivilegedAccessAnswer
 import uk.gov.hmrc.apiplatformtest.models.PrivilegedAccessAnswer
 import uk.gov.hmrc.auth.core.AuthProvider.PrivilegedApplication
 import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._
 import uk.gov.hmrc.play.bootstrap.controller.BaseController
+import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._
 
 import scala.concurrent.Future.successful
 
-trait PrivilegedApiController extends BaseController with AuthorisedFunctions {
+@Singleton
+class PrivilegedApiController @Inject()(override val authConnector: AuthConnector) extends BaseController with AuthorisedFunctions {
 
 
   private def fromPrivilegedApplication: Result = {

@@ -28,6 +28,10 @@ import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 class FraudPreventionControllerSpec extends UnitSpec with WithFakeApplication with ErrorConversion {
 
+  trait Setup{
+    val underTest = new FraudPreventionController
+  }
+
   private implicit val materializer: Materializer = fakeApplication.materializer
 
   private lazy val fakeRequest = FakeRequest()

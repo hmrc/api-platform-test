@@ -22,11 +22,15 @@ import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 class CheckFakeIpControllerSpec extends UnitSpec with WithFakeApplication {
 
-  val fakeRequest = FakeRequest("GET", "/")
+
+  trait Setup{
+    val underTest = new CheckFakeIpController
+    val fakeRequest = FakeRequest("GET", "/")
+  }
 
   "GET /" should {
-    "return 200" in {
-      val result = CheckFakeIpController.handle()(fakeRequest)
+    "return 200" in new Setup {
+      val result = underTest.handle()(fakeRequest)
       status(result) shouldBe Status.OK
       result.header.headers.keys.exists(_ == HeaderNames.LOCATION)
     }

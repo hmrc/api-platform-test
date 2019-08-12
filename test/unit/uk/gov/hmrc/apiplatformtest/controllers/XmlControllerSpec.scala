@@ -20,12 +20,15 @@ import play.api.http.ContentTypes.XML
 import play.api.http.HeaderNames.{ACCEPT, CONTENT_TYPE}
 import play.api.http.Status.{OK, UNSUPPORTED_MEDIA_TYPE}
 import play.api.test.FakeRequest
-import uk.gov.hmrc.apiplatformtest.controllers.XmlController.{VndHmrcXml50, handleXmlPost}
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 import scala.xml.NodeSeq
 
 class XmlControllerSpec extends UnitSpec with WithFakeApplication {
+
+  trait Setup{
+    val underTest = new XmlController
+  }
 
   implicit private val mat = fakeApplication.materializer
 
@@ -34,23 +37,23 @@ class XmlControllerSpec extends UnitSpec with WithFakeApplication {
 
   "POST /xml with good xml" should {
 
-    "return 200 with expected response body" in {
+    "return 200 with expected response body" in new Setup {
       val req = request.withHeaders(
         CONTENT_TYPE -> XML,
-        ACCEPT -> VndHmrcXml50)
+        ACCEPT -> underTest.VndHmrcXml50)
 
-      val result = await(handleXmlPost().apply(req))
+      val result = await(underTest.handleXmlPost().apply(req))
 
       status(result) shouldBe OK
       bodyOf(result) shouldBe <Ping><Pong>hello</Pong></Ping>.toString()
     }
 
-    "return 415 when using a wrong Accept header" in {
+    "return 415 when using a wrong Accept header" in new Setup {
       val req = request.withHeaders(
         CONTENT_TYPE -> XML,
         ACCEPT -> XML)
 
-      val result = await(handleXmlPost()(req))
+      val result = await(underTest.handleXmlPost()(req))
 
       status(result) shouldBe UNSUPPORTED_MEDIA_TYPE
       bodyOf(result) shouldBe ""

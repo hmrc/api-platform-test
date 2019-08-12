@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import javax.inject.Singleton
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.http.HeaderCarrier
 
-trait CiaoController extends CommonController {
+@Singleton
+class CiaoController extends CommonController {
 
   // Successful routes.
   // These resources/endpoints are published to WSO2.
@@ -45,6 +46,3 @@ trait CiaoController extends CommonController {
 
 }
 
-object CiaoController extends CiaoController {
-  override implicit val hc: HeaderCarrier = HeaderCarrier()
-}
