@@ -25,17 +25,21 @@ import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 class CiaoControllerSpec extends UnitSpec with WithFakeApplication {
 
+  trait Setup{
+    val underTest = new CiaoController
+  }
+
   private implicit val materializer = fakeApplication.materializer
 
   "CiaoController" should {
 
     // Successful routes.
 
-    "accept the resource `GET /` " in {
+    "accept the resource `GET /` " in new Setup {
 
       val request = FakeRequest(method = "GET", path = "/")
 
-      val result = CiaoController.handleEmpty()(request)
+      val result = underTest.handleEmpty()(request)
 
       status(result) shouldBe Status.OK
 
@@ -43,14 +47,14 @@ class CiaoControllerSpec extends UnitSpec with WithFakeApplication {
       await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
     }
 
-    "accept the resource `GET /ciao?surname=Kennedy&firstName=John&middleName=Fitzgerald` " in {
+    "accept the resource `GET /ciao?surname=Kennedy&firstName=John&middleName=Fitzgerald` " in new Setup {
 
       val request = FakeRequest(
         method = "GET",
         path = "/ciao?surname=Kennedy&firstName=John&middleName=Fitzgerald"
       )
 
-      val result = CiaoController.handleCiao(
+      val result = underTest.handleCiao(
         surname = Some("Kennedy"),
         firstName = Some("John"),
         middleName = Some("Fitzgerald")
@@ -67,11 +71,11 @@ class CiaoControllerSpec extends UnitSpec with WithFakeApplication {
       await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
     }
 
-    "accept the resource `GET /ciao/Rossi` " in {
+    "accept the resource `GET /ciao/Rossi` " in new Setup {
 
       val request = FakeRequest(method = "GET", path = "/ciao/Rossi")
 
-      val result = CiaoController.handleCiaoSurname(surname = "Rossi")(request)
+      val result = underTest.handleCiaoSurname(surname = "Rossi")(request)
 
       status(result) shouldBe Status.OK
 
@@ -79,11 +83,11 @@ class CiaoControllerSpec extends UnitSpec with WithFakeApplication {
       await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
     }
 
-    "accept the resource `GET /ciao/Rossi/Valentino?middleName=Alvise` " in {
+    "accept the resource `GET /ciao/Rossi/Valentino?middleName=Alvise` " in new Setup {
 
       val request = FakeRequest(method = "GET", path = "/ciao/Rossi/Valentino?middleName=Alvise")
 
-      val result = CiaoController.handleCiaoFullName(
+      val result = underTest.handleCiaoFullName(
         surname = "Rossi",
         firstName = "Valentino",
         middleName = Some("Alvise")
@@ -102,11 +106,11 @@ class CiaoControllerSpec extends UnitSpec with WithFakeApplication {
 
     // Expected failing routes.
 
-    "fail on the resource `GET /ciao/Kennedy/John/Fitzgerald` " in {
+    "fail on the resource `GET /ciao/Kennedy/John/Fitzgerald` " in new Setup {
 
       val request = FakeRequest(method = "GET", path = "/ciao/Kennedy/John/Fitzgerald")
 
-      val result = CiaoController.handleNotImplemented()(request)
+      val result = underTest.handleNotImplemented()(request)
 
       status(result) shouldBe Status.NOT_IMPLEMENTED
 

@@ -17,13 +17,15 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import controllers.AssetsBuilder
-import play.api.http.{ContentTypes, HeaderNames, HttpErrorHandler, LazyHttpErrorHandler}
+import javax.inject.{Inject, Singleton}
+import play.api.http.{ContentTypes, HeaderNames, HttpErrorHandler}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.apiplatformtest.config.{ApiAccess, AppContext}
 import uk.gov.hmrc.apiplatformtest.views.txt
-import uk.gov.hmrc.play.microservice.controller.BaseController
+import uk.gov.hmrc.play.bootstrap.controller.BaseController
 
-class DocumentationController(httpErrorHandler: HttpErrorHandler, appContext: AppContext)
+@Singleton
+class DocumentationController @Inject()(httpErrorHandler: HttpErrorHandler, appContext: AppContext)
   extends AssetsBuilder(httpErrorHandler) with BaseController {
 
   def definition = Action {
@@ -36,4 +38,3 @@ class DocumentationController(httpErrorHandler: HttpErrorHandler, appContext: Ap
   }
 }
 
-object DocumentationController extends DocumentationController(LazyHttpErrorHandler, AppContext)

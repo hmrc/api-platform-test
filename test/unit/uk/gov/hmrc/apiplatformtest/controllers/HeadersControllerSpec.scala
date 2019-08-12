@@ -23,6 +23,10 @@ import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 class HeadersControllerSpec extends UnitSpec with WithFakeApplication {
 
+  trait Setup{
+    val underTest = new HeadersController
+  }
+
   private implicit lazy val materializer: Materializer = fakeApplication.materializer
 
   private val requestIdHeader = "X-REQUEST-ID"
@@ -38,8 +42,8 @@ class HeadersControllerSpec extends UnitSpec with WithFakeApplication {
         clientIdHeader -> "ABCD",
         HeaderNames.ACCEPT -> MimeTypes.JSON)
 
-    "return expected headers" in {
-      val result = await(HeadersController.handle()(request))
+    "return expected headers" in new Setup {
+      val result = await(underTest.handle()(request))
       status(result) shouldBe Status.OK
 
       val responseBody = jsonBodyOf(result).toString()

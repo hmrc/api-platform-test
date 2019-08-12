@@ -16,23 +16,23 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.apiplatformtest.config.AuthClientAuthConnector
 import uk.gov.hmrc.apiplatformtest.models.Header
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.{allUserDetails, externalId, internalId}
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions}
-import uk.gov.hmrc.play.microservice.controller.BaseController
+import uk.gov.hmrc.play.bootstrap.controller.BaseController
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.successful
 
-trait HelloController extends BaseController with AuthorisedFunctions {
+@Singleton
+class HelloController @Inject()(override val authConnector: AuthConnector) extends BaseController with AuthorisedFunctions {
 
-  override val authConnector: AuthConnector = AuthClientAuthConnector
 
   def handle: Action[AnyContent] = Action.async { request =>
     Logger.warn(s"Application ID: ${request.headers.get("x-application-id").getOrElse("Not Found")}")
@@ -73,5 +73,3 @@ trait HelloController extends BaseController with AuthorisedFunctions {
     successful(Ok(Json.toJson(s"""{ "message": "$param1 / $param2" }""")))
   }
 }
-
-object HelloController extends HelloController

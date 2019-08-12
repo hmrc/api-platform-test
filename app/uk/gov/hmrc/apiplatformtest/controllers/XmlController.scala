@@ -16,15 +16,17 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import javax.inject.Singleton
 import play.api.mvc._
 
 import scala.concurrent.Future.successful
 import scala.xml.NodeSeq
-import uk.gov.hmrc.http.HeaderCarrier
 
-trait XmlController extends CommonController {
+@Singleton
+class XmlController extends CommonController {
 
-  import XmlController._
+  val VndHmrcXml50: String = "application/vnd.hmrc.5.0+xml"
+  val AcceptsXml50 = Accepting(VndHmrcXml50)
 
   final def handleXmlPost(): Action[NodeSeq] =
     Action.async(BodyParsers.parse.xml) {
@@ -36,9 +38,3 @@ trait XmlController extends CommonController {
     }
 }
 
-object XmlController extends XmlController {
-  override implicit val hc: HeaderCarrier = HeaderCarrier()
-
-  val VndHmrcXml50: String = "application/vnd.hmrc.5.0+xml"
-  val AcceptsXml50 = Accepting(VndHmrcXml50)
-}

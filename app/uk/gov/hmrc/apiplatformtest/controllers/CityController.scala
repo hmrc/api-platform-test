@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import javax.inject.Singleton
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.http.HeaderCarrier
 
-trait CityController extends CommonController {
+@Singleton
+class CityController extends CommonController {
 
   def showCityAndAddress(cityName: String): Action[AnyContent] =
     Action.async { implicit request => success(s"City: $cityName, Address: Oxford Street") }
@@ -29,6 +30,4 @@ trait CityController extends CommonController {
 
 }
 
-object CityController extends CityController {
-  override implicit val hc: HeaderCarrier = HeaderCarrier()
-}
+

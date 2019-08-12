@@ -21,37 +21,38 @@ import play.api.http.HeaderNames.{ACCEPT, CONTENT_TYPE}
 import play.api.http.Status.{OK, UNSUPPORTED_MEDIA_TYPE}
 import play.api.libs.json.Json.parse
 import play.api.test.FakeRequest
-import uk.gov.hmrc.apiplatformtest.controllers.JsonController._
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 class JsonControllerSpec extends UnitSpec with WithFakeApplication {
 
-  implicit private val mat = fakeApplication.materializer
+  trait Setup{
+    implicit val mat = fakeApplication.materializer
+    val underTest = new JsonController
+  }
 
-  private val controller = new JsonController()
 
   private val payload = """{"firstName":"Alvise","surname":"Fransescoli","dateOfBirth":"04-01-1731"}"""
   private val request = FakeRequest("POST", "/json").withBody(parse(payload))
 
   "POST /json with good json" should {
 
-    "return 200 with expected response body" in {
+    "return 200 with expected response body" in new Setup {
       val req = request.withHeaders(
         CONTENT_TYPE -> JSON,
-        ACCEPT -> VndHmrcJson50)
+        ACCEPT -> underTest.VndHmrcJson50)
 
-      val result = await(controller.handleJsonPost()(req))
+      val result = await(underTest.handleJsonPost()(req))
 
       status(result) shouldBe OK
       bodyOf(result) shouldBe payload
     }
 
-    "return 415 when using a wrong Accept header" in {
+    "return 415 when using a wrong Accept header" in new Setup {
       val req = request.withHeaders(
         CONTENT_TYPE -> JSON,
         ACCEPT -> JSON)
 
-      val result = await(controller.handleJsonPost()(req))
+      val result = await(underTest.handleJsonPost()(req))
 
       status(result) shouldBe UNSUPPORTED_MEDIA_TYPE
       bodyOf(result) shouldBe ""

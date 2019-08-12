@@ -21,14 +21,15 @@ import javax.inject.{Inject, Singleton}
 import akka.stream.Materializer
 import play.api.libs.json._
 import play.api.mvc._
-import uk.gov.hmrc.play.microservice.controller.BaseController
+import uk.gov.hmrc.play.bootstrap.controller.BaseController
 
 import scala.concurrent.Future._
 
 @Singleton
 class JsonController @Inject()(implicit mat: Materializer) extends BaseController {
 
-  import JsonController._
+  val VndHmrcJson50: String = "application/vnd.hmrc.5.0+json"
+  val AcceptsJson50 = Accepting(VndHmrcJson50)
 
   final def handleJsonPost(): Action[JsValue] = {
     Action.async(BodyParsers.parse.json) { implicit request =>
@@ -38,10 +39,6 @@ class JsonController @Inject()(implicit mat: Materializer) extends BaseControlle
       }
     }
   }
-  
+
 }
 
-object JsonController {
-  val VndHmrcJson50: String = "application/vnd.hmrc.5.0+json"
-  val AcceptsJson50 = Accepting(VndHmrcJson50)
-}

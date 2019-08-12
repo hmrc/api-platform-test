@@ -29,9 +29,9 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test
 lazy val compile = Seq(
   ws,
   "uk.gov.hmrc" %% "fraud-prevention" % "0.10.0",
-  "uk.gov.hmrc" %% "microservice-bootstrap" % "10.6.0",
+  "uk.gov.hmrc" %% "bootstrap-play-25" % "4.13.0",
   "uk.gov.hmrc" %% "domain" % "5.6.0-play-25",
-  "uk.gov.hmrc" %% "auth-client" % "2.23.0-play-25",
+  "uk.gov.hmrc" %% "auth-client" % "2.26.0-play-25",
   "ch.qos.logback" % "logback-classic" % "1.2.3",
   "uk.gov.hmrc" %% "logback-json-logger" % "4.2.0"
 
@@ -65,7 +65,7 @@ lazy val microservice = (project in file("."))
     targetJvm := "jvm-1.8",
     scalaVersion := "2.11.11",
     libraryDependencies ++= appDependencies,
-    routesGenerator := StaticRoutesGenerator,
+    routesGenerator := InjectedRoutesGenerator,
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false)
   )
   .settings(
@@ -79,6 +79,6 @@ lazy val microservice = (project in file("."))
   ))
 
 // Coverage configuration
-coverageMinimum := 20
+coverageMinimum := 16.5
 coverageFailOnMinimum := true
 coverageExcludedPackages := "<empty>;com.kenshoo.play.metrics.*;.*definition.*;prod.*;testOnlyDoNotUseInAppConf.*;app.*;uk.gov.hmrc.BuildInfo"

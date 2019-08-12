@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import javax.inject.Singleton
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, Request, Result}
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatNoFraudAnswer
@@ -23,14 +24,12 @@ import uk.gov.hmrc.apiplatformtest.models.NoFraudAnswer
 import uk.gov.hmrc.fraudprevention.headervalidators.impl._
 import uk.gov.hmrc.fraudprevention.model.{ErrorConversion, ErrorResponse}
 import uk.gov.hmrc.fraudprevention.{AntiFraudHeadersValidator, AntiFraudHeadersValidatorActionFilter}
-import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.Future
 import scala.concurrent.Future.successful
 
-trait FraudPreventionController extends ErrorConversion with CommonController {
-
-  override implicit val hc: HeaderCarrier = HeaderCarrier()
+@Singleton
+class FraudPreventionController extends ErrorConversion with CommonController {
 
   lazy val requiredHeaderValidators = List(GovClientColourDepthHeaderValidator, GovClientPublicPortHeaderValidator)
   lazy private val fraudPreventionFilter = AntiFraudHeadersValidatorActionFilter.actionFilterFromHeaderValidators(requiredHeaderValidators)
@@ -61,4 +60,3 @@ trait FraudPreventionController extends ErrorConversion with CommonController {
 
 }
 
-object FraudPreventionController extends FraudPreventionController
