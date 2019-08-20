@@ -24,12 +24,12 @@ import uk.gov.hmrc.apiplatformtest.models.PrivilegedAccessAnswer
 import uk.gov.hmrc.auth.core.AuthProvider.PrivilegedApplication
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.play.bootstrap.controller.BaseController
-import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._
 
+import scala.concurrent.ExecutionContext
 import scala.concurrent.Future.successful
 
 @Singleton
-class PrivilegedApiController @Inject()(override val authConnector: AuthConnector) extends BaseController with AuthorisedFunctions {
+class PrivilegedApiController @Inject()(override val authConnector: AuthConnector)(implicit val ec: ExecutionContext) extends BaseController with AuthorisedFunctions {
 
 
   private def fromPrivilegedApplication: Result = {
