@@ -39,6 +39,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 import scala.concurrent.Future.{failed, successful}
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with MockitoSugar {
 

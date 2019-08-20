@@ -27,11 +27,11 @@ import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions}
 import uk.gov.hmrc.play.bootstrap.controller.BaseController
 
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.ExecutionContext
 import scala.concurrent.Future.successful
 
 @Singleton
-class HelloController @Inject()(override val authConnector: AuthConnector) extends BaseController with AuthorisedFunctions {
+class HelloController @Inject()(override val authConnector: AuthConnector)(implicit val ec: ExecutionContext) extends BaseController with AuthorisedFunctions {
 
 
   def handle: Action[AnyContent] = Action.async { request =>
