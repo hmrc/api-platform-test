@@ -22,3 +22,4 @@ GET        /ni/*remaining                                  uk.gov.hmrc.apiplatfo
 PUT        /ni/*remaining                                  uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(remaining)
 POST       /ni/*remaining                                  uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(remaining)
 
+GET        /error/:errorCode                               uk.gov.hmrc.apiplatformtest.controllers.ErrorController.returnError(errorCode: Int)
