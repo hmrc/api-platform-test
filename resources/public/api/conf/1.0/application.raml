@@ -455,3 +455,12 @@ uses:
           description: Retrieve a tax calculation. Please note that this API will return pre-defined responses that are representative of what may be returned in a future version of this API.
           is: [headers.acceptHeader]
           securedBy: [ sec.x-application ]
+  /error:
+    /{errorCode}:
+      uriParameters:
+        errorCode:
+          description: Error code
+          type: integer
+      get:
+        displayName: Get error
+        is: [headers.acceptHeader]
