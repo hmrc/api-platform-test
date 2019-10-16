@@ -25,11 +25,6 @@ import uk.gov.hmrc.play.config.ServicesConfig
 class AppContext @Inject()(override val runModeConfiguration: Configuration, environment: Environment) extends ServicesConfig {
   lazy val appName = runModeConfiguration.getString("appName").getOrElse(throw new RuntimeException("appName is not configured"))
   lazy val appUrl = runModeConfiguration.getString("appUrl").getOrElse(throw new RuntimeException("appUrl is not configured"))
-  lazy val serviceLocatorUrl: String = baseUrl("service-locator")
-  lazy val registrationEnabled: Boolean = runModeConfiguration.getBoolean(s"$env.microservice.services.service-locator.enabled").getOrElse(true)
   lazy val access = runModeConfiguration.getConfig("api.access")
-
   override protected def mode: Mode = environment.mode
-
 }
-
