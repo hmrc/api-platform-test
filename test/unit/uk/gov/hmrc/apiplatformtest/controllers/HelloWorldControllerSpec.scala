@@ -20,8 +20,7 @@ import java.util.UUID.randomUUID
 
 import akka.stream.Materializer
 import org.joda.time.LocalDate
-import org.mockito.ArgumentMatchers
-import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.{any, eq => meq}
 import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
 import play.api.http.Status.{OK, UNAUTHORIZED}
@@ -38,8 +37,8 @@ import uk.gov.hmrc.auth.core.retrieve.{AgentInformation, Credentials, Name, ~}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-import scala.concurrent.Future.{failed, successful}
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future.{failed, successful}
 
 class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with MockitoSugar {
 
@@ -78,7 +77,7 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
         mockAuthConnector
           .authorise(
             any(),
-            ArgumentMatchers.eq(allUserDetails and Retrievals.internalId and Retrievals.externalId)
+            meq(allUserDetails and Retrievals.internalId and Retrievals.externalId)
           )(any(), any())
       ).thenReturn(
         successful(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(Some(credentials), Some(name)),
@@ -113,11 +112,39 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
         mockAuthConnector
           .authorise(
             any(),
-            ArgumentMatchers.eq(allUserDetails and Retrievals.internalId and Retrievals.externalId)
+            meq(allUserDetails and Retrievals.internalId and Retrievals.externalId)
           )(any(), any())
       ).thenReturn(failed(InvalidBearerToken()))
 
       val result: Result = await(underTest.handleDave()(FakeRequest()))
+
+      status(result) shouldBe UNAUTHORIZED
+      val jsonResult: JsValue = jsonBodyOf(result)
+      (jsonResult \ "errorMessage").as[String] shouldBe "Invalid bearer token"
+    }
+  }
+
+  "Hello Bruce" should {
+    "return 200 with application details when authorisation succeeds" in new Setup {
+      private val retrievedClientId = "retrieved-client-id"
+      private val retrievedApplicationName = "retrieved-application-name"
+
+      when(mockAuthConnector.authorise(any(), meq(clientId and applicationName))(any(), any()))
+        .thenReturn(successful(new ~(Some(retrievedClientId), Some(retrievedApplicationName))))
+
+      val result: Result = await(underTest.handleBruce()(FakeRequest()))
+
+      status(result) shouldBe OK
+
+      val jsonResult: JsValue = jsonBodyOf(result)
+      (jsonResult \ "clientId").as[String] shouldBe retrievedClientId
+      (jsonResult \ "applicationName").as[String] shouldBe retrievedApplicationName
+    }
+
+    "return 401 if the authorisation fails" in new Setup {
+      when(mockAuthConnector.authorise(any(), meq(clientId and applicationName))(any(), any())).thenReturn(failed(InvalidBearerToken()))
+
+      val result: Result = await(underTest.handleBruce()(FakeRequest()))
 
       status(result) shouldBe UNAUTHORIZED
       val jsonResult: JsValue = jsonBodyOf(result)
