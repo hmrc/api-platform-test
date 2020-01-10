@@ -41,6 +41,14 @@ uses:
         is: [headers.acceptHeader]
         (annotations.scope): "catch-the-mouse"
         securedBy: [ sec.oauth_2_0: { scopes: [ "catch-the-mouse" ] } ]
+
+    /bruce:
+      get:
+        displayName: Get Hello Bruce
+        is: [headers.acceptHeader]
+        (annotations.scope): "yippie-kai-yay"
+        securedBy: [ sec.oauth_2_0: { scopes: [ "yippie-kai-yay" ] } ]
+
     /friend:
       get:
         displayName: Get hello friend
