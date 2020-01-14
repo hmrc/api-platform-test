@@ -128,9 +128,11 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
     "return 200 with application details when authorisation succeeds" in new Setup {
       private val retrievedClientId = "retrieved-client-id"
       private val retrievedApplicationName = "retrieved-application-name"
+      private val retrievedApplicationId = "retrieved-application-id"
 
-      when(mockAuthConnector.authorise(any(), meq(clientId and applicationName))(any(), any()))
-        .thenReturn(successful(new ~(Some(retrievedClientId), Some(retrievedApplicationName))))
+      when(mockAuthConnector.authorise(any(), meq(clientId and applicationName and credentials))(any(), any()))
+        .thenReturn(successful(
+          new ~(new ~(Some(retrievedClientId), Some(retrievedApplicationName)), Some(Credentials(retrievedApplicationId, "StandardApplication")))))
 
       val result: Result = await(underTest.handleBruce()(FakeRequest()))
 
@@ -139,10 +141,11 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
       val jsonResult: JsValue = jsonBodyOf(result)
       (jsonResult \ "clientId").as[String] shouldBe retrievedClientId
       (jsonResult \ "applicationName").as[String] shouldBe retrievedApplicationName
+      (jsonResult \ "applicationId").as[String] shouldBe retrievedApplicationId
     }
 
     "return 401 if the authorisation fails" in new Setup {
-      when(mockAuthConnector.authorise(any(), meq(clientId and applicationName))(any(), any())).thenReturn(failed(InvalidBearerToken()))
+      when(mockAuthConnector.authorise(any(), meq(clientId and applicationName and credentials))(any(), any())).thenReturn(failed(InvalidBearerToken()))
 
       val result: Result = await(underTest.handleBruce()(FakeRequest()))
 
