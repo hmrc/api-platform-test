@@ -33,7 +33,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup.Individual
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
-import uk.gov.hmrc.auth.core.retrieve.{AgentInformation, Credentials, GGCredId, LegacyCredentials, Name, ~}
+import uk.gov.hmrc.auth.core.retrieve.{AgentInformation, Credentials, Name, ~}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
@@ -130,15 +130,9 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
       private val retrievedApplicationName = "retrieved-application-name"
       private val retrievedApplicationId = "retrieved-application-id"
 
-      when(mockAuthConnector.authorise(any(), meq(clientId and applicationName and credentials and authProviderId))(any(), any()))
+      when(mockAuthConnector.authorise(any(), meq(clientId and applicationName and credentials))(any(), any()))
         .thenReturn(
-          successful(
-            new ~(
-              new ~(
-                new ~(
-                  Some(retrievedClientId), Some(retrievedApplicationName)),
-                Some(Credentials(retrievedApplicationId, "StandardApplication"))),
-              GGCredId("foo"))))
+          successful(new ~(new ~(Some(retrievedClientId), Some(retrievedApplicationName)), Some(Credentials(retrievedApplicationId, "StandardApplication")))))
 
       val result: Result = await(underTest.handleBruce()(FakeRequest()))
 
@@ -151,7 +145,7 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
     }
 
     "return 401 if the authorisation fails" in new Setup {
-      when(mockAuthConnector.authorise(any(), meq(clientId and applicationName and credentials and authProviderId))(any(), any()))
+      when(mockAuthConnector.authorise(any(), meq(clientId and applicationName and credentials))(any(), any()))
         .thenReturn(failed(InvalidBearerToken()))
 
       val result: Result = await(underTest.handleBruce()(FakeRequest()))
