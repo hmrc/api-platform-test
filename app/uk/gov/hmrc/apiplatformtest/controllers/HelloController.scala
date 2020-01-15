@@ -16,15 +16,14 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import cats.data.OptionT
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, Result}
+import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.apiplatformtest.models.Header
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters._
-import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.{allUserDetails, applicationName, clientId, credentials, externalId, internalId}
-import uk.gov.hmrc.auth.core.retrieve.{Credentials, ~}
+import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
+import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions}
 import uk.gov.hmrc.play.bootstrap.controller.BaseController
 
@@ -67,13 +66,15 @@ class HelloController @Inject()(override val authConnector: AuthConnector)(impli
   }
 
   def handleBruce: Action[AnyContent] = Action.async { implicit request =>
-    authorised().retrieve(clientId and applicationName and credentials) {
-      case clientId ~ applicationName ~ credentials =>
+    authorised().retrieve(clientId and applicationName and credentials and authProviderId) {
+      case clientId ~ applicationName ~ credentials ~ authProviderId =>
         successful(Ok(
           Json.obj(
             "clientId" -> clientId,
             "applicationName" -> applicationName,
-            "applicationId" -> credentials.map(_.providerId))))
+            "applicationId" -> credentials.map(_.providerId),
+            "providerType" -> credentials.map(_.providerType),
+            "authProviderId" -> authProviderId.toString)))
     } recover {
       case e: AuthorisationException => Unauthorized(Json.obj("errorMessage" -> e.getMessage))
     }
