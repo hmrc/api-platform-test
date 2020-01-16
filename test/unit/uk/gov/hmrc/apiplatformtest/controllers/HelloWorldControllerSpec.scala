@@ -60,6 +60,7 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
     "return 200 with the user details and request headers" in new Setup {
       private val internalId = randomUUID.toString
       private val externalId = randomUUID.toString
+      private val applicationId = randomUUID().toString
       private val credentials = Credentials(randomUUID.toString, randomUUID.toString)
       private val name = Name(Some(randomUUID.toString), Some(randomUUID.toString))
       private val dateOfBirth = LocalDate.now
@@ -77,12 +78,12 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
         mockAuthConnector
           .authorise(
             any(),
-            meq(allUserDetails and Retrievals.internalId and Retrievals.externalId)
+            meq(allUserDetails and Retrievals.internalId and Retrievals.externalId and Retrievals.applicationId)
           )(any(), any())
       ).thenReturn(
-        successful(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(Some(credentials), Some(name)),
-          Some(dateOfBirth)), Some(postCode)), Some(email)), Some(affinityGroup)), Some(agentCode)),
-          agentInformation), Some(credentialRole)), Some(description)), Some(groupIdentifier)), Some(unreadMessageCount)), Some(internalId)), Some(externalId))
+        successful(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(Some(credentials), Some(name)),
+          Some(dateOfBirth)), Some(postCode)), Some(email)), Some(affinityGroup)), Some(agentCode)), agentInformation), Some(credentialRole)),
+          Some(description)), Some(groupIdentifier)), Some(unreadMessageCount)), Some(internalId)), Some(externalId)), Some(applicationId))
         )
       )
 
@@ -92,6 +93,7 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
       val jsonResult: JsValue = jsonBodyOf(result)
       (jsonResult \ "internalId").as[String] shouldBe internalId
       (jsonResult \ "externalId").as[String] shouldBe externalId
+      (jsonResult \ "applicationId").as[String] shouldBe applicationId
       (jsonResult \ "credentials").as[Credentials] shouldBe credentials
       (jsonResult \ "name").as[Name] shouldBe name
       (jsonResult \ "dateOfBirth").as[LocalDate] shouldBe dateOfBirth
@@ -112,7 +114,7 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
         mockAuthConnector
           .authorise(
             any(),
-            meq(allUserDetails and Retrievals.internalId and Retrievals.externalId)
+            meq(allUserDetails and Retrievals.internalId and Retrievals.externalId and Retrievals.applicationId)
           )(any(), any())
       ).thenReturn(failed(InvalidBearerToken()))
 
@@ -130,9 +132,9 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
       private val retrievedApplicationName = "retrieved-application-name"
       private val retrievedApplicationId = "retrieved-application-id"
 
-      when(mockAuthConnector.authorise(any(), meq(clientId and applicationName and credentials))(any(), any()))
+      when(mockAuthConnector.authorise(any(), meq(clientId and applicationName and applicationId))(any(), any()))
         .thenReturn(successful(
-          new ~(new ~(Some(retrievedClientId), Some(retrievedApplicationName)), Some(Credentials(retrievedApplicationId, "StandardApplication")))))
+          new ~(new ~(Some(retrievedClientId), Some(retrievedApplicationName)), Some(retrievedApplicationId))))
 
       val result: Result = await(underTest.handleBruce()(FakeRequest()))
 
@@ -145,7 +147,7 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
     }
 
     "return 401 if the authorisation fails" in new Setup {
-      when(mockAuthConnector.authorise(any(), meq(clientId and applicationName and credentials))(any(), any())).thenReturn(failed(InvalidBearerToken()))
+      when(mockAuthConnector.authorise(any(), meq(clientId and applicationName and applicationId))(any(), any())).thenReturn(failed(InvalidBearerToken()))
 
       val result: Result = await(underTest.handleBruce()(FakeRequest()))
 

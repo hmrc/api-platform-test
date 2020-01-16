@@ -16,15 +16,14 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import cats.data.OptionT
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, Result}
+import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.apiplatformtest.models.Header
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters._
-import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.{allUserDetails, applicationName, clientId, credentials, externalId, internalId}
-import uk.gov.hmrc.auth.core.retrieve.{Credentials, ~}
+import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
+import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions}
 import uk.gov.hmrc.play.bootstrap.controller.BaseController
 
@@ -41,12 +40,13 @@ class HelloController @Inject()(override val authConnector: AuthConnector)(impli
   }
 
   def handleDave: Action[AnyContent] = Action.async { implicit request =>
-    authorised().retrieve(allUserDetails and internalId and externalId) {
+    authorised().retrieve(allUserDetails and internalId and externalId and applicationId) {
       case credentials ~ name ~ dateOfBirth ~ postCode ~ email ~ affinityGroup ~ agentCode ~ agentInformation ~
-        credentialRole ~ description ~ groupIdentifier ~ unreadMessageCount ~ internalId ~ externalId =>
+        credentialRole ~ description ~ groupIdentifier ~ unreadMessageCount ~ internalId ~ externalId ~ applicationId =>
         successful(Ok(Json.obj(
           "internalId" -> internalId,
           "externalId" -> externalId,
+          "applicationId" -> applicationId,
           "credentials" -> credentials,
           "name" -> name,
           "dateOfBirth" -> dateOfBirth,
@@ -67,13 +67,13 @@ class HelloController @Inject()(override val authConnector: AuthConnector)(impli
   }
 
   def handleBruce: Action[AnyContent] = Action.async { implicit request =>
-    authorised().retrieve(clientId and applicationName and credentials) {
-      case clientId ~ applicationName ~ credentials =>
+    authorised().retrieve(clientId and applicationName and applicationId) {
+      case clientId ~ applicationName ~ applicationId =>
         successful(Ok(
           Json.obj(
             "clientId" -> clientId,
             "applicationName" -> applicationName,
-            "applicationId" -> credentials.map(_.providerId))))
+            "applicationId" -> applicationId)))
     } recover {
       case e: AuthorisationException => Unauthorized(Json.obj("errorMessage" -> e.getMessage))
     }
