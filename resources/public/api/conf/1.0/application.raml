@@ -47,7 +47,7 @@ uses:
         displayName: Get Hello Bruce
         is: [headers.acceptHeader]
         (annotations.scope): "yippie-kai-yay"
-        securedBy: [ sec.oauth_2_0: { scopes: [ "yippie-kai-yay" ] } ]
+        securedBy: [ sec.x-application: { scopes: [ "yippie-kai-yay" ] } ]
 
     /friend:
       get:
