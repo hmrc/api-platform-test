@@ -28,7 +28,7 @@
   "api": {
     "name": "API Platform Test",
     "description": "Dummy API for testing basic API-functionality on the platform",
-    "context": "api-platform-test",
+    "context": "test/api-platform-test",
     "versions": [
       {
         "version": "1.0",
