@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import javax.inject.Singleton
-import play.api.mvc.{Action, AnyContent}
+import javax.inject.{Inject, Singleton}
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 
 @Singleton
-class CityController extends CommonController {
+class CityController @Inject()(cc: ControllerComponents) extends CommonController(cc) {
 
   def showCityAndAddress(cityName: String): Action[AnyContent] =
     Action.async { implicit request => success(s"City: $cityName, Address: Oxford Street") }

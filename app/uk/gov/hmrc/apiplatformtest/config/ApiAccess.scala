@@ -23,8 +23,8 @@ case class ApiAccess(`type`: String, whitelistedApplicationIds: Option[Seq[Strin
 
 object ApiAccess {
   def build(config: Option[Configuration])(version: String): ApiAccess = ApiAccess(
-    `type` = config.flatMap(_.getString(s"version-$version.type")).getOrElse("PRIVATE"),
-    whitelistedApplicationIds = config.flatMap(_.getStringSeq(s"version-$version.whitelistedApplicationIds")).orElse(Some(Seq.empty)))
+    `type` = config.flatMap(_.getOptional[String](s"version-$version.type")).getOrElse("PRIVATE"),
+    whitelistedApplicationIds = config.flatMap(_.getOptional[Seq[String]](s"version-$version.whitelistedApplicationIds")).orElse(Some(Seq.empty)))
 
   implicit val apiAccessFmt: OFormat[ApiAccess] = Json.format[ApiAccess]
 }

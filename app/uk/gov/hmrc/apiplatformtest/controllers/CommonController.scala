@@ -17,15 +17,15 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import play.api.libs.json.Json
-import play.api.mvc.{AnyContent, Request, Result}
+import play.api.mvc.{AnyContent, ControllerComponents, Request, Result}
 import uk.gov.hmrc.apiplatformtest.models.DummyAnswer
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatDummyAnswer
-import uk.gov.hmrc.play.bootstrap.controller.BaseController
+import uk.gov.hmrc.play.bootstrap.controller.BackendController
 
 import scala.concurrent.Future
 import scala.concurrent.Future.successful
 
-trait CommonController extends BaseController {
+abstract class CommonController(cc: ControllerComponents) extends BackendController(cc) {
 
   protected def result(status: Status, resource: String, request: Request[AnyContent]): Future[Result] = {
     val answer = DummyAnswer(uri = request.uri, method = request.method, resourceDetails = resource)

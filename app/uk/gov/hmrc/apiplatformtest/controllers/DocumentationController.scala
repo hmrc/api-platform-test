@@ -16,17 +16,17 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import controllers.AssetsBuilder
+import controllers.{AssetsBuilder, AssetsMetadata}
 import javax.inject.{Inject, Singleton}
 import play.api.http.{ContentTypes, HeaderNames, HttpErrorHandler}
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.apiplatformtest.config.{ApiAccess, AppContext}
 import uk.gov.hmrc.apiplatformtest.views.txt
-import uk.gov.hmrc.play.bootstrap.controller.BaseController
+import uk.gov.hmrc.play.bootstrap.controller.BackendBaseController
 
 @Singleton
-class DocumentationController @Inject()(httpErrorHandler: HttpErrorHandler, appContext: AppContext)
-  extends AssetsBuilder(httpErrorHandler) with BaseController {
+class DocumentationController @Inject()(httpErrorHandler: HttpErrorHandler, appContext: AppContext, meta: AssetsMetadata, cc: ControllerComponents)
+  extends AssetsBuilder(httpErrorHandler, meta) with BackendBaseController {
 
   def definition = Action {
     Ok(txt.definition(ApiAccess.build(appContext.access)))
@@ -36,5 +36,7 @@ class DocumentationController @Inject()(httpErrorHandler: HttpErrorHandler, appC
   def raml(version: String, file: String): Action[AnyContent] = {
     super.at(s"/public/api/conf/$version", file)
   }
+
+  override protected def controllerComponents: ControllerComponents = cc
 }
 

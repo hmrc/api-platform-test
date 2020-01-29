@@ -18,13 +18,13 @@ package uk.gov.hmrc.apiplatformtest.controllers
 
 import akka.stream.Materializer
 import play.api.http.{HeaderNames, MimeTypes, Status}
-import play.api.test.FakeRequest
+import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-class HeadersControllerSpec extends UnitSpec with WithFakeApplication {
+class HeadersControllerSpec extends UnitSpec with WithFakeApplication with StubControllerComponentsFactory {
 
   trait Setup{
-    val underTest = new HeadersController
+    val underTest = new HeadersController(stubControllerComponents())
   }
 
   private implicit lazy val materializer: Materializer = fakeApplication.materializer

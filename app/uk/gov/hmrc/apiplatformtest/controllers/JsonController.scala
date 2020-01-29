@@ -16,23 +16,22 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import javax.inject.{Inject, Singleton}
-
 import akka.stream.Materializer
+import javax.inject.{Inject, Singleton}
 import play.api.libs.json._
 import play.api.mvc._
-import uk.gov.hmrc.play.bootstrap.controller.BaseController
+import uk.gov.hmrc.play.bootstrap.controller.BackendController
 
 import scala.concurrent.Future._
 
 @Singleton
-class JsonController @Inject()(implicit mat: Materializer) extends BaseController {
+class JsonController @Inject()(cc: ControllerComponents, parsers: PlayBodyParsers)(implicit mat: Materializer) extends BackendController(cc) {
 
   val VndHmrcJson50: String = "application/vnd.hmrc.5.0+json"
   val AcceptsJson50 = Accepting(VndHmrcJson50)
 
   final def handleJsonPost(): Action[JsValue] = {
-    Action.async(BodyParsers.parse.json) { implicit request =>
+    Action.async(parsers.json) { implicit request =>
       render.async {
         case AcceptsJson50() => successful(Ok(Json.toJson(request.body)))
         case _               => successful(UnsupportedMediaType)

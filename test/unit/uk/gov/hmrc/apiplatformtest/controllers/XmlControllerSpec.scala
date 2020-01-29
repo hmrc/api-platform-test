@@ -19,18 +19,18 @@ package uk.gov.hmrc.apiplatformtest.controllers
 import play.api.http.ContentTypes.XML
 import play.api.http.HeaderNames.{ACCEPT, CONTENT_TYPE}
 import play.api.http.Status.{OK, UNSUPPORTED_MEDIA_TYPE}
-import play.api.test.FakeRequest
+import play.api.test.{FakeRequest, StubControllerComponentsFactory, StubPlayBodyParsersFactory}
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 import scala.xml.NodeSeq
 
-class XmlControllerSpec extends UnitSpec with WithFakeApplication {
+class XmlControllerSpec extends UnitSpec with WithFakeApplication with StubControllerComponentsFactory with StubPlayBodyParsersFactory{
+
+  implicit val mat = fakeApplication.materializer
 
   trait Setup{
-    val underTest = new XmlController
+    val underTest = new XmlController(stubControllerComponents(), stubPlayBodyParsers)
   }
-
-  implicit private val mat = fakeApplication.materializer
 
   private val requestBody: NodeSeq = <Pong>hello</Pong>
   private val request = FakeRequest("POST", "/xml").withBody(requestBody)

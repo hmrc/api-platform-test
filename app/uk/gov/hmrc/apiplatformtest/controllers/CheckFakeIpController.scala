@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import javax.inject.Singleton
+import javax.inject.{Inject, Singleton}
 import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.play.bootstrap.controller.BaseController
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import uk.gov.hmrc.play.bootstrap.controller.BackendController
 
 import scala.concurrent.Future
 import scala.util.Random
@@ -29,7 +29,7 @@ import scala.util.Random
   * of the header by API gateway
   */
 @Singleton
-class CheckFakeIpController extends BaseController {
+class CheckFakeIpController @Inject()(cc: ControllerComponents) extends BackendController(cc) {
 
   // Random generator
   private val random = new scala.util.Random
@@ -46,8 +46,8 @@ class CheckFakeIpController extends BaseController {
     randomHexString(24)
   }
 
-  def handle: Action[AnyContent] = Action.async {
-    def bit() = (Random.nextInt(250)+1).toString
+  def handle: Action[AnyContent] = cc.actionBuilder.async {
+    def bit() = (Random.nextInt(250) + 1).toString
     val fakeId = fakeObjectId()
     val fakeNino = Random.nextString(9)
     val fakeIp = s"${bit()}.${bit()}.${bit()}.${bit()}"

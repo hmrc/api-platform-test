@@ -17,14 +17,16 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import play.api.libs.json.Json
-import play.api.mvc.{ActionBuilder, Request, Result, Results}
+import play.api.mvc._
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
 
 
 trait HeaderValidator extends Results {
+
+  protected val cc: ControllerComponents
 
   val validateVersion: String => Boolean = _ == "1.0"
 
@@ -33,13 +35,16 @@ trait HeaderValidator extends Results {
   val matchHeader: String => Option[Match] = new Regex( """^application/vnd[.]{1}hmrc[.]{1}(.*?)[+]{1}(.*)$""", "version", "contenttype") findFirstMatchIn _
 
   val acceptHeaderValidationRules: Option[String] => Boolean =
-    _ flatMap (a => matchHeader(a) map (res => validateContentType(res.group("contenttype")) && validateVersion(res.group("version")))) getOrElse (false)
+    _ flatMap (a => matchHeader(a) map (res => validateContentType(res.group("contenttype")) && validateVersion(res.group("version")))) getOrElse false
 
 
-  def validateAccept(rules: Option[String] => Boolean) = new ActionBuilder[Request] {
-    def invokeBlock[A](request: Request[A], block: (Request[A]) => Future[Result]) = {
+  def validateAccept(rules: Option[String] => Boolean): ActionBuilder[Request, AnyContent] = new  ActionBuilder[Request, AnyContent] {
+    def invokeBlock[A](request: Request[A], block: Request[A] => Future[Result]): Future[Result] = {
       if (rules(request.headers.get("Accept"))) block(request)
       else Future.successful(Status(ErrorAcceptHeaderInvalid.httpStatusCode)(Json.toJson(ErrorAcceptHeaderInvalid)))
     }
+
+    override protected def executionContext: ExecutionContext = cc.executionContext
+    override def parser: BodyParser[AnyContent] = cc.parsers.defaultBodyParser
   }
 }

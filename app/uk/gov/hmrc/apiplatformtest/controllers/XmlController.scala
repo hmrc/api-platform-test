@@ -16,20 +16,20 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import javax.inject.Singleton
+import javax.inject.{Inject, Singleton}
 import play.api.mvc._
 
 import scala.concurrent.Future.successful
 import scala.xml.NodeSeq
 
 @Singleton
-class XmlController extends CommonController {
+class XmlController @Inject()(cc: ControllerComponents, parsers: PlayBodyParsers) extends CommonController(cc) {
 
   val VndHmrcXml50: String = "application/vnd.hmrc.5.0+xml"
   val AcceptsXml50 = Accepting(VndHmrcXml50)
 
   final def handleXmlPost(): Action[NodeSeq] =
-    Action.async(BodyParsers.parse.xml) {
+    Action.async(parsers.xml) {
       implicit request: Request[NodeSeq] =>
         render.async {
           case AcceptsXml50() => successful(Ok(<Ping>{request.body.head}</Ping>).as(XML))

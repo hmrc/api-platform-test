@@ -17,14 +17,14 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import play.api.http.{HeaderNames, Status}
-import play.api.test.FakeRequest
+import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-class CheckFakeIpControllerSpec extends UnitSpec with WithFakeApplication {
+class CheckFakeIpControllerSpec extends UnitSpec with WithFakeApplication with StubControllerComponentsFactory {
 
 
   trait Setup{
-    val underTest = new CheckFakeIpController
+    val underTest = new CheckFakeIpController(stubControllerComponents())
     val fakeRequest = FakeRequest("GET", "/")
   }
 

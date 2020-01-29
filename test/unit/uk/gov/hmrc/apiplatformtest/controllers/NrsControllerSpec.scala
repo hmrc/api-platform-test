@@ -20,14 +20,14 @@ import play.api.http.ContentTypes.TEXT
 import play.api.http.HeaderNames.CONTENT_TYPE
 import play.api.http.Status.OK
 import play.api.libs.json.Json
-import play.api.test.FakeRequest
+import play.api.test.{FakeRequest, StubControllerComponentsFactory, StubPlayBodyParsersFactory}
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-class NrsControllerSpec extends UnitSpec with WithFakeApplication {
+class NrsControllerSpec extends UnitSpec with WithFakeApplication with StubControllerComponentsFactory with StubPlayBodyParsersFactory{
 
   implicit private val mat = fakeApplication.materializer
 
-  private val controller = new NrsController()
+  private val controller = new NrsController(stubControllerComponents(), stubPlayBodyParsers)
 
   "POST to NRS endpoint returns valid SHA-256 without effecting the payload" should {
 

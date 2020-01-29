@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import javax.inject.Singleton
-import play.api.mvc.{Action, AnyContent}
+import javax.inject.{Inject, Singleton}
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 
 @Singleton
-class CiaoController extends CommonController {
+class CiaoController @Inject()(cc: ControllerComponents) extends CommonController(cc) {
 
   // Successful routes.
   // These resources/endpoints are published to WSO2.

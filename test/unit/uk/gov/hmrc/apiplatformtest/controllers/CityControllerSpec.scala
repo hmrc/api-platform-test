@@ -18,15 +18,15 @@ package uk.gov.hmrc.apiplatformtest.controllers
 
 import play.api.http.Status
 import play.api.libs.json.Json
-import play.api.test.FakeRequest
+import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import uk.gov.hmrc.apiplatformtest.models.DummyAnswer
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatDummyAnswer
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-class CityControllerSpec extends UnitSpec with WithFakeApplication {
+class CityControllerSpec extends UnitSpec with WithFakeApplication with StubControllerComponentsFactory {
 
   trait Setup{
-    val underTest = new CityController
+    val underTest = new CityController(stubControllerComponents())
   }
 
   private implicit val materializer = fakeApplication.materializer
