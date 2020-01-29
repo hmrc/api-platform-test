@@ -41,7 +41,7 @@ lazy val scope: String = "test"
 lazy val test = Seq(
   "uk.gov.hmrc" %% "bootstrap-play-26" % "1.3.0" % scope,
   "uk.gov.hmrc" %% "hmrctest" % "3.9.0-play-26" % scope,
-  "org.scalatest" %% "scalatest" % "2.2.6" % scope,
+  "org.scalatest" %% "scalatest" % "3.0.5" % scope,
   "org.pegdown" % "pegdown" % "1.6.0" % scope,
   "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
   "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % scope,
