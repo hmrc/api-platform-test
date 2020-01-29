@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import javax.inject.Singleton
+import javax.inject.{Inject, Singleton}
 import play.api.libs.json._
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.apiplatformtest.controllers.HeadersControllerDomain._
-import uk.gov.hmrc.play.bootstrap.controller.BaseController
+import uk.gov.hmrc.play.bootstrap.controller.BackendController
 
 import scala.concurrent.Future
 
@@ -34,7 +34,7 @@ object HeadersControllerDomain {
 }
 
 @Singleton
-class HeadersController extends BaseController {
+class HeadersController @Inject()(cc: ControllerComponents) extends BackendController(cc) {
 
 
   def handle: Action[AnyContent] = Action.async { implicit request =>

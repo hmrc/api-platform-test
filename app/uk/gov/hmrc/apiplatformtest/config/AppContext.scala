@@ -17,14 +17,14 @@
 package uk.gov.hmrc.apiplatformtest.config
 
 import javax.inject.{Inject, Singleton}
-import play.api.{Configuration, Environment}
-import play.api.Mode.Mode
-import uk.gov.hmrc.play.config.ServicesConfig
+import play.api.{Configuration, Environment, Mode}
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
+
 
 @Singleton
-class AppContext @Inject()(override val runModeConfiguration: Configuration, environment: Environment) extends ServicesConfig {
-  lazy val appName = runModeConfiguration.getString("appName").getOrElse(throw new RuntimeException("appName is not configured"))
-  lazy val appUrl = runModeConfiguration.getString("appUrl").getOrElse(throw new RuntimeException("appUrl is not configured"))
-  lazy val access = runModeConfiguration.getConfig("api.access")
-  override protected def mode: Mode = environment.mode
+class AppContext @Inject()(runModeConfiguration: Configuration, environment: Environment, servicesConfig: ServicesConfig) {
+  lazy val appName = runModeConfiguration.getOptional[String]("appName").getOrElse(throw new RuntimeException("appName is not configured"))
+  lazy val appUrl = runModeConfiguration.getOptional[String]("appUrl").getOrElse(throw new RuntimeException("appUrl is not configured"))
+  lazy val access = runModeConfiguration.getOptional[Configuration]("api.access")
+  def mode: Mode = environment.mode
 }

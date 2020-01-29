@@ -26,7 +26,7 @@ import org.scalatest.mockito.MockitoSugar
 import play.api.http.Status.{OK, UNAUTHORIZED}
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
-import play.api.test.FakeRequest
+import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import uk.gov.hmrc.apiplatformtest.models.Header
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters._
 import uk.gov.hmrc.auth.core.AffinityGroup.Individual
@@ -35,18 +35,19 @@ import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core.retrieve.{AgentInformation, Credentials, Name, ~}
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.controllers.RestFormats.localDateFormats
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.{failed, successful}
 
-class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with MockitoSugar {
+class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with MockitoSugar with StubControllerComponentsFactory{
 
   trait Setup {
     implicit val mat: Materializer = fakeApplication.materializer
     implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
     val mockAuthConnector: AuthConnector = mock[AuthConnector]
-    val underTest = new HelloController(mockAuthConnector)
+    val underTest = new HelloController(mockAuthConnector, stubControllerComponents())
   }
 
   "GET /" should {
@@ -73,7 +74,7 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
       private val description = randomUUID.toString
       private val groupIdentifier = randomUUID.toString
       private val unreadMessageCount = 1
-      private val headers: Seq[(String, String)] = Seq("User-Agent" -> "api-platform-test", "Client-ID" -> randomUUID.toString)
+      private val headers: Seq[(String, String)] = Seq("Host" -> "localhost", "User-Agent" -> "api-platform-test", "Client-ID" -> randomUUID.toString)
       when(
         mockAuthConnector
           .authorise(

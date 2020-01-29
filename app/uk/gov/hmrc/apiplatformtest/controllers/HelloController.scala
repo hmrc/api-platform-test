@@ -19,19 +19,21 @@ package uk.gov.hmrc.apiplatformtest.controllers
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.apiplatformtest.models.Header
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions}
-import uk.gov.hmrc.play.bootstrap.controller.BaseController
+import uk.gov.hmrc.http.controllers.RestFormats.localDateFormats
+import uk.gov.hmrc.play.bootstrap.controller.BackendController
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future.successful
 
 @Singleton
-class HelloController @Inject()(override val authConnector: AuthConnector)(implicit val ec: ExecutionContext) extends BaseController with AuthorisedFunctions {
+class HelloController @Inject()(override val authConnector: AuthConnector, cc: ControllerComponents)(implicit val ec: ExecutionContext)
+  extends BackendController(cc) with AuthorisedFunctions {
 
 
   def handle: Action[AnyContent] = Action.async { request =>

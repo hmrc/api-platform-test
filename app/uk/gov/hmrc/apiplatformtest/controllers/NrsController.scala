@@ -21,13 +21,13 @@ import javax.inject.{Inject, Singleton}
 import play.api.libs.json._
 import play.api.mvc._
 import uk.gov.hmrc.apiplatformtest.services.HashingAlgorithm
-import uk.gov.hmrc.play.bootstrap.controller.BaseController
+import uk.gov.hmrc.play.bootstrap.controller.BackendController
 
 @Singleton
-class NrsController @Inject()(implicit mat: Materializer) extends BaseController {
+class NrsController @Inject()(cc: ControllerComponents, parsers: PlayBodyParsers)(implicit mat: Materializer) extends BackendController(cc) {
 
   final def handleNrsPost(): Action[String] = {
-    Action(BodyParsers.parse.tolerantText) { implicit request =>
+    Action(parsers.tolerantText) { implicit request =>
       val hash = HashingAlgorithm.sha256Hash(request.body)
       Ok(Json.obj("hash" -> hash))
     }

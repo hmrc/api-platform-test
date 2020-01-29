@@ -20,14 +20,14 @@ import play.api.http.ContentTypes.JSON
 import play.api.http.HeaderNames.{ACCEPT, CONTENT_TYPE}
 import play.api.http.Status.{OK, UNSUPPORTED_MEDIA_TYPE}
 import play.api.libs.json.Json.parse
-import play.api.test.FakeRequest
+import play.api.test.{FakeRequest, StubBodyParserFactory, StubControllerComponentsFactory}
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-class JsonControllerSpec extends UnitSpec with WithFakeApplication {
+class JsonControllerSpec extends UnitSpec with WithFakeApplication with StubControllerComponentsFactory with StubBodyParserFactory {
 
   trait Setup{
     implicit val mat = fakeApplication.materializer
-    val underTest = new JsonController
+    val underTest = new JsonController(stubControllerComponents(), stubPlayBodyParsers)
   }
 
 

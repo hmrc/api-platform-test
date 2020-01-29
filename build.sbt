@@ -28,10 +28,9 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test
 
 lazy val compile = Seq(
   ws,
-  "uk.gov.hmrc" %% "fraud-prevention" % "0.13.0",
-  "uk.gov.hmrc" %% "bootstrap-play-25" % "5.1.0",
-  "uk.gov.hmrc" %% "domain" % "5.6.0-play-25",
-  "uk.gov.hmrc" %% "auth-client" % "2.32.2-play-25",
+  "uk.gov.hmrc" %% "bootstrap-play-26" % "1.3.0",
+  "uk.gov.hmrc" %% "domain" % "5.6.0-play-26",
+  "uk.gov.hmrc" %% "auth-client" % "2.32.2-play-26",
   "ch.qos.logback" % "logback-classic" % "1.2.3",
   "uk.gov.hmrc" %% "logback-json-logger" % "4.6.0"
 
@@ -40,11 +39,12 @@ lazy val compile = Seq(
 lazy val scope: String = "test"
 
 lazy val test = Seq(
-  "uk.gov.hmrc" %% "hmrctest" % "3.9.0-play-25" % scope,
-  "org.scalatest" %% "scalatest" % "2.2.6" % scope,
+  "uk.gov.hmrc" %% "bootstrap-play-26" % "1.3.0" % scope,
+  "uk.gov.hmrc" %% "hmrctest" % "3.9.0-play-26" % scope,
+  "org.scalatest" %% "scalatest" % "3.0.5" % scope,
   "org.pegdown" % "pegdown" % "1.6.0" % scope,
   "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
-  "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.1" % scope,
+  "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % scope,
   "org.mockito" % "mockito-core" % "2.13.0" % scope,
   "com.github.tomakehurst" % "wiremock" % "2.10.1" % scope exclude("org.apache.httpcomponents","httpclient") exclude("org.apache.httpcomponents","httpcore")
 )
@@ -63,7 +63,7 @@ lazy val microservice = (project in file("."))
     name := appName,
     majorVersion := 0,
     targetJvm := "jvm-1.8",
-    scalaVersion := "2.11.11",
+    scalaVersion := "2.12.10",
     libraryDependencies ++= appDependencies,
     routesGenerator := InjectedRoutesGenerator,
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false)
