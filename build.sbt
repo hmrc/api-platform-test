@@ -79,6 +79,6 @@ lazy val microservice = (project in file("."))
   ))
 
 // Coverage configuration
-coverageMinimum := 17
+coverageMinimum := 35
 coverageFailOnMinimum := true
 coverageExcludedPackages := "<empty>;com.kenshoo.play.metrics.*;.*definition.*;prod.*;testOnlyDoNotUseInAppConf.*;app.*;uk.gov.hmrc.BuildInfo"

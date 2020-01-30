@@ -51,8 +51,10 @@ class CheckFakeIpController @Inject()(cc: ControllerComponents) extends BackendC
     val fakeId = fakeObjectId()
     val fakeNino = Random.nextString(9)
     val fakeIp = s"${bit()}.${bit()}.${bit()}.${bit()}"
+    // see https://github.com/playframework/playframework/issues/9178 upgrade to 2.6 cause ASCII set out of range error
+    val encodedURL = java.net.URLEncoder.encode(fakeNino, "utf-8")
     Future.successful(Ok(Json.toJson("""{ "message": "CheckFakeIp" }"""))
-      .withHeaders(LOCATION -> s"/self-assessment/ni/$fakeNino/self-employments/$fakeId"))
+      .withHeaders(LOCATION -> s"/self-assessment/ni/$encodedURL/self-employments/$fakeId"))
   }
 }
 
