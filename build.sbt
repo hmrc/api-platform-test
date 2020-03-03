@@ -30,7 +30,7 @@ lazy val compile = Seq(
   ws,
   "uk.gov.hmrc" %% "bootstrap-play-26" % "1.3.0",
   "uk.gov.hmrc" %% "domain" % "5.6.0-play-26",
-  "uk.gov.hmrc" %% "auth-client" % "2.33.0-play-26",
+  "uk.gov.hmrc" %% "auth-client" % "2.34.0-play-26",
   "ch.qos.logback" % "logback-classic" % "1.2.3",
   "uk.gov.hmrc" %% "logback-json-logger" % "4.6.0"
 

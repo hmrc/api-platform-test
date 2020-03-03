@@ -69,10 +69,12 @@ class HelloController @Inject()(override val authConnector: AuthConnector, cc: C
   }
 
   def handleBruce: Action[AnyContent] = Action.async { implicit request =>
-    authorised().retrieve(clientId and applicationName and applicationId) {
-      case clientId ~ applicationName ~ applicationId =>
+    authorised().retrieve(authProviderId and credentials and clientId and applicationName and applicationId) {
+      case authProviderId ~ credentials ~ clientId ~ applicationName ~ applicationId =>
         successful(Ok(
           Json.obj(
+            "authProviderId" -> authProviderId,
+            "credentials" -> credentials,
             "clientId" -> clientId,
             "applicationName" -> applicationName,
             "applicationId" -> applicationId)))
