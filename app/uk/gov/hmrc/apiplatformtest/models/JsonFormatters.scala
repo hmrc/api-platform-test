@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.apiplatformtest.models
 
-import play.api.libs.json._
-import uk.gov.hmrc.auth.core.retrieve.{AgentInformation, Credentials, Name}
+import play.api.libs.json.{Json, Writes}
+import uk.gov.hmrc.auth.core.retrieve._
 
 object JsonFormatters {
 
@@ -28,4 +28,16 @@ object JsonFormatters {
   implicit val formatCredentials = Json.format[Credentials]
   implicit val formatAgentInformation = Json.format[AgentInformation]
   implicit val formatHeader = Json.format[Header]
+
+  implicit val formatGGCredId = Json.format[GGCredId]
+  implicit val formatVerifyPid = Json.format[VerifyPid]
+  implicit val formatPAClientId = Json.format[PAClientId]
+  implicit val formatStandardApplication = Json.format[StandardApplication]
+  implicit val writeLegacyCredentials = Writes[LegacyCredentials] {
+    case value: GGCredId => Json.toJson(value)
+    case value: VerifyPid => Json.toJson(value)
+    case value: PAClientId => Json.toJson(value)
+    case OneTimeLogin => Json.toJson("")
+    case value: StandardApplication => Json.toJson(value)
+  }
 }

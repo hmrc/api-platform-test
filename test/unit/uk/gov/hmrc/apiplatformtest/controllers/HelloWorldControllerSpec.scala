@@ -33,7 +33,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup.Individual
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
-import uk.gov.hmrc.auth.core.retrieve.{AgentInformation, Credentials, Name, ~}
+import uk.gov.hmrc.auth.core.retrieve._
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.controllers.RestFormats.localDateFormats
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
@@ -129,26 +129,32 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
 
   "Hello Bruce" should {
     "return 200 with application details when authorisation succeeds" in new Setup {
+      private val retrievedAuthProviderId = GGCredId("123")
+      private val retrievedCredentials = Credentials("123", "GG")
       private val retrievedClientId = "retrieved-client-id"
       private val retrievedApplicationName = "retrieved-application-name"
       private val retrievedApplicationId = "retrieved-application-id"
 
-      when(mockAuthConnector.authorise(any(), meq(clientId and applicationName and applicationId))(any(), any()))
+      when(mockAuthConnector.authorise(any(), meq(authProviderId and credentials and clientId and applicationName and applicationId))(any(), any()))
         .thenReturn(successful(
-          new ~(new ~(Some(retrievedClientId), Some(retrievedApplicationName)), Some(retrievedApplicationId))))
+          new ~(new ~(new ~(new ~(retrievedAuthProviderId, Some(retrievedCredentials)), Some(retrievedClientId)),
+            Some(retrievedApplicationName)), Some(retrievedApplicationId))))
 
       val result: Result = await(underTest.handleBruce()(FakeRequest()))
 
       status(result) shouldBe OK
 
       val jsonResult: JsValue = jsonBodyOf(result)
+      (jsonResult \ "authProviderId").as[GGCredId] shouldBe retrievedAuthProviderId
+      (jsonResult \ "credentials").as[Credentials] shouldBe retrievedCredentials
       (jsonResult \ "clientId").as[String] shouldBe retrievedClientId
       (jsonResult \ "applicationName").as[String] shouldBe retrievedApplicationName
       (jsonResult \ "applicationId").as[String] shouldBe retrievedApplicationId
     }
 
     "return 401 if the authorisation fails" in new Setup {
-      when(mockAuthConnector.authorise(any(), meq(clientId and applicationName and applicationId))(any(), any())).thenReturn(failed(InvalidBearerToken()))
+      when(mockAuthConnector.authorise(any(), meq(authProviderId and credentials and clientId and applicationName and applicationId))
+      (any(), any())).thenReturn(failed(InvalidBearerToken()))
 
       val result: Result = await(underTest.handleBruce()(FakeRequest()))
 
