@@ -472,3 +472,20 @@ uses:
       get:
         displayName: Get error
         is: [headers.acceptHeader]
+  /box:
+    /{boxId}:
+      uriParameters:
+        boxId:
+          description: Box ID
+          type: string
+      /notifications:
+        post:
+          displayName: Post notification
+          is: [headers.acceptHeader]
+          securedBy: [ sec.x-application ]
+          body:
+            application/json:
+              example: |
+                {
+                  "message": "new notification"
+                }

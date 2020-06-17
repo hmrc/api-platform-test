@@ -23,3 +23,4 @@ GET        /ni/*remaining                                  uk.gov.hmrc.apiplatfo
 PUT        /ni/*remaining                                  uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(remaining)
 POST       /ni/*remaining                                  uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(remaining)
 
+POST       /box/:boxId/notifications                       uk.gov.hmrc.apiplatformtest.controllers.NotificationsController.saveNotification(boxId: java.util.UUID)
