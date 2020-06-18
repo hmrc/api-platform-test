@@ -36,7 +36,24 @@
       {
         "version": "1.0",
         "status": "STABLE",
-        "endpointsEnabled": true
+        "endpointsEnabled": true,
+        "fieldDefinitions": [
+            {
+              "name": "callbackUrl",
+              "description": "What is your Call back URL?",
+              "type": "PPNSField",
+              "hint": "This is your Call back URL.",
+              "shortDescription": "Callback URL",
+              "validation": {
+                "errorMessage": "Callback URL must be a valid URL",
+                 "rules": [
+                   {
+                     "UrlValidationRule": {}
+                   }
+                 ]
+               }
+            }
+         ]
       },
       {
         "version": "2.0",
