@@ -45,10 +45,15 @@
               "hint": "This is your Call back URL.",
               "shortDescription": "Callback URL",
               "validation": {
-                "errorMessage": "Callback URL must be a valid URL",
+                "errorMessage": "Callback URL must be a valid https URL",
                  "rules": [
                    {
                      "UrlValidationRule": {}
+                   },
+                   {
+                     "RegexValidationRule": {
+                       "regex" : "^https.*"
+                     }
                    }
                  ]
                }
