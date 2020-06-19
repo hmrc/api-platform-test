@@ -38,6 +38,12 @@ class PushPullNotificationsApiConnector @Inject()(http: HttpClient, config: Conf
       .POST[JsValue, CreateNotificationResponse](s"$serviceBaseUrl/box/$boxId/notifications", payload)
       .map(_.notificationId)
   }
+
+  def getBoxId(clientId: String)(implicit hc: HeaderCarrier): Future[UUID] = {
+    http
+      .GET[JsValue](s"$serviceBaseUrl/box", Seq("boxName" -> "test/api-platform-test##1.0##callbackUrl", "clientId" -> clientId))
+      .map(r => (r \ "boxId").as[UUID])
+  }
 }
 
 object PushPullNotificationsApiConnector {
