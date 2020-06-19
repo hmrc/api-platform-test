@@ -17,6 +17,7 @@
 package uk.gov.hmrc.apiplatformtest.services
 
 import java.util.UUID
+import java.util.UUID.randomUUID
 
 import org.mockito.ArgumentMatchers.{any, eq => meq}
 import org.mockito.Mockito.{verify, when}
@@ -34,9 +35,10 @@ class NotificationsServiceSpec extends UnitSpec with MockitoSugar {
 
   trait Setup{
     implicit val hc: HeaderCarrier = HeaderCarrier()
-    val boxId: UUID = UUID.randomUUID
+    val boxId: UUID = randomUUID
+    val clientId: String = randomUUID.toString
     val payload: JsValue = parse("""{"message": "new notification"}""")
-    val notificationId: String = UUID.randomUUID.toString
+    val notificationId: String = randomUUID.toString
 
     val mockPushPullNotificationsApiConnector: PushPullNotificationsApiConnector = mock[PushPullNotificationsApiConnector]
     val underTest = new NotificationsService(mockPushPullNotificationsApiConnector)
@@ -57,6 +59,16 @@ class NotificationsServiceSpec extends UnitSpec with MockitoSugar {
       val result: String = await(underTest.saveNotification(boxId, payload))
 
       result shouldBe notificationId
+    }
+  }
+
+  "getBox" should {
+    "return the box ID" in new Setup {
+      when(mockPushPullNotificationsApiConnector.getBoxId(any())(any())).thenReturn(Future.successful(boxId))
+
+      val result: UUID = await(underTest.getBox(clientId))
+
+      result shouldBe boxId
     }
   }
 }
