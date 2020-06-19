@@ -17,6 +17,7 @@
 package uk.gov.hmrc.apiplatformtest.connectors
 
 import java.util.UUID
+import java.util.UUID.randomUUID
 
 import akka.stream.Materializer
 import com.github.tomakehurst.wiremock.WireMockServer
@@ -67,10 +68,13 @@ class PushPullNotificationsApiConnectorSpec
   trait Setup {
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
-    val boxId: UUID = UUID.randomUUID
-    val notificationId: String = UUID.randomUUID.toString
+    val boxId: UUID = randomUUID
+    val encodedBoxName: String = "test/api-platform-test##1.0##callbackUrl"
+    val notificationId: String = randomUUID.toString
+    val clientId: String = randomUUID.toString
     val payload: JsValue = parse("""{"message": "new notification"}""")
-    val path = s"/box/$boxId/notifications"
+    val notificationsPath = s"/box/$boxId/notifications"
+    val boxPath = s"/box"
 
     val underTest: PushPullNotificationsApiConnector = app.injector.instanceOf[PushPullNotificationsApiConnector]
   }
@@ -78,7 +82,7 @@ class PushPullNotificationsApiConnectorSpec
   "saveNotification" should {
     "send proper request to save notification" in new Setup {
       wireMockServer.stubFor(
-        post(path).withRequestBody(equalTo(Json.stringify(payload)))
+        post(notificationsPath).withRequestBody(equalTo(Json.stringify(payload)))
         .willReturn(aResponse()
           .withHeader(CONTENT_TYPE, "application/json")
           .withBody(Json.stringify(Json.toJson(CreateNotificationResponse(notificationId))))
@@ -87,7 +91,7 @@ class PushPullNotificationsApiConnectorSpec
       await(underTest.saveNotification(boxId, payload))
 
       wireMockServer.verify(
-        postRequestedFor(urlPathEqualTo(path))
+        postRequestedFor(urlPathEqualTo(notificationsPath))
         .withHeader(CONTENT_TYPE, equalTo("application/json"))
         .withHeader(USER_AGENT, equalTo("api-platform-test"))
       )
@@ -95,7 +99,7 @@ class PushPullNotificationsApiConnectorSpec
 
     "return the notification ID" in new Setup {
       wireMockServer.stubFor(
-        post(path).withRequestBody(equalTo(Json.stringify(payload)))
+        post(notificationsPath).withRequestBody(equalTo(Json.stringify(payload)))
           .willReturn(aResponse()
             .withHeader(CONTENT_TYPE, "application/json")
             .withBody(Json.stringify(Json.toJson(CreateNotificationResponse(notificationId))))
@@ -108,14 +112,39 @@ class PushPullNotificationsApiConnectorSpec
 
     "throw not found exception when the box does not exist" in new Setup {
       wireMockServer.stubFor(
-        post(path).withRequestBody(equalTo(Json.stringify(payload)))
+        post(notificationsPath).withRequestBody(equalTo(Json.stringify(payload)))
           .willReturn(aResponse()
-            .withHeader(CONTENT_TYPE, "application/json")
-            .withBody(Json.stringify(Json.toJson(CreateNotificationResponse(notificationId))))
             .withStatus(NOT_FOUND)))
 
       intercept[NotFoundException] {
         await(underTest.saveNotification(boxId, payload))
+      }
+    }
+  }
+
+  "getBoxId" should {
+    "return the box ID" in new Setup {
+      wireMockServer.stubFor(
+        get(urlPathEqualTo(boxPath))
+          .withQueryParam("boxName", equalTo(encodedBoxName)).withQueryParam("clientId", equalTo(clientId))
+          .willReturn(aResponse()
+            .withHeader(CONTENT_TYPE, "application/json")
+            .withBody(Json.stringify(Json.obj("boxId" -> boxId)))
+            .withStatus(OK)))
+
+      val result: UUID = await(underTest.getBoxId(clientId))
+
+      result shouldBe boxId
+    }
+
+    "throw not found exception when the box does not exist" in new Setup {
+      wireMockServer.stubFor(
+        get(urlPathEqualTo(boxPath))
+          .withQueryParam("boxName", equalTo(encodedBoxName)).withQueryParam("clientId", equalTo(clientId))
+          .willReturn(aResponse().withStatus(NOT_FOUND)))
+
+      intercept[NotFoundException] {
+        await(underTest.getBoxId(clientId))
       }
     }
   }

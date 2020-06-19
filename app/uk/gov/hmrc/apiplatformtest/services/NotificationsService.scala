@@ -32,4 +32,8 @@ class NotificationsService @Inject()(pushPullNotificationsApiConnector: PushPull
   def saveNotification(boxId: UUID, payload: JsValue)(implicit hc: HeaderCarrier): Future[String] = {
     pushPullNotificationsApiConnector.saveNotification(boxId, payload)
   }
+
+  def getBox(clientId: String)(implicit hc: HeaderCarrier): Future[UUID] = {
+    pushPullNotificationsApiConnector.getBoxId(clientId)
+  }
 }
