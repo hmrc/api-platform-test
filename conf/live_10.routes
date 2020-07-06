@@ -24,3 +24,4 @@ PUT        /ni/*remaining                                  uk.gov.hmrc.apiplatfo
 POST       /ni/*remaining                                  uk.gov.hmrc.apiplatformtest.controllers.HelloController.handleWithParam(remaining)
 
 POST       /notifications                                  uk.gov.hmrc.apiplatformtest.controllers.NotificationsController.triggerNotification()
+POST       /destination/notifications                      uk.gov.hmrc.apiplatformtest.controllers.NotificationsController.handleNotificationPush(status: Option[Int], delayInSeconds: Option[Int])

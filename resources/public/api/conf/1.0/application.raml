@@ -477,3 +477,18 @@ uses:
       displayName: Trigger notification
       is: [headers.acceptHeader]
       securedBy: [ sec.x-application ]
+  /destination:
+    /notifications:
+      post:
+        displayName: Handle notification push
+        is: [headers.acceptHeader]
+        securedBy: [ sec.x-application ]
+        queryParameters:
+          status:
+            description: Status that the endpoint will return
+            type: integer
+            required: false
+          delayInSeconds:
+            description: Delay in seconds before the endpoint returns the response
+            type: integer
+            required: false
