@@ -19,12 +19,14 @@ package uk.gov.hmrc.apiplatformtest.controllers
 import java.util.UUID
 import java.util.UUID.randomUUID
 
+import akka.actor.ActorSystem
 import akka.stream.Materializer
+import org.joda.time.DateTime
 import org.mockito.ArgumentMatchers.{any, eq => meq}
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.concurrent.Eventually
 import org.scalatest.mockito.MockitoSugar
-import play.api.http.Status.{INTERNAL_SERVER_ERROR, OK}
+import play.api.http.Status.{ACCEPTED, INTERNAL_SERVER_ERROR, NO_CONTENT, OK}
 import play.api.mvc.Result
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import uk.gov.hmrc.apiplatformtest.services.NotificationsService
@@ -36,18 +38,20 @@ import scala.concurrent.duration._
 
 class NotificationsControllerSpec extends UnitSpec with WithFakeApplication with StubControllerComponentsFactory with MockitoSugar with Eventually {
 
-  trait Setup{
-    implicit val mat: Materializer = fakeApplication.materializer
-    val boxId: UUID = randomUUID
-    val clientId: String = randomUUID.toString
-    val request = FakeRequest().withHeaders("X-Client-ID" -> clientId)
-    val notificationId: String = randomUUID.toString
+  implicit val mat: Materializer = fakeApplication.materializer
+  implicit val actorSystemTest: ActorSystem = ActorSystem("test-actor-system")
+  val boxId: UUID = randomUUID
+  val clientId: String = randomUUID.toString
+  val notificationId: String = randomUUID.toString
 
+  trait Setup{
     val mockNotificationsService: NotificationsService = mock[NotificationsService]
-    val underTest = new NotificationsController(stubControllerComponents(), mockNotificationsService)
+    val underTest = new NotificationsController(stubControllerComponents(), stubPlayBodyParsers, actorSystemTest, mockNotificationsService)
   }
 
   "saveNotification" should {
+    val request = FakeRequest().withHeaders("X-Client-ID" -> clientId)
+
     "eventually save notification using the notifications service" in new Setup {
       when(mockNotificationsService.getBox(meq(clientId))(any())).thenReturn(successful(boxId))
       when(mockNotificationsService.saveNotification(any(), any())(any())).thenReturn(successful(notificationId))
@@ -73,6 +77,40 @@ class NotificationsControllerSpec extends UnitSpec with WithFakeApplication with
       val result: Result = await(underTest.triggerNotification()(FakeRequest()))
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
+    }
+  }
+
+  "handleNotificationPush" should {
+    val request = FakeRequest().withBody("""{"hello":"world"}""")
+
+    "return 204 by default" in new Setup {
+      val result: Result = await(underTest.handleNotificationPush(None, None)(request))
+
+      status(result) shouldBe NO_CONTENT
+    }
+
+    "return specified status when a status is passed in" in new Setup {
+      val result: Result = await(underTest.handleNotificationPush(Some(ACCEPTED), None)(request))
+
+      status(result) shouldBe ACCEPTED
+    }
+
+    "not delay the response by default" in new Setup {
+      val before = new DateTime()
+      val result: Result = await(underTest.handleNotificationPush(None, None)(request))
+      val after = new DateTime()
+
+      status(result) shouldBe NO_CONTENT
+      (after.getMillis - before.getMillis).toInt should be < 100
+    }
+
+    "delay the response when a delay is passed in" in new Setup {
+      val before = new DateTime()
+      val result: Result = await(underTest.handleNotificationPush(None, Some(2))(request))
+      val after = new DateTime()
+
+      status(result) shouldBe NO_CONTENT
+      (after.getMillis - before.getMillis).toInt should be > 2000
     }
   }
 }

@@ -18,23 +18,38 @@ package uk.gov.hmrc.apiplatformtest.controllers
 
 import java.util.UUID
 import java.util.UUID.randomUUID
+import java.util.concurrent.TimeUnit
 
+import akka.actor.ActorSystem
+import akka.pattern.after
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
-import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import play.api.libs.json.Json
+import play.api.mvc.{Action, AnyContent, ControllerComponents, PlayBodyParsers}
 import uk.gov.hmrc.apiplatformtest.services.NotificationsService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.BackendController
 
 import scala.concurrent.Future.successful
+import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class NotificationsController @Inject()(cc: ControllerComponents, notificationsService: NotificationsService)
+class NotificationsController @Inject()(cc: ControllerComponents,
+                                        parsers: PlayBodyParsers,
+                                        actorSystem: ActorSystem,
+                                        notificationsService: NotificationsService)
                                        (implicit val ec: ExecutionContext) extends BackendController(cc) {
 
   def triggerNotification(): Action[AnyContent] = Action.async { implicit request =>
+    def runAsyncProcess(boxId: UUID, correlationId: UUID)(implicit hc: HeaderCarrier): Future[String] = {
+      // Here we would run some asynchronous process, and then save the notification
+      val delay = FiniteDuration(1, TimeUnit.SECONDS)
+      after(delay, actorSystem.scheduler)(successful(())) flatMap { _ =>
+        notificationsService.saveNotification(boxId, Json.obj("correlationId" -> correlationId, "message" -> "test message"))
+      }
+    }
+
     request.headers.get("X-Client-ID") match {
       case Some(clientId) =>
         notificationsService.getBox(clientId) map { boxId =>
@@ -49,12 +64,9 @@ class NotificationsController @Inject()(cc: ControllerComponents, notificationsS
     }
   }
 
-  private def runAsyncProcess(boxId: UUID, correlationId: UUID)(implicit hc: HeaderCarrier): Future[String] = {
-    // Here we would run some asynchronous process, and then save the notification
-    Future {
-      Thread.sleep(1000)
-    } flatMap { _ =>
-      notificationsService.saveNotification(boxId, Json.obj("correlationId" -> correlationId, "message" -> "test message"))
-    }
+  def handleNotificationPush(status: Option[Int], delayInSeconds: Option[Int]): Action[String] = Action.async(parsers.tolerantText) { implicit request =>
+    Logger.info(s"Received notification with payload '${request.body}' and headers '${request.headers.toMap}'")
+    val delay = FiniteDuration(delayInSeconds.getOrElse(0), TimeUnit.SECONDS)
+    after(delay, actorSystem.scheduler)(successful(new Status(status.getOrElse(NO_CONTENT))))
   }
 }
