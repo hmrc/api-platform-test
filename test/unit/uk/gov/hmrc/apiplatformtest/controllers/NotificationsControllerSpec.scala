@@ -26,7 +26,7 @@ import org.mockito.ArgumentMatchers.{any, eq => meq}
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.concurrent.Eventually
 import org.scalatest.mockito.MockitoSugar
-import play.api.http.Status.{ACCEPTED, INTERNAL_SERVER_ERROR, NO_CONTENT, OK}
+import play.api.http.Status.{ACCEPTED, INTERNAL_SERVER_ERROR, OK}
 import play.api.mvc.Result
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import uk.gov.hmrc.apiplatformtest.services.NotificationsService
@@ -83,10 +83,10 @@ class NotificationsControllerSpec extends UnitSpec with WithFakeApplication with
   "handleNotificationPush" should {
     val request = FakeRequest().withBody("""{"hello":"world"}""")
 
-    "return 204 by default" in new Setup {
+    "return 200 by default" in new Setup {
       val result: Result = await(underTest.handleNotificationPush(None, None)(request))
 
-      status(result) shouldBe NO_CONTENT
+      status(result) shouldBe OK
     }
 
     "return specified status when a status is passed in" in new Setup {
@@ -100,7 +100,7 @@ class NotificationsControllerSpec extends UnitSpec with WithFakeApplication with
       val result: Result = await(underTest.handleNotificationPush(None, None)(request))
       val after = new DateTime()
 
-      status(result) shouldBe NO_CONTENT
+      status(result) shouldBe OK
       (after.getMillis - before.getMillis).toInt should be < 100
     }
 
@@ -109,7 +109,7 @@ class NotificationsControllerSpec extends UnitSpec with WithFakeApplication with
       val result: Result = await(underTest.handleNotificationPush(None, Some(2))(request))
       val after = new DateTime()
 
-      status(result) shouldBe NO_CONTENT
+      status(result) shouldBe OK
       (after.getMillis - before.getMillis).toInt should be > 2000
     }
   }

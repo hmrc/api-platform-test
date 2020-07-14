@@ -67,6 +67,6 @@ class NotificationsController @Inject()(cc: ControllerComponents,
   def handleNotificationPush(status: Option[Int], delayInSeconds: Option[Int]): Action[String] = Action.async(parsers.tolerantText) { implicit request =>
     Logger.info(s"Received notification with payload '${request.body}' and headers '${request.headers.toMap}'")
     val delay = FiniteDuration(delayInSeconds.getOrElse(0), TimeUnit.SECONDS)
-    after(delay, actorSystem.scheduler)(successful(new Status(status.getOrElse(NO_CONTENT))))
+    after(delay, actorSystem.scheduler)(successful(new Status(status.getOrElse(OK))))
   }
 }
