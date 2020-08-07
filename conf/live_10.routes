@@ -25,3 +25,5 @@ POST       /ni/*remaining                                  uk.gov.hmrc.apiplatfo
 
 POST       /notifications                                  uk.gov.hmrc.apiplatformtest.controllers.NotificationsController.triggerNotification()
 POST       /destination/notifications                      uk.gov.hmrc.apiplatformtest.controllers.NotificationsController.handleNotificationPush(status: Option[Int], delayInSeconds: Option[Int])
+GET        /destination/notifications                      uk.gov.hmrc.apiplatformtest.controllers.NotificationsController.callbackValidation(challenge: String)
+
