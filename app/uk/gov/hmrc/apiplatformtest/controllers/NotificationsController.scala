@@ -69,4 +69,8 @@ class NotificationsController @Inject()(cc: ControllerComponents,
     val delay = FiniteDuration(delayInSeconds.getOrElse(0), TimeUnit.SECONDS)
     after(delay, actorSystem.scheduler)(successful(new Status(status.getOrElse(OK))))
   }
+
+  def callbackValidation(challenge: String): Action[AnyContent] = Action.async { implicit request =>
+    successful(Ok(Json.obj("challenge" -> challenge)))
+  }
 }

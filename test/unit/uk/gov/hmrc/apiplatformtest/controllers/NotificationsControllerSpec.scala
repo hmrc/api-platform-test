@@ -44,7 +44,7 @@ class NotificationsControllerSpec extends UnitSpec with WithFakeApplication with
   val clientId: String = randomUUID.toString
   val notificationId: String = randomUUID.toString
 
-  trait Setup{
+  trait Setup {
     val mockNotificationsService: NotificationsService = mock[NotificationsService]
     val underTest = new NotificationsController(stubControllerComponents(), stubPlayBodyParsers, actorSystemTest, mockNotificationsService)
   }
@@ -111,6 +111,18 @@ class NotificationsControllerSpec extends UnitSpec with WithFakeApplication with
 
       status(result) shouldBe OK
       (after.getMillis - before.getMillis).toInt should be > 2000
+    }
+  }
+
+  "callbackValidation" should {
+    val request = FakeRequest()
+    val challenge = UUID.randomUUID().toString
+
+    "return 200 by default" in new Setup {
+      val result: Result = await(underTest.callbackValidation(challenge)(request))
+
+      status(result) shouldBe OK
+      (jsonBodyOf(result) \ "challenge").as[String] shouldBe challenge
     }
   }
 }
