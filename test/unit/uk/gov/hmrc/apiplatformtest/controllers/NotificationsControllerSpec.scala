@@ -118,7 +118,7 @@ class NotificationsControllerSpec extends UnitSpec with WithFakeApplication with
     val request = FakeRequest()
     val challenge = UUID.randomUUID().toString
 
-    "return 200 by default" in new Setup {
+    "return 200 and the challenge" in new Setup {
       val result: Result = await(underTest.callbackValidation(challenge)(request))
 
       status(result) shouldBe OK
