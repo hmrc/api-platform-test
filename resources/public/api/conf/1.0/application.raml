@@ -491,3 +491,11 @@ uses:
             description: Delay in seconds before the endpoint returns the response
             type: integer
             required: false
+      get:
+        displayName: Callback validation
+        is: [headers.acceptHeader]
+        queryParameters:
+          challenge:
+            description: value the endpoint returns
+            type: string
+            required: true
