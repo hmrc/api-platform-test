@@ -65,6 +65,7 @@ lazy val microservice = (project in file("."))
     majorVersion := 0,
     targetJvm := "jvm-1.8",
     scalaVersion := "2.12.10",
+    PlayKeys.playDefaultPort := 6704,
     libraryDependencies ++= appDependencies,
     routesGenerator := InjectedRoutesGenerator,
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false)
