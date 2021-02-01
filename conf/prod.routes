@@ -14,4 +14,4 @@
 ->         /                          live_60.Routes
 
 GET        /admin/metrics             @com.kenshoo.play.metrics.MetricsController.metrics
-GET        /assets/*file              @controllers.Assets.at(file: String)
+GET        /assets/*file              uk.gov.hmrc.apiplatformtest.controllers.AssetsController.at(file: String)

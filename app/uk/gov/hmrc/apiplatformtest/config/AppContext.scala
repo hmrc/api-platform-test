@@ -16,15 +16,18 @@
 
 package uk.gov.hmrc.apiplatformtest.config
 
-import javax.inject.{Inject, Singleton}
 import play.api.{Configuration, Environment, Mode}
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
+
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.duration.{Duration, FiniteDuration}
 
 
 @Singleton
 class AppContext @Inject()(runModeConfiguration: Configuration, environment: Environment, servicesConfig: ServicesConfig) {
+  def mode: Mode = environment.mode
   lazy val appName = runModeConfiguration.getOptional[String]("appName").getOrElse(throw new RuntimeException("appName is not configured"))
   lazy val appUrl = runModeConfiguration.getOptional[String]("appUrl").getOrElse(throw new RuntimeException("appUrl is not configured"))
   lazy val access = runModeConfiguration.getOptional[Configuration]("api.access")
-  def mode: Mode = environment.mode
+  lazy val assetsDelay: FiniteDuration = Duration(runModeConfiguration.getOptional[String]("assets.delay").getOrElse("0 sec")).asInstanceOf[FiniteDuration]
 }
