@@ -75,10 +75,6 @@ lazy val microservice = (project in file("."))
     unmanagedSourceDirectories in Test := Seq((baseDirectory in Test).value / "test" / "unit"),
     addTestReportOption(Test, "test-reports")
   )
-  .settings(resolvers ++= Seq(
-    Resolver.bintrayRepo("hmrc", "releases"),
-    Resolver.jcenterRepo
-  ))
 
 // Coverage configuration
 coverageMinimum := 33
