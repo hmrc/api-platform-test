@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns="http://xmlns.ec.eu/BusinessObjects/ICS/ServiceFaultBasicType/V1" 
+	targetNamespace="http://xmlns.ec.eu/BusinessObjects/ICS/ServiceFaultBasicType/V1"
+	xmlns:abstractFaultType="http://xmlns.ec.eu/BusinessObjects/Core/AbstractFaultType/V1"
+	elementFormDefault="qualified" 
+	attributeFormDefault="unqualified">
+	<xsd:import namespace="http://xmlns.ec.eu/BusinessObjects/Core/AbstractFaultType/V1" schemaLocation="AbstractFaultType.xsd"/>
+	<xsd:complexType name="ServiceFaultBasicType">
+		<xsd:complexContent>
+			<xsd:extension base="abstractFaultType:AbstractFaultType">
+				<xsd:sequence>
+					<xsd:element name="severity" type="xsd:string"  minOccurs="1" maxOccurs="1"/>
+					<xsd:element name="eventTimestamp" type="xsd:dateTime"  minOccurs="1" maxOccurs="1"/>
+					<xsd:element name="errorPointer" type="xsd:string"  minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="OriginalAttributeValue" type="xsd:string"  minOccurs="0" maxOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+ </xsd:schema>

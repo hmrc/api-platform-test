@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns="http://xmlns.ec.eu/BusinessObjects/ICS/Common/V1" 
+	targetNamespace="http://xmlns.ec.eu/BusinessObjects/ICS/Common/V1" 
+	elementFormDefault="qualified" 
+	attributeFormDefault="unqualified"
+	xmlns:servicefaultbasictype="http://xmlns.ec.eu/BusinessObjects/ICS/ServiceFaultBasicType/V1"
+	>
+	
+	<xsd:import namespace="http://xmlns.ec.eu/BusinessObjects/ICS/ServiceFaultBasicType/V1" schemaLocation="ServiceFaultBasicType.xsd"/>
+	
+	<xsd:element name="ServiceFault" type="ServiceFaultType"/>
+	<xsd:complexType name="ServiceFaultType">
+		<xsd:sequence>
+			<xsd:element name="ServiceFaultList" type="servicefaultbasictype:ServiceFaultBasicType"  minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+ </xsd:schema>

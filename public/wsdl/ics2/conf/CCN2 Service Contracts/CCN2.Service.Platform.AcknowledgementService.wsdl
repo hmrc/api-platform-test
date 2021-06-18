@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:tns="http://ccn2.ec.eu/CCN2.Service.Platform.AcknowledgementService" xmlns:ccn2cs="http://ccn2.ec.eu/CCN2.Service.Platform.Acknowledgement.Schema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="CCN2.Service.Platform.AcknowledgementService" targetNamespace="http://ccn2.ec.eu/CCN2.Service.Platform.AcknowledgementService">
+	<wsdl:types>
+		<xsd:schema>
+			<xsd:import namespace="http://ccn2.ec.eu/CCN2.Service.Platform.Acknowledgement.Schema" schemaLocation="xsd/CCN2.Service.Platform.Acknowledgement.Schema.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="CoA">
+		<wsdl:part name="coa" element="ccn2cs:CoA"/>
+	</wsdl:message>
+	<wsdl:message name="CoD">
+		<wsdl:part name="cod" element="ccn2cs:CoD"/>
+	</wsdl:message>
+	<wsdl:message name="CoE">
+		<wsdl:part name="coe" element="ccn2cs:CoE"/>
+	</wsdl:message>
+	<wsdl:portType name="AcknowledgementServicePort">
+		<wsdl:operation name="CoA">
+			<wsdl:input message="tns:CoA"/>
+		</wsdl:operation>
+		<wsdl:operation name="CoD">
+			<wsdl:input message="tns:CoD"/>
+		</wsdl:operation>
+		<wsdl:operation name="CoE">
+			<wsdl:input message="tns:CoE"/>
+		</wsdl:operation>
+	</wsdl:portType>
+</wsdl:definitions>

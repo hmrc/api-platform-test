@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:wco:datamodel:WCO:CIS:1" elementFormDefault="qualified" targetNamespace="urn:wco:datamodel:WCO:CIS:1">
+  <xs:include id="IE4N11" schemaLocation="IE4N11.xsd" />
+  <xs:complexType name="IE4N11RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message type definition for the operation IE4N11notifyAEOControl of the service AEONotificationBAS</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="IE4N11" type="IE4N11Type" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

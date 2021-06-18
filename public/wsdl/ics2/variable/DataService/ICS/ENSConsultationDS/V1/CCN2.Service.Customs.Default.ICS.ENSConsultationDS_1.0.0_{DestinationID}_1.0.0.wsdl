@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://xmlns.ec.eu/DataService/ICS/ENSConsultationDS/V1" xmlns:ccn2="http://ccn2.ec.eu/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xmlns.ec.eu/DataService/ICS/ENSConsultationDS/V1" name="ENSConsultationDS">
+  <wsdl:import namespace="http://xmlns.ec.eu/DataService/ICS/ENSConsultationDS/V1" location="CCN2.Service.Customs.Default.ICS.ENSConsultationDS_1.0.0_1.0.0.wsdl" />
+  <wsdl:binding name="ENSConsultationDSSoapBinding" type="ENSConsultationDS">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsp:PolicyReference URI="#wss11_saml20_sendervouches_token_mutual_authn_sign_encrypt" />
+    <wsdl:operation name="QueryENS">
+      <soap12:operation soapAction="CCN2.Service.Customs.EU.ICS.ENSConsultationDS/QueryENS" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="serviceFault">
+        <soap12:fault use="literal" name="serviceFault" />
+      </wsdl:fault>
+      <wsdl:fault name="ccnFault">
+        <soap12:fault use="literal" name="ccnFault" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IsAlive">
+      <soap12:operation soapAction="CCN2.Service.Customs.EU.ICS.ENSConsultationDS/IsAlive" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CCN2.Service.Customs.EU.ICS.ENSConsultationDS">
+    <wsdl:port name="ENSConsultationDS" binding="ENSConsultationDSSoapBinding">
+      <soap12:address location="{partner_Service_EndPoint}" />
+      <wsa:EndpointReference>
+        <wsa:Address>{partner_Service_EndPoint}</wsa:Address>
+        <wsa:Metadata>
+          <ccn2:ServiceID>CCN2.Service.Customs.EU.ICS.ENSConsultationDS</ccn2:ServiceID>
+          <ccn2:ServiceName>CCN2.Service.Customs.EU.ICS.ENSConsultationDS</ccn2:ServiceName>
+          <ccn2:ServiceDescription>CCN2.Service.Customs.EU.ICS.ENSConsultationDS</ccn2:ServiceDescription>
+          <ccn2:ServiceVersion>http://ccn2.ec.eu/Version/1.0.0</ccn2:ServiceVersion>
+          <ccn2:DestinationId>CCN2.Partner.{CountryCode}.Customs.TAXUD/ICS_CR.{ENV}</ccn2:DestinationId>
+        </wsa:Metadata>
+      </wsa:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

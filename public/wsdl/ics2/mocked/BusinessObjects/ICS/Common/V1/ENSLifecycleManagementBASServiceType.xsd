@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:wco:datamodel:WCO:CIS:1" elementFormDefault="qualified" targetNamespace="urn:wco:datamodel:WCO:CIS:1">
+  <xs:include id="IE4N10" schemaLocation="IE4N10.xsd" />
+  <xs:include id="IE4Q08" schemaLocation="IE4Q08.xsd" />
+  <xs:include id="IE4S03" schemaLocation="IE4S03.xsd" />
+  <xs:complexType name="IE4N10RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message type definition for the operation IE4N10submitPresentationInformation of the service ENSLifecycleManagementBAS</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="IE4N10" type="IE4N10Type" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="IE4Q08RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message type definition for the operation IE4Q08revokePresentation of the service ENSLifecycleManagementBAS</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="IE4Q08" type="IE4Q08Type" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="IE4S03RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message type definition for the operation IE4S03submitControlResult of the service ENSLifecycleManagementBAS</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="IE4S03" type="IE4S03Type" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://xmlns.ec.eu/BusinessActivityService/ICS/IAEONotificationBAS/V1" xmlns:servicestype="urn:wco:datamodel:WCO:CIS:1" targetNamespace="http://xmlns.ec.eu/BusinessActivityService/ICS/IAEONotificationBAS/V1">
+  <xs:import namespace="urn:wco:datamodel:WCO:CIS:1" schemaLocation="../../../../BusinessObjects/ICS/Common/V1/AEONotificationBASServiceType.xsd" />
+  <xs:element name="IE4N11notifyAEOControlReqMsg" type="servicestype:IE4N11RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message for the IE4N11notifyAEOControl operation of the AEONotificationBAS</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:wco:datamodel:WCO:CIS:1" targetNamespace="urn:wco:datamodel:WCO:CIS:1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:annotation>
+    <xs:documentation>Generated from input release</xs:documentation>
+  </xs:annotation>
+  <xs:include schemaLocation="ctypes.xsd" />
+  <xs:element name="IE4Q10" type="IE4Q10Type" />
+  <xs:complexType name="IE4Q10Type">
+    <xs:sequence>
+      <xs:element name="MessageHeader" type="MessageHeaderType" />
+      <xs:element name="functionalReference" type="FunctionalReferenceContentType" />
+      <xs:element name="MRN" minOccurs="0" type="MRNContentType">
+        <xs:annotation>
+          <xs:documentation>
+            <Rules>R3028</Rules>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ENSQueryParameters" maxOccurs="9" type="ENSQueryParametersType" />
+      <xs:element name="transportDocument" minOccurs="0" type="TransportDocumentType">
+        <xs:annotation>
+          <xs:documentation>
+            <Rules>R3028</Rules>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

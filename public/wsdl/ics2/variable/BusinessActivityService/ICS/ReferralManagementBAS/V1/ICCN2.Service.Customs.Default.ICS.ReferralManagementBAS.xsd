@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://xmlns.ec.eu/BusinessActivityService/ICS/IReferralManagementBAS/V1" xmlns:servicestype="urn:wco:datamodel:WCO:CIS:1" targetNamespace="http://xmlns.ec.eu/BusinessActivityService/ICS/IReferralManagementBAS/V1">
+  <xs:import namespace="urn:wco:datamodel:WCO:CIS:1" schemaLocation="../../../../BusinessObjects/ICS/Common/V1/ReferralManagementBASServiceType.xsd" />
+  <xs:element name="IE4Q04requestAdditionalInformationReqMsg" type="servicestype:IE4Q04RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message for the IE4Q04requestAdditionalInformation operation of the ReferralManagementBAS</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="IE4R02provideAdditionalInformationReqMsg" type="servicestype:IE4R02RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message for the IE4R02provideAdditionalInformation operation of the ReferralManagementBAS</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="IE4Q05requestHRCMReqMsg" type="servicestype:IE4Q05RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message for the IE4Q05requestHRCM operation of the ReferralManagementBAS</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="IE4R03provideHRCMResultReqMsg" type="servicestype:IE4R03RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message for the IE4R03provideHRCMResult operation of the ReferralManagementBAS</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+</xs:schema>
