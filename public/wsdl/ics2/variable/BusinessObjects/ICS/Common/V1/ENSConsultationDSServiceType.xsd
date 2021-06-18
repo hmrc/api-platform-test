@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:wco:datamodel:WCO:CIS:1" elementFormDefault="qualified" targetNamespace="urn:wco:datamodel:WCO:CIS:1">
+  <xs:include id="IE4R05" schemaLocation="IE4R05.xsd" />
+  <xs:include id="IE4Q10" schemaLocation="IE4Q10.xsd" />
+  <xs:complexType name="IE4Q10RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message type definition for the operation QueryENS of the service ENSConsultationDS</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="IE4Q10" type="IE4Q10Type" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="IE4R05ResponseType">
+    <xs:annotation>
+      <xs:documentation>Response message type definition for the operation QueryENS of the service ENSConsultationDS</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="IE4R05" type="IE4R05Type" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

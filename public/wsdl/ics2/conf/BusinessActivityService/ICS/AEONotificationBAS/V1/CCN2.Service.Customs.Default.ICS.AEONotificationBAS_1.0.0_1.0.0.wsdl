@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://xmlns.ec.eu/BusinessActivityService/ICS/AEONotificationBAS/V1" xmlns:itf="http://xmlns.ec.eu/BusinessActivityService/ICS/IAEONotificationBAS/V1" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tmn="http://xmlns.ec.eu/BusinessMessages/TATAFng/Monitoring/V1" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xmlns.ec.eu/BusinessActivityService/ICS/AEONotificationBAS/V1" name="AEONotificationBAS">
+  <wsdl:import namespace="http://ccn2.ec.eu/CCN2.Service.Platform.SecurityPolicies" location="../../../../Policies/CCN2/CCN2.Service.Platform.SecurityPolicies.wsdl" />
+  <wsdl:types>
+    <xs:schema>
+      <xs:import namespace="http://xmlns.ec.eu/BusinessActivityService/ICS/IAEONotificationBAS/V1" schemaLocation="ICCN2.Service.Customs.Default.ICS.AEONotificationBAS.xsd" />
+      <xs:import namespace="http://xmlns.ec.eu/BusinessMessages/TATAFng/Monitoring/V1" schemaLocation="../../../../BusinessObjects/ICS/Common/V1/Monitoring.xsd" />
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="IE4N11notifyAEOControlReqMsg">
+    <wsdl:part name="param" element="itf:IE4N11notifyAEOControlReqMsg" />
+  </wsdl:message>
+  <wsdl:message name="IsAlive">
+    <wsdl:part name="param" element="tmn:isAliveReqMsg" />
+  </wsdl:message>
+  <wsdl:portType name="AEONotificationBAS">
+    <wsdl:documentation>AEONotificationBAS functionalities description</wsdl:documentation>
+    <wsdl:operation name="IE4N11notifyAEOControl">
+      <wsdl:input name="IE4N11notifyAEOControlReqMsg" message="IE4N11notifyAEOControlReqMsg" wsaw:action="CCN2.Service.Customs.EU.ICS.AEONotificationBAS/IE4N11notifyAEOControl" />
+    </wsdl:operation>
+    <wsdl:operation name="IsAlive">
+      <wsdl:input name="IsAlive" message="IsAlive" wsaw:action="CCN2.Service.Customs.EU.ICS.AEONotificationBAS/IsAlive" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

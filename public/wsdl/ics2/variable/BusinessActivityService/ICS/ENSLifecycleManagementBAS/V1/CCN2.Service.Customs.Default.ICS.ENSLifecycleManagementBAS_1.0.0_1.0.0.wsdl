@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://xmlns.ec.eu/BusinessActivityService/ICS/ENSLifecycleManagementBAS/V1" xmlns:itf="http://xmlns.ec.eu/BusinessActivityService/ICS/IENSLifecycleManagementBAS/V1" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tmn="http://xmlns.ec.eu/BusinessMessages/TATAFng/Monitoring/V1" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xmlns.ec.eu/BusinessActivityService/ICS/ENSLifecycleManagementBAS/V1" name="ENSLifecycleManagementBAS">
+  <wsdl:import namespace="http://ccn2.ec.eu/CCN2.Service.Platform.SecurityPolicies" location="../../../../Policies/CCN2/CCN2.Service.Platform.SecurityPolicies.wsdl" />
+  <wsdl:types>
+    <xs:schema>
+      <xs:import namespace="http://xmlns.ec.eu/BusinessActivityService/ICS/IENSLifecycleManagementBAS/V1" schemaLocation="ICCN2.Service.Customs.Default.ICS.ENSLifecycleManagementBAS.xsd" />
+      <xs:import namespace="http://xmlns.ec.eu/BusinessMessages/TATAFng/Monitoring/V1" schemaLocation="../../../../BusinessObjects/ICS/Common/V1/Monitoring.xsd" />
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="IE4S03submitControlResultReqMsg">
+    <wsdl:part name="param" element="itf:IE4S03submitControlResultReqMsg" />
+  </wsdl:message>
+  <wsdl:message name="IE4N10submitPresentationInformationReqMsg">
+    <wsdl:part name="param" element="itf:IE4N10submitPresentationInformationReqMsg" />
+  </wsdl:message>
+  <wsdl:message name="IE4Q08revokePresentationReqMsg">
+    <wsdl:part name="param" element="itf:IE4Q08revokePresentationReqMsg" />
+  </wsdl:message>
+  <wsdl:message name="IsAlive">
+    <wsdl:part name="param" element="tmn:isAliveReqMsg" />
+  </wsdl:message>
+  <wsdl:portType name="ENSLifecycleManagementBAS">
+    <wsdl:documentation>ENSLifecycleManagementBAS functionalities description</wsdl:documentation>
+    <wsdl:operation name="IE4S03submitControlResult">
+      <wsdl:input name="IE4S03submitControlResultReqMsg" message="IE4S03submitControlResultReqMsg" wsaw:action="CCN2.Service.Customs.EU.ICS.ENSLifecycleManagementBAS/IE4S03submitControlResult" />
+    </wsdl:operation>
+    <wsdl:operation name="IE4N10submitPresentationInformation">
+      <wsdl:input name="IE4N10submitPresentationInformationReqMsg" message="IE4N10submitPresentationInformationReqMsg" wsaw:action="CCN2.Service.Customs.EU.ICS.ENSLifecycleManagementBAS/IE4N10submitPresentationInformation" />
+    </wsdl:operation>
+    <wsdl:operation name="IE4Q08revokePresentation">
+      <wsdl:input name="IE4Q08revokePresentationReqMsg" message="IE4Q08revokePresentationReqMsg" wsaw:action="CCN2.Service.Customs.EU.ICS.ENSLifecycleManagementBAS/IE4Q08revokePresentation" />
+    </wsdl:operation>
+    <wsdl:operation name="IsAlive">
+      <wsdl:input name="IsAlive" message="IsAlive" wsaw:action="CCN2.Service.Customs.EU.ICS.ENSLifecycleManagementBAS/IsAlive" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

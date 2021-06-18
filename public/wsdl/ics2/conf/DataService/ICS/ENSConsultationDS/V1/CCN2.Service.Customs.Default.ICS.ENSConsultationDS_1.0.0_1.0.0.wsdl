@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://xmlns.ec.eu/DataService/ICS/ENSConsultationDS/V1" xmlns:ccn2_cmn="http://ccn2.ec.eu/CCN2.Service.Platform.Common.Schema" xmlns:itf="http://xmlns.ec.eu/DataService/ICS/IENSConsultationDS/V1" xmlns:servicetypes="http://xmlns.ec.eu/BusinessObjects/ICS/Common/V1" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tmn="http://xmlns.ec.eu/BusinessMessages/TATAFng/Monitoring/V1" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xmlns.ec.eu/DataService/ICS/ENSConsultationDS/V1" name="ENSConsultationDS">
+  <wsdl:import namespace="http://ccn2.ec.eu/CCN2.Service.Platform.SecurityPolicies" location="../../../../Policies/CCN2/CCN2.Service.Platform.SecurityPolicies.wsdl" />
+  <wsdl:types>
+    <xs:schema>
+      <xs:import namespace="http://xmlns.ec.eu/DataService/ICS/IENSConsultationDS/V1" schemaLocation="ICCN2.Service.Customs.Default.ICS.ENSConsultationDS.xsd" />
+      <xs:import namespace="http://xmlns.ec.eu/BusinessObjects/ICS/Common/V1" schemaLocation="../../../../BusinessObjects/ICS/Common/V1/ServiceFault.xsd" />
+      <xs:import namespace="http://ccn2.ec.eu/CCN2.Service.Platform.Common.Schema" schemaLocation="../../../../BusinessObjects/CCN2/CCN2.Service.Platform.Common.Schema.xsd" />
+      <xs:import namespace="http://xmlns.ec.eu/BusinessMessages/TATAFng/Monitoring/V1" schemaLocation="../../../../BusinessObjects/ICS/Common/V1/Monitoring.xsd" />
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="QueryENSReqMsg">
+    <wsdl:part name="param" element="itf:QueryENSReqMsg" />
+  </wsdl:message>
+  <wsdl:message name="QueryENSRespMsg">
+    <wsdl:part name="param" element="itf:QueryENSRespMsg" />
+  </wsdl:message>
+  <wsdl:message name="IsAlive">
+    <wsdl:part name="param" element="tmn:isAliveReqMsg" />
+  </wsdl:message>
+  <wsdl:message name="isAliveResponse">
+    <wsdl:part name="param" element="tmn:isAliveRespMsg" />
+  </wsdl:message>
+  <wsdl:message name="serviceFault">
+    <wsdl:part name="param" element="servicetypes:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="ccnFault">
+    <wsdl:part name="param" element="ccn2_cmn:Fault" />
+  </wsdl:message>
+  <wsdl:portType name="ENSConsultationDS">
+    <wsdl:documentation>ENSConsultationDS functionalities description</wsdl:documentation>
+    <wsdl:operation name="QueryENS">
+      <wsdl:input name="QueryENSReqMsg" message="QueryENSReqMsg" wsaw:action="CCN2.Service.Customs.EU.ICS.ENSConsultationDS/QueryENS" />
+      <wsdl:output name="QueryENSRespMsg" message="QueryENSRespMsg" wsaw:action="CCN2.Service.Customs.EU.ICS.ENSConsultationDS/QueryENSResponse" />
+      <wsdl:fault name="serviceFault" message="serviceFault" />
+      <wsdl:fault name="ccnFault" message="ccnFault" />
+    </wsdl:operation>
+    <wsdl:operation name="IsAlive">
+      <wsdl:input name="IsAlive" message="IsAlive" wsaw:action="CCN2.Service.Customs.EU.ICS.ENSConsultationDS/IsAlive" />
+      <wsdl:output name="isAliveResponse" message="isAliveResponse" wsaw:action="CCN2.Service.Customs.EU.ICS.ENSConsultationDS/IsAliveResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

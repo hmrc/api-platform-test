@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:wco:datamodel:WCO:CIS:1" elementFormDefault="qualified" targetNamespace="urn:wco:datamodel:WCO:CIS:1">
+  <xs:include id="IE4R03" schemaLocation="IE4R03.xsd" />
+  <xs:include id="IE4R02" schemaLocation="IE4R02.xsd" />
+  <xs:include id="IE4Q05" schemaLocation="IE4Q05.xsd" />
+  <xs:include id="IE4Q04" schemaLocation="IE4Q04.xsd" />
+  <xs:complexType name="IE4Q04RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message type definition for the operation IE4Q04requestAdditionalInformation of the service ReferralManagementBAS</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="IE4Q04" type="IE4Q04Type" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="IE4R02RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message type definition for the operation IE4R02provideAdditionalInformation of the service ReferralManagementBAS</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="IE4R02" type="IE4R02Type" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="IE4R03RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message type definition for the operation IE4R03provideHRCMResult of the service ReferralManagementBAS</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="IE4R03" type="IE4R03Type" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="IE4Q05RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message type definition for the operation IE4Q05requestHRCM of the service ReferralManagementBAS</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="IE4Q05" type="IE4Q05Type" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

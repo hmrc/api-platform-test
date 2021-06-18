@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://ccn2.ec.eu/CCN2.Service.Platform.AcknowledgementService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wswa="http://www.w3.org/2005/02/addressing/wsdl" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:ccn2="http://ccn2.ec.eu/" name="CCN2.Service.Platform.AcknowledgementService" targetNamespace="http://ccn2.ec.eu/CCN2.Service.Platform.AcknowledgementService">
+	<wsdl:import namespace="http://ccn2.ec.eu/CCN2.Service.Platform.AcknowledgementService" location="../CCN2.Service.Platform.AcknowledgementService.wsdl"/>
+	<wsdl:binding name="AcknowledgementServiceBinding" type="tns:AcknowledgementServicePort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<!-- Use WS-Addressing instead of SOAPAction -->
+		<wswa:UsingAddressing required="true"/>
+		<wsdl:operation name="CoA">
+			<soap:operation soapAction="CCN2.Service.Platform.AcknowledgementService/CoA"/>
+			<!-- Use Fire / Forget -->
+			<wswa:Anonymous>required</wswa:Anonymous>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+		</wsdl:operation>
+		<wsdl:operation name="CoD">
+			<soap:operation soapAction="CCN2.Service.Platform.AcknowledgementService/CoD"/>
+			<!-- Use Fire / Forget -->
+			<wswa:Anonymous>required</wswa:Anonymous>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+		</wsdl:operation>
+		<wsdl:operation name="CoE">
+			<soap:operation soapAction="CCN2.Service.Platform.AcknowledgementService/CoE"/>
+			<!-- Use Fire / Forget -->
+			<wswa:Anonymous>required</wswa:Anonymous>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="CCN2.Service.Platform.AcknowledgementService">
+		<wsdl:port name="AcknowledgementServicePort" binding="tns:AcknowledgementServiceBinding">
+			<soap:address location="http://172.22.3.21:30001/CCN2.Service.Platform.AcknowledgementService"/>
+			<wsa:EndpointReference>
+				<wsa:Address>http://172.22.3.21:30001/CCN2.Service.Platform.AcknowledgementService</wsa:Address>
+				<wsa:Metadata>
+					<ccn2:ServiceID>CCN2.Service.Infra.Default.Platform.AcknowledgementService</ccn2:ServiceID>
+					<ccn2:ServiceName>CCN2 Acknowledgement Service</ccn2:ServiceName>
+					<ccn2:ServiceDescription>This service enables the exchanges of CCN2 Asynchronous Acknowledgments.</ccn2:ServiceDescription>
+					<ccn2:ServiceVersion>http://ccn2.ec.eu/Version/1.0.0</ccn2:ServiceVersion>
+					<ccn2:ServiceState>http://ccn2.ec.eu/State/Test</ccn2:ServiceState>
+					<ccn2:DestinationID>[DESTINATION ID]</ccn2:DestinationID>
+				</wsa:Metadata>
+			</wsa:EndpointReference>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

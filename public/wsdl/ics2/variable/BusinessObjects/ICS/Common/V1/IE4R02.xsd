@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:wco:datamodel:WCO:CIS:1" targetNamespace="urn:wco:datamodel:WCO:CIS:1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:annotation>
+    <xs:documentation>Generated from input release</xs:documentation>
+  </xs:annotation>
+  <xs:include schemaLocation="ctypes.xsd" />
+  <xs:element name="IE4R02" type="IE4R02Type" />
+  <xs:complexType name="IE4R02Type">
+    <xs:sequence>
+      <xs:element name="MessageHeader" type="MessageHeaderType" />
+      <xs:element name="documentIssueDate" type="DocumentIssueDateType" />
+      <xs:element name="MRN" type="MRNContentType" />
+      <xs:element name="responsibleMemberState" type="ResponsibleMemberStateType" />
+      <xs:element name="representative" minOccurs="0" type="RepresentativeType03" />
+      <xs:element name="transportDocument" minOccurs="0" type="TransportDocumentType" />
+      <xs:element name="declarant" type="DeclarantType03" />
+      <xs:element name="additionalInformationResponse" maxOccurs="99" type="AdditionalInformationResponseType02" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
