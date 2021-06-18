@@ -19,9 +19,9 @@
   </wsdl:binding>
   <wsdl:service name="CCN2.Service.Customs.EU.ICS.CRErrorNotificationBAS">
     <wsdl:port name="CRErrorNotificationBAS" binding="CRErrorNotificationBASSoapBinding">
-      <soap12:address location="http://ccn.ws.ibt.hmrc.gov.uk:443/CCN2.Service.Customs.EU.ICS.CRErrorNotificationBAS" />
+      <soap12:address location="https://ccn.ws.ibt.hmrc.gov.uk:443/CCN2.Service.Customs.EU.ICS.CRErrorNotificationBAS" />
       <wsa:EndpointReference>
-        <wsa:Address>http://ccn.ws.ibt.hmrc.gov.uk:443/CCN2.Service.Customs.EU.ICS.CRErrorNotificationBAS</wsa:Address>
+        <wsa:Address>https://ccn.ws.ibt.hmrc.gov.uk:443/CCN2.Service.Customs.EU.ICS.CRErrorNotificationBAS</wsa:Address>
         <wsa:Metadata>
           <ccn2:ServiceID>CCN2.Service.Customs.EU.ICS.CRErrorNotificationBAS</ccn2:ServiceID>
           <ccn2:ServiceName>CCN2.Service.Customs.EU.ICS.CRErrorNotificationBAS</ccn2:ServiceName>

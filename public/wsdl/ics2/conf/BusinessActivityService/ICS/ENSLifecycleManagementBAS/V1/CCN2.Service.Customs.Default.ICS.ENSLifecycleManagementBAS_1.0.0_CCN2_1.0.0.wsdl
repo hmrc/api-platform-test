@@ -31,9 +31,9 @@
   </wsdl:binding>
   <wsdl:service name="CCN2.Service.Customs.EU.ICS.ENSLifecycleManagementBAS">
     <wsdl:port name="ENSLifecycleManagementBAS" binding="ENSLifecycleManagementBASSoapBinding">
-      <soap12:address location="http://ccn.ws.ibt.hmrc.gov.uk:443/CCN2.Service.Customs.EU.ICS.ENSLifecycleManagementBAS" />
+      <soap12:address location="https://ccn.ws.ibt.hmrc.gov.uk:443/CCN2.Service.Customs.EU.ICS.ENSLifecycleManagementBAS" />
       <wsa:EndpointReference>
-        <wsa:Address>http://ccn.ws.ibt.hmrc.gov.uk:443/CCN2.Service.Customs.EU.ICS.ENSLifecycleManagementBAS</wsa:Address>
+        <wsa:Address>https://ccn.ws.ibt.hmrc.gov.uk:443/CCN2.Service.Customs.EU.ICS.ENSLifecycleManagementBAS</wsa:Address>
         <wsa:Metadata>
           <ccn2:ServiceID>CCN2.Service.Customs.EU.ICS.ENSLifecycleManagementBAS</ccn2:ServiceID>
           <ccn2:ServiceName>CCN2.Service.Customs.EU.ICS.ENSLifecycleManagementBAS</ccn2:ServiceName>
