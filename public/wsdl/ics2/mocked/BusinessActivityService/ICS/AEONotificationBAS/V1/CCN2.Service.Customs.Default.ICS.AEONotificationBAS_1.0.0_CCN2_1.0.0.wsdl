@@ -19,9 +19,9 @@
   </wsdl:binding>
   <wsdl:service name="CCN2.Service.Customs.EU.ICS.AEONotificationBAS">
     <wsdl:port name="AEONotificationBAS" binding="AEONotificationBASSoapBinding">
-      <soap12:address location="http://ccn2.mocklab.io:443/CCN2.Service.Customs.EU.ICS.AEONotificationBAS" />
+      <soap12:address location="https://ccn2.mocklab.io:443/CCN2.Service.Customs.EU.ICS.AEONotificationBAS" />
       <wsa:EndpointReference>
-        <wsa:Address>http://ccn2.mocklab.io:443/CCN2.Service.Customs.EU.ICS.AEONotificationBAS</wsa:Address>
+        <wsa:Address>https://ccn2.mocklab.io:443/CCN2.Service.Customs.EU.ICS.AEONotificationBAS</wsa:Address>
         <wsa:Metadata>
           <ccn2:ServiceID>CCN2.Service.Customs.EU.ICS.AEONotificationBAS</ccn2:ServiceID>
           <ccn2:ServiceName>CCN2.Service.Customs.EU.ICS.AEONotificationBAS</ccn2:ServiceName>

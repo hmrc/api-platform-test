@@ -37,9 +37,9 @@
   </wsdl:binding>
   <wsdl:service name="CCN2.Service.Customs.EU.ICS.ReferralManagementBAS">
     <wsdl:port name="ReferralManagementBAS" binding="ReferralManagementBASSoapBinding">
-      <soap12:address location="http://ccn.ws.ibt.hmrc.gov.uk:443/CCN2.Service.Customs.EU.ICS.ReferralManagementBAS" />
+      <soap12:address location="https://ccn.ws.ibt.hmrc.gov.uk:443/CCN2.Service.Customs.EU.ICS.ReferralManagementBAS" />
       <wsa:EndpointReference>
-        <wsa:Address>http://ccn.ws.ibt.hmrc.gov.uk:443/CCN2.Service.Customs.EU.ICS.ReferralManagementBAS</wsa:Address>
+        <wsa:Address>https://ccn.ws.ibt.hmrc.gov.uk:443/CCN2.Service.Customs.EU.ICS.ReferralManagementBAS</wsa:Address>
         <wsa:Metadata>
           <ccn2:ServiceID>CCN2.Service.Customs.EU.ICS.ReferralManagementBAS</ccn2:ServiceID>
           <ccn2:ServiceName>CCN2.Service.Customs.EU.ICS.ReferralManagementBAS</ccn2:ServiceName>
