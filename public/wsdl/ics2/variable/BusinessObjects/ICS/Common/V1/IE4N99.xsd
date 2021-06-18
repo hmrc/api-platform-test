@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:wco:datamodel:WCO:CIS:1" targetNamespace="urn:wco:datamodel:WCO:CIS:1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:annotation>
+    <xs:documentation>Generated from input release</xs:documentation>
+  </xs:annotation>
+  <xs:include schemaLocation="ctypes.xsd" />
+  <xs:element name="IE4N99" type="IE4N99Type" />
+  <xs:complexType name="IE4N99Type">
+    <xs:sequence>
+      <xs:element name="MessageHeader" type="MessageHeaderType" />
+      <xs:element name="functionalReference" minOccurs="0" type="FunctionalReferenceContentType" />
+      <xs:element name="notificationDate" type="NotificationDateType" />
+      <xs:element name="representative" minOccurs="0" type="RepresentativeType03" />
+      <xs:element name="transportDocument" minOccurs="0" type="TransportDocumentType" />
+      <xs:element name="declarant" minOccurs="0" type="DeclarantType03" />
+      <xs:element name="customsOfficeOfFirstEntry" minOccurs="0" type="CustomsOfficeOfFirstEntryType" />
+      <xs:element name="error" maxOccurs="999" type="ErrorType02" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

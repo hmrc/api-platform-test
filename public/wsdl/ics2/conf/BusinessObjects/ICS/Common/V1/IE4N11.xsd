@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:wco:datamodel:WCO:CIS:1" targetNamespace="urn:wco:datamodel:WCO:CIS:1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:annotation>
+    <xs:documentation>Generated from input release</xs:documentation>
+  </xs:annotation>
+  <xs:include schemaLocation="ctypes.xsd" />
+  <xs:element name="IE4N11" type="IE4N11Type" />
+  <xs:complexType name="IE4N11Type">
+    <xs:sequence>
+      <xs:element name="MessageHeader" type="MessageHeaderType" />
+      <xs:element name="MRN" type="MRNContentType" />
+      <xs:element name="notificationDate" type="NotificationDateType" />
+      <xs:element name="scheduledControlDate" type="ScheduledControlDateType" />
+      <xs:element name="customsOfficeOfControl" type="CustomsOfficeOfControlType" />
+      <xs:element name="representative" minOccurs="0" type="RepresentativeType03" />
+      <xs:element name="transportDocument" minOccurs="0" type="TransportDocumentType" />
+      <xs:element name="carrier" minOccurs="0" type="CarrierType" />
+      <xs:element name="control" maxOccurs="99" type="ControlType" />
+      <xs:element name="declarant" minOccurs="0" type="DeclarantType03" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

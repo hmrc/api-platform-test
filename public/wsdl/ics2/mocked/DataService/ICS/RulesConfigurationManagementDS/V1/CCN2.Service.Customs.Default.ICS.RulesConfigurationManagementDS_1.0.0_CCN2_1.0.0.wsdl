@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://xmlns.ec.eu/DataService/ICS/RulesConfigurationManagementDS/V1" xmlns:ccn2="http://ccn2.ec.eu/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xmlns.ec.eu/DataService/ICS/RulesConfigurationManagementDS/V1" name="RulesConfigurationManagementDS">
+  <wsdl:import namespace="http://xmlns.ec.eu/DataService/ICS/RulesConfigurationManagementDS/V1" location="CCN2.Service.Customs.Default.ICS.RulesConfigurationManagementDS_1.0.0_1.0.0.wsdl" />
+  <wsdl:binding name="RulesConfigurationManagementDSSoapBinding" type="RulesConfigurationManagementDS">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsp:PolicyReference URI="#username_supporting_token_plaintext_password" />
+    <wsdl:operation name="IE4Q07registerOMSParameters">
+      <soap12:operation soapAction="CCN2.Service.Customs.EU.ICS.RulesConfigurationManagementDS/IE4Q07registerOMSParameters" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="serviceFault">
+        <soap12:fault use="literal" name="serviceFault" />
+      </wsdl:fault>
+      <wsdl:fault name="ccnFault">
+        <soap12:fault use="literal" name="ccnFault" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IsAlive">
+      <soap12:operation soapAction="CCN2.Service.Customs.EU.ICS.RulesConfigurationManagementDS/IsAlive" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CCN2.Service.Customs.EU.ICS.RulesConfigurationManagementDS">
+    <wsdl:port name="RulesConfigurationManagementDS" binding="RulesConfigurationManagementDSSoapBinding">
+      <soap12:address location="http://ccn2.mocklab.io:443/CCN2.Service.Customs.EU.ICS.RulesConfigurationManagementDS" />
+      <wsa:EndpointReference>
+        <wsa:Address>http://ccn2.mocklab.io:443/CCN2.Service.Customs.EU.ICS.RulesConfigurationManagementDS</wsa:Address>
+        <wsa:Metadata>
+          <ccn2:ServiceID>CCN2.Service.Customs.EU.ICS.RulesConfigurationManagementDS</ccn2:ServiceID>
+          <ccn2:ServiceName>CCN2.Service.Customs.EU.ICS.RulesConfigurationManagementDS</ccn2:ServiceName>
+          <ccn2:ServiceDescription>CCN2.Service.Customs.EU.ICS.RulesConfigurationManagementDS</ccn2:ServiceDescription>
+          <ccn2:ServiceVersion>http://ccn2.ec.eu/Version/1.0.0</ccn2:ServiceVersion>
+        </wsa:Metadata>
+      </wsa:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:wco:datamodel:WCO:CIS:1" elementFormDefault="qualified" targetNamespace="urn:wco:datamodel:WCO:CIS:1">
+  <xs:include id="IE4Q07" schemaLocation="IE4Q07.xsd" />
+  <xs:include id="IE4Q07registerOMSParametersResult" schemaLocation="IE4Q07registerOMSParametersResult.xsd" />
+  <xs:complexType name="IE4Q07registerOMSParametersResultResponseType">
+    <xs:annotation>
+      <xs:documentation>Response message type definition for the operation IE4Q07registerOMSParameters of the service RulesConfigurationManagementDS</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="IE4Q07registerOMSParametersResult" type="IE4Q07registerOMSParametersResultType" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="IE4Q07RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message type definition for the operation IE4Q07registerOMSParameters of the service RulesConfigurationManagementDS</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="IE4Q07" type="IE4Q07Type" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

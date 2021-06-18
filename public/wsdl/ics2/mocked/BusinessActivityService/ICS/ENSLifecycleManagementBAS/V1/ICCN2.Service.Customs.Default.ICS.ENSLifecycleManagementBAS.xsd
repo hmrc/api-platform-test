@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://xmlns.ec.eu/BusinessActivityService/ICS/IENSLifecycleManagementBAS/V1" xmlns:servicestype="urn:wco:datamodel:WCO:CIS:1" targetNamespace="http://xmlns.ec.eu/BusinessActivityService/ICS/IENSLifecycleManagementBAS/V1">
+  <xs:import namespace="urn:wco:datamodel:WCO:CIS:1" schemaLocation="../../../../BusinessObjects/ICS/Common/V1/ENSLifecycleManagementBASServiceType.xsd" />
+  <xs:element name="IE4S03submitControlResultReqMsg" type="servicestype:IE4S03RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message for the IE4S03submitControlResult operation of the ENSLifecycleManagementBAS</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="IE4N10submitPresentationInformationReqMsg" type="servicestype:IE4N10RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message for the IE4N10submitPresentationInformation operation of the ENSLifecycleManagementBAS</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="IE4Q08revokePresentationReqMsg" type="servicestype:IE4Q08RequestType">
+    <xs:annotation>
+      <xs:documentation>Request message for the IE4Q08revokePresentation operation of the ENSLifecycleManagementBAS</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+</xs:schema>

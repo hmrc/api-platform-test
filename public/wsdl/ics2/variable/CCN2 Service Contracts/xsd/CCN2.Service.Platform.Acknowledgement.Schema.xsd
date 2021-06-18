@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ccn2.ec.eu/CCN2.Service.Platform.Acknowledgement.Schema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" targetNamespace="http://ccn2.ec.eu/CCN2.Service.Platform.Acknowledgement.Schema" elementFormDefault="qualified">
+	<import namespace="http://www.w3.org/2003/05/soap-envelope" schemaLocation="soap-envelope.xsd"/>
+	<element name="CoA">
+		<complexType>
+			<sequence>
+				<element name="EventTimestamp" type="dateTime"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="CoD">
+		<complexType>
+			<sequence>
+				<element name="EventTimestamp" type="dateTime"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="CoE">
+		<complexType>
+			<sequence>
+				<element name="Severity" minOccurs="1" maxOccurs="1">
+					<simpleType>
+						<restriction base="string">
+							<enumeration value="Critical"/>
+							<enumeration value="Emergency"/>
+							<enumeration value="Error"/>
+							<enumeration value="Warning"/>
+							<enumeration value="Info"/>
+						</restriction>
+					</simpleType>
+				</element>
+				<element name="EventTimestamp" type="dateTime" minOccurs="1" maxOccurs="1"/>
+				<element name="Payload" minOccurs="0" maxOccurs="1">
+					<complexType>
+						<choice>
+							<element ref="soap12:Fault"/>
+							<element name="Message" type="string"/>
+						</choice>
+					</complexType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+</schema>

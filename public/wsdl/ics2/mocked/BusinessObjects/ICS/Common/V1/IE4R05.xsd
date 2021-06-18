@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:wco:datamodel:WCO:CIS:1" targetNamespace="urn:wco:datamodel:WCO:CIS:1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:annotation>
+    <xs:documentation>Generated from input release</xs:documentation>
+  </xs:annotation>
+  <xs:include schemaLocation="ctypes.xsd" />
+  <xs:element name="IE4R05" type="IE4R05Type" />
+  <xs:complexType name="IE4R05Type">
+    <xs:sequence>
+      <xs:element name="MessageHeader" type="MessageHeaderType" />
+      <xs:element name="functionalReference" minOccurs="0" type="FunctionalReferenceContentType" />
+      <xs:element name="relatedPLACI" minOccurs="0" maxOccurs="99999" type="RelatedPLACIType03" />
+      <xs:element name="ENSHistory" minOccurs="0" type="ENSHistoryType" />
+      <xs:element name="relatedENS" minOccurs="0" type="RelatedENSType04" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
