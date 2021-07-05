@@ -65,7 +65,7 @@ class NotificationsController @Inject()(cc: ControllerComponents,
   }
 
   def handleNotificationPush(status: Option[Int], delayInSeconds: Option[Int]): Action[String] = Action.async(parsers.tolerantText) { implicit request =>
-    val bodyToLog = if (request.body.length > 1024) request.body.substring(0,1024) + "...(truncated to 1024 chars)" else request.body
+    val bodyToLog = if (request.body.length > 10240) request.body.substring(0,10240) + "...(truncated to 10kb)" else request.body
       Logger.info(s"Received notification with payload '${bodyToLog}' and headers '${request.headers.toMap}'")
     val delay = FiniteDuration(delayInSeconds.getOrElse(0), TimeUnit.SECONDS)
     after(delay, actorSystem.scheduler)(successful(new Status(status.getOrElse(OK))))
