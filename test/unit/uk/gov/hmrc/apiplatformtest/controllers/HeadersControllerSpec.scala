@@ -16,18 +16,20 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import akka.stream.Materializer
+import play.api.test.Helpers._
+import play.api.http.Status
+
 import play.api.http.{HeaderNames, MimeTypes, Status}
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-class HeadersControllerSpec extends UnitSpec with WithFakeApplication with StubControllerComponentsFactory {
+import uk.gov.hmrc.util.AsyncHmrcSpec
+
+
+class HeadersControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory {
 
   trait Setup{
     val underTest = new HeadersController(stubControllerComponents())
   }
-
-  private implicit lazy val materializer: Materializer = fakeApplication.materializer
 
   private val requestIdHeader = "X-REQUEST-ID"
   private val clientIdHeader = "x_Client_id"
@@ -43,19 +45,17 @@ class HeadersControllerSpec extends UnitSpec with WithFakeApplication with StubC
         HeaderNames.ACCEPT -> MimeTypes.JSON)
 
     "return expected headers" in new Setup {
-      val result = await(underTest.handle()(request))
+      val result = underTest.handle()(request)
       status(result) shouldBe Status.OK
 
-      val responseBody = jsonBodyOf(result).toString()
+      val responseBody = contentAsJson(result).toString()
       responseBody shouldBe s"""{"request":{"name":"$requestIdHeader","value":"1234"},"client":{"name":"$clientIdHeader","value":"ABCD"}}"""
       responseBody should not contain dummyHeader
 
-      val headersInTheResponse = result.header.headers.keySet
-      headersInTheResponse should contain (requestIdHeader)
-      headersInTheResponse should contain (clientIdHeader)
-      headersInTheResponse should not contain dummyHeader
+      val actualHeaders = headers(result)
+      actualHeaders should contain (requestIdHeader)
+      actualHeaders should contain (clientIdHeader)
+      actualHeaders should not contain dummyHeader
     }
-
   }
-
 }

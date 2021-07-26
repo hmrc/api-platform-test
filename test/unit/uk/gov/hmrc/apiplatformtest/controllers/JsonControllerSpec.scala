@@ -18,15 +18,16 @@ package uk.gov.hmrc.apiplatformtest.controllers
 
 import play.api.http.ContentTypes.JSON
 import play.api.http.HeaderNames.{ACCEPT, CONTENT_TYPE}
-import play.api.http.Status.{OK, UNSUPPORTED_MEDIA_TYPE}
+import play.api.test.Helpers._
 import play.api.libs.json.Json.parse
 import play.api.test.{FakeRequest, StubBodyParserFactory, StubControllerComponentsFactory}
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
+import uk.gov.hmrc.util.AsyncHmrcSpec
+import org.scalatestplus.play.guice.GuiceOneAppPerTest
 
-class JsonControllerSpec extends UnitSpec with WithFakeApplication with StubControllerComponentsFactory with StubBodyParserFactory {
+class JsonControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerTest with StubControllerComponentsFactory with StubBodyParserFactory {
 
   trait Setup{
-    implicit val mat = fakeApplication.materializer
+    implicit val mat = app.materializer
     val underTest = new JsonController(stubControllerComponents(), stubPlayBodyParsers)
   }
 
@@ -41,10 +42,10 @@ class JsonControllerSpec extends UnitSpec with WithFakeApplication with StubCont
         CONTENT_TYPE -> JSON,
         ACCEPT -> underTest.VndHmrcJson50)
 
-      val result = await(underTest.handleJsonPost()(req))
+      val result = underTest.handleJsonPost()(req)
 
       status(result) shouldBe OK
-      bodyOf(result) shouldBe payload
+      contentAsJson(result) shouldBe payload
     }
 
     "return 415 when using a wrong Accept header" in new Setup {
@@ -52,10 +53,10 @@ class JsonControllerSpec extends UnitSpec with WithFakeApplication with StubCont
         CONTENT_TYPE -> JSON,
         ACCEPT -> JSON)
 
-      val result = await(underTest.handleJsonPost()(req))
+      val result = underTest.handleJsonPost()(req)
 
       status(result) shouldBe UNSUPPORTED_MEDIA_TYPE
-      bodyOf(result) shouldBe ""
+      contentAsJson(result) shouldBe ""
     }
   }
 

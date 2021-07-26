@@ -38,6 +38,5 @@ class JsonController @Inject()(cc: ControllerComponents, parsers: PlayBodyParser
       }
     }
   }
-
 }
 

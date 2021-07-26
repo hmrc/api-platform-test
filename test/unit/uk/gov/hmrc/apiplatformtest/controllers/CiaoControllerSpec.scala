@@ -18,18 +18,18 @@ package uk.gov.hmrc.apiplatformtest.controllers
 
 import play.api.http.Status
 import play.api.libs.json.Json
+import play.api.test.Helpers._
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import uk.gov.hmrc.apiplatformtest.models.DummyAnswer
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatDummyAnswer
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-class CiaoControllerSpec extends UnitSpec with WithFakeApplication with StubControllerComponentsFactory {
+import uk.gov.hmrc.util.AsyncHmrcSpec
+
+class CiaoControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory {
 
   trait Setup{
     val underTest = new CiaoController(stubControllerComponents())
   }
-
-  private implicit val materializer = fakeApplication.materializer
 
   "CiaoController" should {
 
@@ -44,7 +44,7 @@ class CiaoControllerSpec extends UnitSpec with WithFakeApplication with StubCont
       status(result) shouldBe Status.OK
 
       val expectedAnswer = DummyAnswer(uri = "/", method = "GET", resourceDetails = "Ciao Empty!")
-      await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
+      contentAsJson(result) shouldBe Json.toJson(expectedAnswer)
     }
 
     "accept the resource `GET /ciao?surname=Kennedy&firstName=John&middleName=Fitzgerald` " in new Setup {
@@ -68,7 +68,7 @@ class CiaoControllerSpec extends UnitSpec with WithFakeApplication with StubCont
         resourceDetails = "Ciao: Some(Kennedy), Some(John), Some(Fitzgerald)"
       )
 
-      await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
+      contentAsJson(result) shouldBe Json.toJson(expectedAnswer)
     }
 
     "accept the resource `GET /ciao/Rossi` " in new Setup {
@@ -80,7 +80,7 @@ class CiaoControllerSpec extends UnitSpec with WithFakeApplication with StubCont
       status(result) shouldBe Status.OK
 
       val expectedAnswer = DummyAnswer(uri = "/ciao/Rossi", method = "GET", resourceDetails = "Ciao Surname: Rossi")
-      await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
+      contentAsJson(result) shouldBe Json.toJson(expectedAnswer)
     }
 
     "accept the resource `GET /ciao/Rossi/Valentino?middleName=Alvise` " in new Setup {
@@ -101,7 +101,7 @@ class CiaoControllerSpec extends UnitSpec with WithFakeApplication with StubCont
         resourceDetails = "Ciao Full Name: Rossi, Valentino, Some(Alvise)"
       )
 
-      await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
+      contentAsJson(result) shouldBe Json.toJson(expectedAnswer)
     }
 
     // Expected failing routes.
@@ -120,7 +120,7 @@ class CiaoControllerSpec extends UnitSpec with WithFakeApplication with StubCont
         resourceDetails = "Ciao Not Implemented!"
       )
 
-      await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
+      contentAsJson(result) shouldBe Json.toJson(expectedAnswer)
     }
   }
 

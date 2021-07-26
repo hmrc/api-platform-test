@@ -20,6 +20,7 @@ import uk.gov.hmrc.DefaultBuildSettings._
 import uk.gov.hmrc.SbtAutoBuildPlugin
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
+import bloop.integrations.sbt.BloopDefaults
 
 val appName = "api-platform-test"
 
@@ -45,7 +46,9 @@ lazy val microservice = (project in file("."))
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false)
   )
   .settings(
-    testOptions in Test := Seq(Tests.Filter(_ => true)),// this removes duplicated lines in HTML reports
-    unmanagedSourceDirectories in Test := Seq((baseDirectory in Test).value / "test" / "unit"),
+    inConfig(Test)(BloopDefaults.configSettings),
+    Test / testOptions := Seq(Tests.Filter(_ => true)),// this removes duplicated lines in HTML reports
+    Test / unmanagedSourceDirectories ++= Seq((baseDirectory in Test).value / "test" / "unit"),
+    Test / unmanagedSourceDirectories ++= Seq((baseDirectory in Test).value / "test-common"),
     addTestReportOption(Test, "test-reports")
   )

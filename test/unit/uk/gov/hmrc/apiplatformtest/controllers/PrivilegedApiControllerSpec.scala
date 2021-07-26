@@ -17,18 +17,19 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 
-import org.scalatest.MustMatchers
-import org.scalatest.mockito.MockitoSugar
 import play.api.http.{HeaderNames, MimeTypes, Status}
 import play.api.test.{FakeRequest, Helpers, ResultExtractors, StubControllerComponentsFactory}
 import uk.gov.hmrc.auth.core.UnsupportedAuthProvider
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
+
+import play.api.test.Helpers._
+
+import uk.gov.hmrc.util.AsyncHmrcSpec
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class PrivilegedApiControllerSpec extends UnitSpec with MockitoSugar with  AuthTestSupport with WithFakeApplication with StubControllerComponentsFactory  {
+class PrivilegedApiControllerSpec extends AsyncHmrcSpec with AuthTestSupport with StubControllerComponentsFactory  {
 
-  implicit private val mat = fakeApplication.materializer
+  // implicit private val mat = fakeApplication.materializer
 
   private val requestIdHeader = "X-REQUEST-ID"
   private val clientIdHeader = "x_Client_id"
@@ -37,10 +38,10 @@ class PrivilegedApiControllerSpec extends UnitSpec with MockitoSugar with  AuthT
   trait Setup{
     val underTest = new PrivilegedApiController(mockAuthConnector, stubControllerComponents())
   }
-implicit val timeout = akka.util.Timeout(defaultTimeout)
+
+  // implicit val timeout = akka.util.Timeout(defaultTimeout)
   // GET        /privileged
   "PrivilegedApiController" should {
-
     val request = FakeRequest("GET", "/privileged")
       .withHeaders(
         dummyHeader -> dummyHeader,
@@ -50,19 +51,18 @@ implicit val timeout = akka.util.Timeout(defaultTimeout)
 
     "handle privileged apps correctly" in new Setup {
       withAuthorizedUser()
-      val result = await(underTest.handlePrivilegedAccess()(request))
+      val result = underTest.handlePrivilegedAccess()(request)
       status(result) shouldBe Status.OK
 
-      bodyOf(result) shouldBe "{\"message\":\"Request coming from a privileged application\"}"
+      contentAsJson(result) shouldBe "{\"message\":\"Request coming from a privileged application\"}"
     }
 
     "handle authorisation errors correctly" in new Setup {
       withUnauthorizedUser(new UnsupportedAuthProvider())
-      val result = await(underTest.handlePrivilegedAccess()(request))
+      val result = underTest.handlePrivilegedAccess()(request)
       status(result) shouldBe Status.FORBIDDEN
 
-      bodyOf(result) shouldBe "{\"message\":\"Only privileged applications can access this endpoint\"}"
+      contentAsJson(result) shouldBe "{\"message\":\"Only privileged applications can access this endpoint\"}"
     }
-
   }
 }
