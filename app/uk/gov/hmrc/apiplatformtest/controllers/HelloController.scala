@@ -84,10 +84,10 @@ class HelloController @Inject()(override val authConnector: AuthConnector, cc: C
   }
 
   def handleWithParam(param: String): Action[AnyContent] = Action.async {
-    successful(Ok(Json.toJson(s"""{ "message": "$param" }""")))
+    successful(Ok(s"""{ "message": "$param" }"""))
   }
 
   def handleWithTwoParams(param1: String, param2: String): Action[AnyContent] = Action.async {
-    successful(Ok(Json.toJson(s"""{ "message": "$param1 / $param2" }""")))
+    successful(Ok(s"""{ "message": "$param1 / $param2" }"""))
   }
 }
