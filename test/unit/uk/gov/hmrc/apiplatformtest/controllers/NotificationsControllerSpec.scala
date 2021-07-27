@@ -32,12 +32,13 @@ import uk.gov.hmrc.util.AsyncHmrcSpec
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.successful
 import scala.concurrent.duration._
-import org.scalatestplus.play.guice.GuiceOneAppPerTest
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 
-class NotificationsControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerTest with StubControllerComponentsFactory with Eventually {
+class NotificationsControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerSuite with StubControllerComponentsFactory with Eventually {
 
-  implicit val mat: Materializer = app.materializer
-  implicit val actorSystemTest: ActorSystem = ActorSystem("test-actor-system")
+  implicit val actorSystemTest: ActorSystem = app.injector.instanceOf[ActorSystem]
+  implicit val mat: Materializer = app.injector.instanceOf[Materializer]
+
   val boxId: UUID = randomUUID
   val clientId: String = randomUUID.toString
   val notificationId: String = randomUUID.toString
@@ -95,19 +96,19 @@ class NotificationsControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerTest 
 
     "not delay the response by default" in new Setup {
       val before = new DateTime()
-      val result = underTest.handleNotificationPush(None, None)(request)
+      val result = await(underTest.handleNotificationPush(None, None)(request))
       val after = new DateTime()
 
-      status(result) shouldBe OK
+      result.header.status shouldBe OK
       (after.getMillis - before.getMillis).toInt should be < 100
     }
 
     "delay the response when a delay is passed in" in new Setup {
       val before = new DateTime()
-      val result = underTest.handleNotificationPush(None, Some(2))(request)
+      val result = await(underTest.handleNotificationPush(None, Some(2))(request))
       val after = new DateTime()
 
-      status(result) shouldBe OK
+      result.header.status shouldBe OK
       (after.getMillis - before.getMillis).toInt should be > 2000
     }
   }

@@ -7,15 +7,13 @@ object AppDependencies {
 
   private lazy val compile = Seq(
     ws,
-    "uk.gov.hmrc"                   %% "bootstrap-play-26"        % "1.16.0",
+    "uk.gov.hmrc"                   %% "bootstrap-play-26"        % "4.0.0",
     "uk.gov.hmrc"                   %% "domain"                   % "5.6.0-play-26",
-    "uk.gov.hmrc"                   %% "auth-client"              % "2.35.0-play-26",
     "ch.qos.logback"                %  "logback-classic"          % "1.2.3",
     "uk.gov.hmrc"                   %% "logback-json-logger"      % "4.6.0"
   )
 
   private lazy val test = Seq(
-    "org.scalatest"                 %% "scalatest"                % "3.0.5",
     "org.pegdown"                   %  "pegdown"                  % "1.6.0",
     "com.typesafe.play"             %% "play-test"                % PlayVersion.current,
     "org.scalatestplus.play"        %% "scalatestplus-play"       % "3.1.3",

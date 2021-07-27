@@ -51,10 +51,10 @@ class AssetsControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFa
       when(mockAppContext.assetsDelay).thenReturn(FiniteDuration(2, "sec"))
 
       val before = new DateTime()
-      val result = underTest.at(fileName)(request)
+      val result = await(underTest.at(fileName)(request))
       val after = new DateTime()
 
-      status(result) shouldBe OK
+      result.header.status shouldBe OK
       (after.getMillis - before.getMillis).toInt should be > 2000
     }
   }

@@ -41,7 +41,6 @@ import scala.concurrent.Future.{failed, successful}
 class HelloWorldControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory{
 
   trait Setup {
-    // implicit val mat: Materializer = fakeApplication.materializer
     implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
     val mockAuthConnector: AuthConnector = mock[AuthConnector]
     val underTest = new HelloController(mockAuthConnector, stubControllerComponents())

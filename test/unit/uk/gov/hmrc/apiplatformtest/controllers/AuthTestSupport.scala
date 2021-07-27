@@ -16,26 +16,22 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
-import org.scalatest.mockito.MockitoSugar
 import uk.gov.hmrc.auth.core.AuthConnector
-import uk.gov.hmrc.auth.core.authorise.Predicate
-import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.{ExecutionContext, Future}
+import org.mockito.MockitoSugar
+import org.mockito.ArgumentMatchersSugar
+import scala.concurrent.Future.{successful, failed}
 
-trait AuthTestSupport extends MockitoSugar {
+trait AuthTestSupport extends MockitoSugar with ArgumentMatchersSugar {
 
   lazy val mockAuthConnector: AuthConnector = mock[AuthConnector]
-
 
   //TODO add predicate for privileged user authProviders
 
   def withAuthorizedUser(): Unit =
-    when(mockAuthConnector.authorise[Unit](any[Predicate], any())(any[HeaderCarrier],any[ExecutionContext])).thenReturn(Future.successful(()))
+    when(mockAuthConnector.authorise[Unit](*, *)(*,*)).thenReturn(successful(()))
 
   def withUnauthorizedUser(error: Throwable): Unit =
-    when(mockAuthConnector.authorise(any(), any())(any(), any())).thenReturn(Future.failed(error))
+    when(mockAuthConnector.authorise(*, *)(*, *)).thenReturn(failed(error))
 
 }

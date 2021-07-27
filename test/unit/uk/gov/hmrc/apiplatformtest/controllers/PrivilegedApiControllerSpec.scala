@@ -18,7 +18,7 @@ package uk.gov.hmrc.apiplatformtest.controllers
 
 
 import play.api.http.{HeaderNames, MimeTypes, Status}
-import play.api.test.{FakeRequest, Helpers, ResultExtractors, StubControllerComponentsFactory}
+import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import uk.gov.hmrc.auth.core.UnsupportedAuthProvider
 
 import play.api.test.Helpers._
@@ -28,8 +28,6 @@ import uk.gov.hmrc.util.AsyncHmrcSpec
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class PrivilegedApiControllerSpec extends AsyncHmrcSpec with AuthTestSupport with StubControllerComponentsFactory  {
-
-  // implicit private val mat = fakeApplication.materializer
 
   private val requestIdHeader = "X-REQUEST-ID"
   private val clientIdHeader = "x_Client_id"
@@ -54,7 +52,7 @@ class PrivilegedApiControllerSpec extends AsyncHmrcSpec with AuthTestSupport wit
       val result = underTest.handlePrivilegedAccess()(request)
       status(result) shouldBe Status.OK
 
-      contentAsJson(result) shouldBe "{\"message\":\"Request coming from a privileged application\"}"
+      contentAsString(result) shouldBe "{\"message\":\"Request coming from a privileged application\"}"
     }
 
     "handle authorisation errors correctly" in new Setup {
@@ -62,7 +60,7 @@ class PrivilegedApiControllerSpec extends AsyncHmrcSpec with AuthTestSupport wit
       val result = underTest.handlePrivilegedAccess()(request)
       status(result) shouldBe Status.FORBIDDEN
 
-      contentAsJson(result) shouldBe "{\"message\":\"Only privileged applications can access this endpoint\"}"
+      contentAsString(result) shouldBe "{\"message\":\"Only privileged applications can access this endpoint\"}"
     }
   }
 }

@@ -24,11 +24,11 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
 import scala.xml.NodeSeq
-import org.scalatestplus.play.guice.GuiceOneAppPerTest
+import play.api.test.NoMaterializer
 
-class XmlControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerTest with StubControllerComponentsFactory with StubPlayBodyParsersFactory {
+class XmlControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory with StubPlayBodyParsersFactory {
 
-  implicit val mat = app.materializer
+  implicit val mat = NoMaterializer
 
   trait Setup{
     val underTest = new XmlController(stubControllerComponents(), stubPlayBodyParsers)
@@ -44,10 +44,10 @@ class XmlControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerTest with StubC
         CONTENT_TYPE -> XML,
         ACCEPT -> underTest.VndHmrcXml50)
 
-      val result = underTest.handleXmlPost().apply(req)
+      val result = underTest.handleXmlPost()(req)
 
       status(result) shouldBe OK
-      contentAsJson(result) shouldBe <Ping><Pong>hello</Pong></Ping>.toString()
+      contentAsString(result) shouldBe <Ping><Pong>hello</Pong></Ping>.toString()
     }
 
     "return 415 when using a wrong Accept header" in new Setup {
@@ -58,7 +58,7 @@ class XmlControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerTest with StubC
       val result = underTest.handleXmlPost()(req)
 
       status(result) shouldBe UNSUPPORTED_MEDIA_TYPE
-      contentAsJson(result) shouldBe ""
+      contentAsString(result) shouldBe ""
     }
 
   }

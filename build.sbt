@@ -43,12 +43,13 @@ lazy val microservice = (project in file("."))
     PlayKeys.playDefaultPort := 6704,
     libraryDependencies ++= AppDependencies.libraryDependencies,
     routesGenerator := InjectedRoutesGenerator,
-    evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false)
+    evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
+    bloopAggregateSourceDependencies in Global := true
   )
   .settings(
     inConfig(Test)(BloopDefaults.configSettings),
     Test / testOptions := Seq(Tests.Filter(_ => true)),// this removes duplicated lines in HTML reports
-    Test / unmanagedSourceDirectories ++= Seq((baseDirectory in Test).value / "test" / "unit"),
-    Test / unmanagedSourceDirectories ++= Seq((baseDirectory in Test).value / "test-common"),
+    Test / unmanagedSourceDirectories += baseDirectory.value / "test" / "unit", // TODO remove unit from tests
+    Test / unmanagedSourceDirectories += baseDirectory.value / "test-common",
     addTestReportOption(Test, "test-reports")
   )

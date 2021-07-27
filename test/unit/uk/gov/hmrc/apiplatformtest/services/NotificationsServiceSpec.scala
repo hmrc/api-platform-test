@@ -19,8 +19,6 @@ package uk.gov.hmrc.apiplatformtest.services
 import java.util.UUID
 import java.util.UUID.randomUUID
 
-import org.mockito.ArgumentMatchers.{any, eq => meq}
-import org.mockito.Mockito.{verify, when}
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json.parse
 import uk.gov.hmrc.apiplatformtest.connectors.PushPullNotificationsApiConnector
@@ -50,7 +48,7 @@ class NotificationsServiceSpec extends AsyncHmrcSpec {
 
       await(underTest.saveNotification(boxId, payload))
 
-      verify(mockPushPullNotificationsApiConnector).saveNotification(meq(boxId), meq(payload))(*)
+      verify(mockPushPullNotificationsApiConnector).saveNotification(eqTo(boxId), eqTo(payload))(*)
     }
 
     "return the notification ID" in new Setup {

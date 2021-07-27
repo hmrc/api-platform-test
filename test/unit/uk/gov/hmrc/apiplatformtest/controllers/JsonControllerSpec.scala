@@ -22,15 +22,15 @@ import play.api.test.Helpers._
 import play.api.libs.json.Json.parse
 import play.api.test.{FakeRequest, StubBodyParserFactory, StubControllerComponentsFactory}
 import uk.gov.hmrc.util.AsyncHmrcSpec
-import org.scalatestplus.play.guice.GuiceOneAppPerTest
+import play.api.test.NoMaterializer
+import play.api.libs.json.Json
 
-class JsonControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerTest with StubControllerComponentsFactory with StubBodyParserFactory {
+class JsonControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory with StubBodyParserFactory {
 
   trait Setup{
-    implicit val mat = app.materializer
+    implicit val mat = NoMaterializer
     val underTest = new JsonController(stubControllerComponents(), stubPlayBodyParsers)
   }
-
 
   private val payload = """{"firstName":"Alvise","surname":"Fransescoli","dateOfBirth":"04-01-1731"}"""
   private val request = FakeRequest("POST", "/json").withBody(parse(payload))
@@ -45,7 +45,7 @@ class JsonControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerTest with Stub
       val result = underTest.handleJsonPost()(req)
 
       status(result) shouldBe OK
-      contentAsJson(result) shouldBe payload
+      contentAsJson(result) shouldBe Json.parse(payload)
     }
 
     "return 415 when using a wrong Accept header" in new Setup {
@@ -56,8 +56,6 @@ class JsonControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerTest with Stub
       val result = underTest.handleJsonPost()(req)
 
       status(result) shouldBe UNSUPPORTED_MEDIA_TYPE
-      contentAsJson(result) shouldBe ""
     }
   }
-
 }

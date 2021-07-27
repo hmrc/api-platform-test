@@ -22,13 +22,13 @@ import play.api.http.Status.OK
 import play.api.test.Helpers._
 import play.api.libs.json.Json
 import play.api.test.{FakeRequest, StubControllerComponentsFactory, StubPlayBodyParsersFactory}
-import org.scalatestplus.play.guice.GuiceOneAppPerTest
 import uk.gov.hmrc.util.AsyncHmrcSpec
+import play.api.test.NoMaterializer
 
 
-class NrsControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerTest with StubControllerComponentsFactory with StubPlayBodyParsersFactory{
+class NrsControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory with StubPlayBodyParsersFactory{
 
-  implicit private val mat = app.materializer
+  implicit private val mat = NoMaterializer
 
   private val controller = new NrsController(stubControllerComponents(), stubPlayBodyParsers)
 

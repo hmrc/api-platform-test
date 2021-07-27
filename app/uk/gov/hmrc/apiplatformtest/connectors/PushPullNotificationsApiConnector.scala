@@ -23,9 +23,11 @@ import play.api.libs.json.{JsValue, Json, OFormat}
 import uk.gov.hmrc.apiplatformtest.connectors.CreateNotificationResponse.formatCreateNotificationResponse
 import uk.gov.hmrc.apiplatformtest.connectors.PushPullNotificationsApiConnector.Config
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.HttpReads.Implicits._
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
 import scala.concurrent.{ExecutionContext, Future}
+import uk.gov.hmrc.http.UpstreamErrorResponse
 
 @Singleton
 class PushPullNotificationsApiConnector @Inject()(http: HttpClient, config: Config)
@@ -41,8 +43,11 @@ class PushPullNotificationsApiConnector @Inject()(http: HttpClient, config: Conf
 
   def getBoxId(clientId: String)(implicit hc: HeaderCarrier): Future[UUID] = {
     http
-      .GET[JsValue](s"$serviceBaseUrl/box", Seq("boxName" -> "test/api-platform-test##1.0##callbackUrl", "clientId" -> clientId))
-      .map(r => (r \ "boxId").as[UUID])
+      .GET[Either[UpstreamErrorResponse, JsValue]](s"$serviceBaseUrl/box", Seq("boxName" -> "test/api-platform-test##1.0##callbackUrl", "clientId" -> clientId))
+      .map {
+        case Right(r) => (r \ "boxId").as[UUID]
+        case Left(err) => throw err
+      }
   }
 }
 

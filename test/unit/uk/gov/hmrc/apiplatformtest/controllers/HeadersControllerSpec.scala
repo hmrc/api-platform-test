@@ -52,7 +52,7 @@ class HeadersControllerSpec extends AsyncHmrcSpec with StubControllerComponentsF
       responseBody shouldBe s"""{"request":{"name":"$requestIdHeader","value":"1234"},"client":{"name":"$clientIdHeader","value":"ABCD"}}"""
       responseBody should not contain dummyHeader
 
-      val actualHeaders = headers(result)
+      val actualHeaders = headers(result).keySet
       actualHeaders should contain (requestIdHeader)
       actualHeaders should contain (clientIdHeader)
       actualHeaders should not contain dummyHeader
