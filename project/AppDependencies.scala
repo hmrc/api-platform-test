@@ -7,7 +7,7 @@ object AppDependencies {
 
   private lazy val compile = Seq(
     ws,
-    "uk.gov.hmrc"                   %% "bootstrap-backend-play-26"        % "5.7.0",
+    "uk.gov.hmrc"                   %% "bootstrap-backend-play-26"        % "5.10.0",
     "uk.gov.hmrc"                   %% "domain"                           % "5.6.0-play-26",
     "ch.qos.logback"                %  "logback-classic"                  % "1.2.3",
     "uk.gov.hmrc"                   %% "logback-json-logger"              % "4.6.0"
