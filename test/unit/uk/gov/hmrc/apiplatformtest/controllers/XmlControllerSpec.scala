@@ -20,13 +20,15 @@ import play.api.http.ContentTypes.XML
 import play.api.http.HeaderNames.{ACCEPT, CONTENT_TYPE}
 import play.api.http.Status.{OK, UNSUPPORTED_MEDIA_TYPE}
 import play.api.test.{FakeRequest, StubControllerComponentsFactory, StubPlayBodyParsersFactory}
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
+import play.api.test.Helpers._
+import uk.gov.hmrc.util.AsyncHmrcSpec
 
 import scala.xml.NodeSeq
+import play.api.test.NoMaterializer
 
-class XmlControllerSpec extends UnitSpec with WithFakeApplication with StubControllerComponentsFactory with StubPlayBodyParsersFactory{
+class XmlControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory with StubPlayBodyParsersFactory {
 
-  implicit val mat = fakeApplication.materializer
+  implicit val mat = NoMaterializer
 
   trait Setup{
     val underTest = new XmlController(stubControllerComponents(), stubPlayBodyParsers)
@@ -42,10 +44,10 @@ class XmlControllerSpec extends UnitSpec with WithFakeApplication with StubContr
         CONTENT_TYPE -> XML,
         ACCEPT -> underTest.VndHmrcXml50)
 
-      val result = await(underTest.handleXmlPost().apply(req))
+      val result = underTest.handleXmlPost()(req)
 
       status(result) shouldBe OK
-      bodyOf(result) shouldBe <Ping><Pong>hello</Pong></Ping>.toString()
+      contentAsString(result) shouldBe <Ping><Pong>hello</Pong></Ping>.toString()
     }
 
     "return 415 when using a wrong Accept header" in new Setup {
@@ -53,10 +55,10 @@ class XmlControllerSpec extends UnitSpec with WithFakeApplication with StubContr
         CONTENT_TYPE -> XML,
         ACCEPT -> XML)
 
-      val result = await(underTest.handleXmlPost()(req))
+      val result = underTest.handleXmlPost()(req)
 
       status(result) shouldBe UNSUPPORTED_MEDIA_TYPE
-      bodyOf(result) shouldBe ""
+      contentAsString(result) shouldBe ""
     }
 
   }

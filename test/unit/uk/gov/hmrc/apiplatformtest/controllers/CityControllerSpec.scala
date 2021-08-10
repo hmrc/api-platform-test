@@ -18,18 +18,19 @@ package uk.gov.hmrc.apiplatformtest.controllers
 
 import play.api.http.Status
 import play.api.libs.json.Json
+import play.api.test.Helpers._
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import uk.gov.hmrc.apiplatformtest.models.DummyAnswer
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatDummyAnswer
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-class CityControllerSpec extends UnitSpec with WithFakeApplication with StubControllerComponentsFactory {
+import uk.gov.hmrc.util.AsyncHmrcSpec
+
+
+class CityControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory {
 
   trait Setup{
     val underTest = new CityController(stubControllerComponents())
   }
-
-  private implicit val materializer = fakeApplication.materializer
 
   "CityController" should {
 
@@ -49,7 +50,7 @@ class CityControllerSpec extends UnitSpec with WithFakeApplication with StubCont
         resourceDetails = "City: Leeds, Address: Oxford Street"
       )
 
-      await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
+      contentAsJson(result) shouldBe Json.toJson(expectedAnswer)
     }
 
     "accept the resource `PUT /city-details/Leeds/address` " in new Setup {
@@ -66,7 +67,7 @@ class CityControllerSpec extends UnitSpec with WithFakeApplication with StubCont
         resourceDetails = "City: Leeds, Address: Oxford Street"
       )
 
-      await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
+      contentAsJson(result) shouldBe Json.toJson(expectedAnswer)
     }
 
     // tests for the `/city-details/:cityName/:postcode` URL
@@ -85,7 +86,7 @@ class CityControllerSpec extends UnitSpec with WithFakeApplication with StubCont
         resourceDetails = "City: London, Postcode: SW208HR"
       )
 
-      await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
+      contentAsJson(result) shouldBe Json.toJson(expectedAnswer)
     }
 
     "accept the resource `POST /city-details/London/SW208HR` " in new Setup {
@@ -102,7 +103,7 @@ class CityControllerSpec extends UnitSpec with WithFakeApplication with StubCont
         resourceDetails = "City: London, Postcode: SW208HR"
       )
 
-      await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
+      contentAsJson(result) shouldBe Json.toJson(expectedAnswer)
     }
 
     "accept the resource `DELETE /city-details/London/SW208HR` " in new Setup {
@@ -119,7 +120,7 @@ class CityControllerSpec extends UnitSpec with WithFakeApplication with StubCont
         resourceDetails = "City: London, Postcode: SW208HR"
       )
 
-      await(jsonBodyOf(result)) shouldBe Json.toJson(expectedAnswer)
+      contentAsJson(result) shouldBe Json.toJson(expectedAnswer)
     }
 
   }

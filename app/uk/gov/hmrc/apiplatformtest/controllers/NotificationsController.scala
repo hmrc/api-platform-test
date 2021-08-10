@@ -71,7 +71,7 @@ class NotificationsController @Inject()(cc: ControllerComponents,
     after(delay, actorSystem.scheduler)(successful(new Status(status.getOrElse(OK))))
   }
 
-  def callbackValidation(challenge: String): Action[AnyContent] = Action.async { implicit request =>
+  def callbackValidation(challenge: String): Action[AnyContent] = Action.async { _ =>
     successful(Ok(Json.obj("challenge" -> challenge)))
   }
 }

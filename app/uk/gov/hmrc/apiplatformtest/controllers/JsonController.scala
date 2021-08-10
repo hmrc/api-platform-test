@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import akka.stream.Materializer
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json._
 import play.api.mvc._
@@ -25,7 +24,7 @@ import uk.gov.hmrc.play.bootstrap.controller.BackendController
 import scala.concurrent.Future._
 
 @Singleton
-class JsonController @Inject()(cc: ControllerComponents, parsers: PlayBodyParsers)(implicit mat: Materializer) extends BackendController(cc) {
+class JsonController @Inject()(cc: ControllerComponents, parsers: PlayBodyParsers) extends BackendController(cc) {
 
   val VndHmrcJson50: String = "application/vnd.hmrc.5.0+json"
   val AcceptsJson50 = Accepting(VndHmrcJson50)
@@ -38,6 +37,5 @@ class JsonController @Inject()(cc: ControllerComponents, parsers: PlayBodyParser
       }
     }
   }
-
 }
 

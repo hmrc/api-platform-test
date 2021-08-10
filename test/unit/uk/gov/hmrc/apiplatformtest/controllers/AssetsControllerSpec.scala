@@ -19,20 +19,20 @@ package uk.gov.hmrc.apiplatformtest.controllers
 import akka.actor.ActorSystem
 import controllers.Assets
 import org.joda.time.DateTime
-import org.mockito.Mockito.when
-import org.scalatest.mockito.MockitoSugar
 import play.api.http.Status.OK
 import play.api.mvc.Results.Ok
-import play.api.mvc.{Action, ActionBuilder, AnyContent, Result}
+import play.api.mvc.{Action, ActionBuilder, AnyContent}
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import uk.gov.hmrc.apiplatformtest.config.AppContext
-import uk.gov.hmrc.play.test.UnitSpec
+import play.api.test.Helpers._
+
+import uk.gov.hmrc.util.AsyncHmrcSpec
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.successful
 import scala.concurrent.duration._
 
-class AssetsControllerSpec extends UnitSpec with StubControllerComponentsFactory with MockitoSugar {
+class AssetsControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory {
   implicit val actorSystemTest: ActorSystem = ActorSystem("test-actor-system")
   val fileName = "file.xml"
   val assetsAction: Action[AnyContent] = new ActionBuilder.IgnoringBody().async(successful(Ok("some stuff")))
@@ -51,10 +51,10 @@ class AssetsControllerSpec extends UnitSpec with StubControllerComponentsFactory
       when(mockAppContext.assetsDelay).thenReturn(FiniteDuration(2, "sec"))
 
       val before = new DateTime()
-      val result: Result = await(underTest.at(fileName)(request))
+      val result = await(underTest.at(fileName)(request))
       val after = new DateTime()
 
-      status(result) shouldBe OK
+      result.header.status shouldBe OK
       (after.getMillis - before.getMillis).toInt should be > 2000
     }
   }

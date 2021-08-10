@@ -20,44 +20,19 @@ import uk.gov.hmrc.DefaultBuildSettings._
 import uk.gov.hmrc.SbtAutoBuildPlugin
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
-import uk.gov.hmrc.versioning.SbtGitVersioning
+import bloop.integrations.sbt.BloopDefaults
 
 val appName = "api-platform-test"
 
-lazy val appDependencies: Seq[ModuleID] = compile ++ test
-
-lazy val compile = Seq(
-  ws,
-  "uk.gov.hmrc" %% "bootstrap-play-26" % "1.16.0",
-  "uk.gov.hmrc" %% "domain" % "5.6.0-play-26",
-  "uk.gov.hmrc" %% "auth-client" % "2.35.0-play-26",
-  "ch.qos.logback" % "logback-classic" % "1.2.3",
-  "uk.gov.hmrc" %% "logback-json-logger" % "4.6.0"
-
-)
-
-lazy val scope: String = "test"
-
-lazy val test = Seq(
-  "uk.gov.hmrc" %% "bootstrap-play-26" % "1.3.0" % scope,
-  "uk.gov.hmrc" %% "hmrctest" % "3.9.0-play-26" % scope,
-  "org.scalatest" %% "scalatest" % "3.0.5" % scope,
-  "org.pegdown" % "pegdown" % "1.6.0" % scope,
-  "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
-  "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % scope,
-  "org.mockito" % "mockito-core" % "2.13.0" % scope,
-  "com.github.tomakehurst" % "wiremock-jre8" % "2.26.3" % scope
-)
-
-lazy val plugins: Seq[Plugins] = Seq.empty
 lazy val playSettings: Seq[Setting[_]] = Seq.empty
 
 lazy val microservice = (project in file("."))
-  .enablePlugins(Seq(_root_.play.sbt.PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory) ++ plugins: _*)
+  .enablePlugins(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin)
   .disablePlugins(JUnitXmlReportPlugin)
   .settings(playSettings: _*)
   .settings(scalaSettings: _*)
   .settings(publishingSettings: _*)
+  .settings(ScoverageSettings())
   .settings(defaultSettings(): _*)
   .settings(unmanagedResourceDirectories in Compile += baseDirectory.value / "resources")
   .settings(
@@ -66,17 +41,15 @@ lazy val microservice = (project in file("."))
     targetJvm := "jvm-1.8",
     scalaVersion := "2.12.10",
     PlayKeys.playDefaultPort := 6704,
-    libraryDependencies ++= appDependencies,
+    libraryDependencies ++= AppDependencies.libraryDependencies,
     routesGenerator := InjectedRoutesGenerator,
-    evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false)
+    evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
+    bloopAggregateSourceDependencies in Global := true
   )
   .settings(
-    testOptions in Test := Seq(Tests.Filter(_ => true)),// this removes duplicated lines in HTML reports
-    unmanagedSourceDirectories in Test := Seq((baseDirectory in Test).value / "test" / "unit"),
+    inConfig(Test)(BloopDefaults.configSettings),
+    Test / testOptions := Seq(Tests.Filter(_ => true)),// this removes duplicated lines in HTML reports
+    Test / unmanagedSourceDirectories += baseDirectory.value / "test" / "unit", // TODO remove unit from tests
+    Test / unmanagedSourceDirectories += baseDirectory.value / "test-common",
     addTestReportOption(Test, "test-reports")
   )
-
-// Coverage configuration
-coverageMinimum := 33
-coverageFailOnMinimum := true
-coverageExcludedPackages := "<empty>;com.kenshoo.play.metrics.*;.*definition.*;prod.*;testOnlyDoNotUseInAppConf.*;app.*;uk.gov.hmrc.BuildInfo"

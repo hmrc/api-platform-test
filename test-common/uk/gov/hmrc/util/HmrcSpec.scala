@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatformtest.controllers
+package uk.gov.hmrc.util
 
-import javax.inject.{Inject, Singleton}
-import play.api.libs.json._
-import play.api.mvc._
-import uk.gov.hmrc.apiplatformtest.services.HashingAlgorithm
-import uk.gov.hmrc.play.bootstrap.controller.BackendController
+import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
+import org.scalatest.{Matchers, OptionValues, WordSpec}
+import org.scalatestplus.play.WsScalaTestClient
 
-@Singleton
-class NrsController @Inject()(cc: ControllerComponents, parsers: PlayBodyParsers) extends BackendController(cc) {
+import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 
-  final def handleNrsPost(): Action[String] = {
-    Action(parsers.tolerantText) { implicit request =>
-      val hash = HashingAlgorithm.sha256Hash(request.body)
-      Ok(Json.obj("hash" -> hash))
-    }
-  }
+abstract class HmrcSpec extends WordSpec with Matchers with OptionValues with WsScalaTestClient with MockitoSugar with ArgumentMatchersSugar
 
-}
+abstract class AsyncHmrcSpec extends HmrcSpec with DefaultAwaitTimeout with FutureAwaits

@@ -18,15 +18,11 @@ package uk.gov.hmrc.apiplatformtest.controllers
 
 import java.util.UUID.randomUUID
 
-import akka.stream.Materializer
 import org.joda.time.LocalDate
-import org.mockito.ArgumentMatchers.{any, eq => meq}
-import org.mockito.Mockito.when
-import org.scalatest.mockito.MockitoSugar
 import play.api.http.Status.{OK, UNAUTHORIZED}
 import play.api.libs.json.JsValue
-import play.api.mvc.Result
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
+import play.api.test.Helpers._
 import uk.gov.hmrc.apiplatformtest.models.Header
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters._
 import uk.gov.hmrc.auth.core.AffinityGroup.Individual
@@ -36,15 +32,15 @@ import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core.retrieve._
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.controllers.RestFormats.localDateFormats
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
+
+import uk.gov.hmrc.util.AsyncHmrcSpec
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.{failed, successful}
 
-class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with MockitoSugar with StubControllerComponentsFactory{
+class HelloWorldControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory{
 
   trait Setup {
-    implicit val mat: Materializer = fakeApplication.materializer
     implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
     val mockAuthConnector: AuthConnector = mock[AuthConnector]
     val underTest = new HelloController(mockAuthConnector, stubControllerComponents())
@@ -78,9 +74,9 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
       when(
         mockAuthConnector
           .authorise(
-            any(),
-            meq(allUserDetails and Retrievals.internalId and Retrievals.externalId and Retrievals.applicationId)
-          )(any(), any())
+            *,
+            eqTo(allUserDetails and Retrievals.internalId and Retrievals.externalId and Retrievals.applicationId)
+          )(*, *)
       ).thenReturn(
         successful(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(Some(credentials), Some(name)),
           Some(dateOfBirth)), Some(postCode)), Some(email)), Some(affinityGroup)), Some(agentCode)), agentInformation), Some(credentialRole)),
@@ -88,10 +84,10 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
         )
       )
 
-      val result: Result = await(underTest.handleDave()(FakeRequest().withHeaders(headers: _*)))
+      val result = underTest.handleDave()(FakeRequest().withHeaders(headers: _*))
 
       status(result) shouldBe OK
-      val jsonResult: JsValue = jsonBodyOf(result)
+      val jsonResult: JsValue = contentAsJson(result)
       (jsonResult \ "internalId").as[String] shouldBe internalId
       (jsonResult \ "externalId").as[String] shouldBe externalId
       (jsonResult \ "applicationId").as[String] shouldBe applicationId
@@ -114,15 +110,15 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
       when(
         mockAuthConnector
           .authorise(
-            any(),
-            meq(allUserDetails and Retrievals.internalId and Retrievals.externalId and Retrievals.applicationId)
-          )(any(), any())
+            *,
+            eqTo(allUserDetails and Retrievals.internalId and Retrievals.externalId and Retrievals.applicationId)
+          )(*, *)
       ).thenReturn(failed(InvalidBearerToken()))
 
-      val result: Result = await(underTest.handleDave()(FakeRequest()))
+      val result = underTest.handleDave()(FakeRequest())
 
       status(result) shouldBe UNAUTHORIZED
-      val jsonResult: JsValue = jsonBodyOf(result)
+      val jsonResult: JsValue = contentAsJson(result)
       (jsonResult \ "errorMessage").as[String] shouldBe "Invalid bearer token"
     }
   }
@@ -135,16 +131,16 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
       private val retrievedApplicationName = "retrieved-application-name"
       private val retrievedApplicationId = "retrieved-application-id"
 
-      when(mockAuthConnector.authorise(any(), meq(authProviderId and credentials and clientId and applicationName and applicationId))(any(), any()))
+      when(mockAuthConnector.authorise(*, eqTo(authProviderId and credentials and clientId and applicationName and applicationId))(*, *))
         .thenReturn(successful(
           new ~(new ~(new ~(new ~(retrievedAuthProviderId, Some(retrievedCredentials)), Some(retrievedClientId)),
             Some(retrievedApplicationName)), Some(retrievedApplicationId))))
 
-      val result: Result = await(underTest.handleBruce()(FakeRequest()))
+      val result = underTest.handleBruce()(FakeRequest())
 
       status(result) shouldBe OK
 
-      val jsonResult: JsValue = jsonBodyOf(result)
+      val jsonResult: JsValue = contentAsJson(result)
       (jsonResult \ "authProviderId").as[GGCredId] shouldBe retrievedAuthProviderId
       (jsonResult \ "credentials").as[Credentials] shouldBe retrievedCredentials
       (jsonResult \ "clientId").as[String] shouldBe retrievedClientId
@@ -153,13 +149,13 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
     }
 
     "return 401 if the authorisation fails" in new Setup {
-      when(mockAuthConnector.authorise(any(), meq(authProviderId and credentials and clientId and applicationName and applicationId))
-      (any(), any())).thenReturn(failed(InvalidBearerToken()))
+      when(mockAuthConnector.authorise(*, eqTo(authProviderId and credentials and clientId and applicationName and applicationId))
+      (*, *)).thenReturn(failed(InvalidBearerToken()))
 
-      val result: Result = await(underTest.handleBruce()(FakeRequest()))
+      val result = underTest.handleBruce()(FakeRequest())
 
       status(result) shouldBe UNAUTHORIZED
-      val jsonResult: JsValue = jsonBodyOf(result)
+      val jsonResult: JsValue = contentAsJson(result)
       (jsonResult \ "errorMessage").as[String] shouldBe "Invalid bearer token"
     }
   }

@@ -19,19 +19,17 @@ package uk.gov.hmrc.apiplatformtest.services
 import java.util.UUID
 import java.util.UUID.randomUUID
 
-import org.mockito.ArgumentMatchers.{any, eq => meq}
-import org.mockito.Mockito.{verify, when}
-import org.scalatest.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json.parse
 import uk.gov.hmrc.apiplatformtest.connectors.PushPullNotificationsApiConnector
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.test.UnitSpec
+
+import uk.gov.hmrc.util.AsyncHmrcSpec
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class NotificationsServiceSpec extends UnitSpec with MockitoSugar {
+class NotificationsServiceSpec extends AsyncHmrcSpec {
 
   trait Setup{
     implicit val hc: HeaderCarrier = HeaderCarrier()
@@ -46,15 +44,15 @@ class NotificationsServiceSpec extends UnitSpec with MockitoSugar {
 
   "saveNotification" should {
     "save notification using the notifications connector" in new Setup {
-      when(mockPushPullNotificationsApiConnector.saveNotification(any(), any())(any())).thenReturn(Future.successful(notificationId))
+      when(mockPushPullNotificationsApiConnector.saveNotification(*, *)(*)).thenReturn(Future.successful(notificationId))
 
-      val result: String = await(underTest.saveNotification(boxId, payload))
+      await(underTest.saveNotification(boxId, payload))
 
-      verify(mockPushPullNotificationsApiConnector).saveNotification(meq(boxId), meq(payload))(any())
+      verify(mockPushPullNotificationsApiConnector).saveNotification(eqTo(boxId), eqTo(payload))(*)
     }
 
     "return the notification ID" in new Setup {
-      when(mockPushPullNotificationsApiConnector.saveNotification(any(), any())(any())).thenReturn(Future.successful(notificationId))
+      when(mockPushPullNotificationsApiConnector.saveNotification(*, *)(*)).thenReturn(Future.successful(notificationId))
 
       val result: String = await(underTest.saveNotification(boxId, payload))
 
@@ -64,7 +62,7 @@ class NotificationsServiceSpec extends UnitSpec with MockitoSugar {
 
   "getBox" should {
     "return the box ID" in new Setup {
-      when(mockPushPullNotificationsApiConnector.getBoxId(any())(any())).thenReturn(Future.successful(boxId))
+      when(mockPushPullNotificationsApiConnector.getBoxId(*)(*)).thenReturn(Future.successful(boxId))
 
       val result: UUID = await(underTest.getBox(clientId))
 

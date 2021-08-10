@@ -33,10 +33,11 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json.parse
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.{HeaderCarrier, NotFoundException}
-import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.util.AsyncHmrcSpec
+import uk.gov.hmrc.http.UpstreamErrorResponse
 
 class PushPullNotificationsApiConnectorSpec
-    extends UnitSpec
+    extends AsyncHmrcSpec
     with GuiceOneAppPerSuite
     with BeforeAndAfterAll with BeforeAndAfterEach {
 
@@ -110,15 +111,15 @@ class PushPullNotificationsApiConnectorSpec
       result shouldBe notificationId
     }
 
-    "throw not found exception when the box does not exist" in new Setup {
+    "throw upstream error response exception with statusCode of NOT_FOUND when the box does not exist" in new Setup {
       wireMockServer.stubFor(
         post(notificationsPath).withRequestBody(equalTo(Json.stringify(payload)))
           .willReturn(aResponse()
             .withStatus(NOT_FOUND)))
 
-      intercept[NotFoundException] {
+      intercept[UpstreamErrorResponse] {
         await(underTest.saveNotification(boxId, payload))
-      }
+      }.statusCode shouldBe NOT_FOUND
     }
   }
 
@@ -126,26 +127,34 @@ class PushPullNotificationsApiConnectorSpec
     "return the box ID" in new Setup {
       wireMockServer.stubFor(
         get(urlPathEqualTo(boxPath))
-          .withQueryParam("boxName", equalTo(encodedBoxName)).withQueryParam("clientId", equalTo(clientId))
+          .withQueryParam("boxName", equalTo(encodedBoxName))
+          .withQueryParam("clientId", equalTo(clientId))
           .willReturn(aResponse()
             .withHeader(CONTENT_TYPE, "application/json")
             .withBody(Json.stringify(Json.obj("boxId" -> boxId)))
-            .withStatus(OK)))
+            .withStatus(OK)
+          )
+      )
 
       val result: UUID = await(underTest.getBoxId(clientId))
 
       result shouldBe boxId
     }
 
-    "throw not found exception when the box does not exist" in new Setup {
+    "throw upstream error response exception with statusCode of NOT_FOUND when the box does not exist" in new Setup {
       wireMockServer.stubFor(
         get(urlPathEqualTo(boxPath))
-          .withQueryParam("boxName", equalTo(encodedBoxName)).withQueryParam("clientId", equalTo(clientId))
-          .willReturn(aResponse().withStatus(NOT_FOUND)))
+          .withQueryParam("boxName", equalTo(encodedBoxName))
+          .withQueryParam("clientId", equalTo(clientId))
+          .willReturn(aResponse()
+            .withStatus(NOT_FOUND)
+            .withBody("{}")
+          )
+      )
 
-      intercept[NotFoundException] {
+      intercept[UpstreamErrorResponse] {
         await(underTest.getBoxId(clientId))
-      }
+      }.statusCode shouldBe NOT_FOUND
     }
   }
 }
