@@ -4,6 +4,7 @@ object ScoverageSettings {
   def apply() = Seq(
     // Semicolon-separated list of regexs matching classes to exclude
     coverageExcludedPackages :=
+        """.*definition.*;""" +
         """uk\.gov\.hmrc\.BuildInfo;""" +
         """.*\.Routes;""" +
         """.*\.RoutesPrefix;""" +

@@ -17,7 +17,6 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import javax.inject.{Inject, Singleton}
-import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.apiplatformtest.models.Header
@@ -26,18 +25,19 @@ import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions}
 import uk.gov.hmrc.http.controllers.RestFormats.localDateFormats
-import uk.gov.hmrc.play.bootstrap.controller.BackendController
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future.successful
+import uk.gov.hmrc.apiplatformtest.utils.ApplicationLogger
 
 @Singleton
 class HelloController @Inject()(override val authConnector: AuthConnector, cc: ControllerComponents)(implicit val ec: ExecutionContext)
-  extends BackendController(cc) with AuthorisedFunctions {
+  extends BackendController(cc) with AuthorisedFunctions with ApplicationLogger {
 
 
   def handle: Action[AnyContent] = Action.async { request =>
-    Logger.warn(s"Application ID: ${request.headers.get("x-application-id").getOrElse("Not Found")}")
+    logger.warn(s"Application ID: ${request.headers.get("x-application-id").getOrElse("Not Found")}")
     successful(Ok(Json.toJson("""{ "message": "Hello World" }""")))
   }
 

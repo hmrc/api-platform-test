@@ -33,38 +33,53 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.successful
 import scala.concurrent.duration._
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
+import uk.gov.hmrc.http.HeaderCarrier
+import play.api.libs.json.JsValue
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 class NotificationsControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerSuite with StubControllerComponentsFactory with Eventually {
 
-  implicit val actorSystemTest: ActorSystem = app.injector.instanceOf[ActorSystem]
-  implicit val mat: Materializer = app.injector.instanceOf[Materializer]
+  implicit val actorSystemTest: ActorSystem = app.actorSystem
+  implicit val mat: Materializer = app.materializer
 
   val boxId: UUID = randomUUID
   val clientId: String = randomUUID.toString
   val notificationId: String = randomUUID.toString
 
+  class FakeNotificationsService(cdl: CountDownLatch)(override implicit val ec: ExecutionContext) extends NotificationsService(null)(ec) {
+    override def getBox(clientId: String)(implicit hc: HeaderCarrier): Future[UUID] = successful(boxId)
+
+    override def saveNotification(boxId: UUID, payload: JsValue)(implicit hc: HeaderCarrier): Future[String] = {
+      cdl.countDown()
+      successful(notificationId)
+    }
+  }
+  
   trait Setup {
     val mockNotificationsService: NotificationsService = mock[NotificationsService]
-    val underTest = new NotificationsController(stubControllerComponents(), stubPlayBodyParsers, actorSystemTest, mockNotificationsService)
+    val cdl = new CountDownLatch(1)
+    val underTest = new NotificationsController(stubControllerComponents(), stubPlayBodyParsers, actorSystemTest, new FakeNotificationsService(cdl))
   }
 
   "saveNotification" should {
     val request = FakeRequest().withHeaders("X-Client-ID" -> clientId)
 
-    "eventually save notification using the notifications service" in new Setup {
-      when(mockNotificationsService.getBox(eqTo(clientId))(*)).thenReturn(successful(boxId))
-      when(mockNotificationsService.saveNotification(*, *)(*)).thenReturn(successful(notificationId))
-
+    "not save notification immediately" in new Setup {
       await(underTest.triggerNotification()(request))
 
-      eventually(timeout(3.seconds), interval(100.milliseconds)) {
-        verify(mockNotificationsService).saveNotification(eqTo(boxId), *)(*)
-      }
+      cdl.await(5, TimeUnit.MILLISECONDS) shouldBe false  // HAS NOT SENT YET
+    }
+
+    "eventually save notification using the notifications service" in new Setup {
+      await(underTest.triggerNotification()(request))
+
+      cdl.await(3, TimeUnit.SECONDS) shouldBe true  // HAS NOW SENT IT
     }
 
     "return 200 with the box ID and correlation ID" in new Setup {
-      when(mockNotificationsService.getBox(eqTo(clientId))(*)).thenReturn(successful(boxId))
-
       val result = underTest.triggerNotification()(request)
 
       status(result) shouldBe OK

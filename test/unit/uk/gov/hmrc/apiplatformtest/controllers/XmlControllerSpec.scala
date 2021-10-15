@@ -24,7 +24,7 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
 import scala.xml.NodeSeq
-import play.api.test.NoMaterializer
+import akka.stream.testkit.NoMaterializer
 
 class XmlControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory with StubPlayBodyParsersFactory {
 

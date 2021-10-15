@@ -28,3 +28,10 @@ case object ErrorGenericBadRequest extends ErrorResponse(400,"BAD_REQUEST", "Bad
 case object ErrorAcceptHeaderInvalid extends ErrorResponse(406,"ACCEPT_HEADER_INVALID", "The accept header is missing or invalid")
 case object ErrorInternalServerError extends ErrorResponse(500,"INTERNAL_SERVER_ERROR", "Internal server error")
 case object ErrorGatewayTimeout extends ErrorResponse(504,"GATEWAY_TIMEOUT", "The request has timed out")
+
+object ErrorResponse {
+  import play.api.libs.json.Json
+
+  implicit val errorAcceptHeaderInvalid = Json.format[ErrorAcceptHeaderInvalid.type]
+  implicit val errorInternalServerErrorFormat = Json.format[ErrorInternalServerError.type]
+}

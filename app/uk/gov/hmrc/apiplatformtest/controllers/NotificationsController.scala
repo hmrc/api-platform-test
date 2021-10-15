@@ -23,12 +23,12 @@ import java.util.concurrent.TimeUnit
 import akka.actor.ActorSystem
 import akka.pattern.after
 import javax.inject.{Inject, Singleton}
-import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents, PlayBodyParsers}
 import uk.gov.hmrc.apiplatformtest.services.NotificationsService
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.bootstrap.controller.BackendController
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
+import uk.gov.hmrc.apiplatformtest.utils.ApplicationLogger
 
 import scala.concurrent.Future.successful
 import scala.concurrent.duration.FiniteDuration
@@ -39,7 +39,7 @@ class NotificationsController @Inject()(cc: ControllerComponents,
                                         parsers: PlayBodyParsers,
                                         actorSystem: ActorSystem,
                                         notificationsService: NotificationsService)
-                                       (implicit val ec: ExecutionContext) extends BackendController(cc) {
+                                       (implicit val ec: ExecutionContext) extends BackendController(cc) with ApplicationLogger {
 
   def triggerNotification(): Action[AnyContent] = Action.async { implicit request =>
     def runAsyncProcess(boxId: UUID, correlationId: UUID)(implicit hc: HeaderCarrier): Future[String] = {
@@ -59,14 +59,14 @@ class NotificationsController @Inject()(cc: ControllerComponents,
           Ok(Json.obj("boxId" -> boxId, "correlationId" -> correlationId))
         }
       case _ =>
-        Logger.error("X-Client-ID is missing")
+        logger.error("X-Client-ID is missing")
         successful(Status(ErrorInternalServerError.httpStatusCode)(Json.toJson(ErrorInternalServerError)))
     }
   }
 
   def handleNotificationPush(status: Option[Int], delayInSeconds: Option[Int]): Action[String] = Action.async(parsers.tolerantText) { implicit request =>
     val bodyToLog = if (request.body.length > 10240) request.body.substring(0,10240) + "...(truncated to 10kb)" else request.body
-      Logger.info(s"Received notification with payload '${bodyToLog}' and headers '${request.headers.toMap}'")
+      logger.info(s"Received notification with payload '${bodyToLog}' and headers '${request.headers.toMap}'")
     val delay = FiniteDuration(delayInSeconds.getOrElse(0), TimeUnit.SECONDS)
     after(delay, actorSystem.scheduler)(successful(new Status(status.getOrElse(OK))))
   }
