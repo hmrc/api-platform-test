@@ -24,7 +24,7 @@ import uk.gov.hmrc.apiplatformtest.connectors.CreateNotificationResponse.formatC
 import uk.gov.hmrc.apiplatformtest.connectors.PushPullNotificationsApiConnector.Config
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.HttpReads.Implicits._
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.HttpClient
 
 import scala.concurrent.{ExecutionContext, Future}
 import uk.gov.hmrc.http.UpstreamErrorResponse

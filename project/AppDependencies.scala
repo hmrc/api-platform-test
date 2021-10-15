@@ -7,17 +7,17 @@ object AppDependencies {
 
   private lazy val compile = Seq(
     ws,
-    "uk.gov.hmrc"                   %% "bootstrap-backend-play-26"        % "5.10.0",
-    "uk.gov.hmrc"                   %% "domain"                           % "5.6.0-play-26",
+    "uk.gov.hmrc"                   %% "bootstrap-backend-play-28"        % "5.15.0",
+    "com.typesafe.play"             %% "play-json"                        % "2.9.2",
+    "com.typesafe.play"             %% "play-json-joda"                   % "2.9.2",
+    "uk.gov.hmrc"                   %% "domain"                           % "6.2.0-play-28",
     "ch.qos.logback"                %  "logback-classic"                  % "1.2.3",
     "uk.gov.hmrc"                   %% "logback-json-logger"              % "4.6.0"
   )
 
   private lazy val test = Seq(
-    "org.pegdown"                   %  "pegdown"                          % "1.6.0",
-    "com.typesafe.play"             %% "play-test"                        % PlayVersion.current,
-    "org.scalatestplus.play"        %% "scalatestplus-play"               % "3.1.3",
-    "org.mockito"                   %% "mockito-scala-scalatest"          % "1.7.1",
+    "uk.gov.hmrc"                   %% "bootstrap-test-play-28"           % "5.15.0",
+    "org.mockito"                   %% "mockito-scala-scalatest"          % "1.16.42",
     "com.github.tomakehurst"        %  "wiremock-jre8-standalone"         % "2.27.1"
-  ).map (m => m % "test")
+  ).map (_ % "test")
 }

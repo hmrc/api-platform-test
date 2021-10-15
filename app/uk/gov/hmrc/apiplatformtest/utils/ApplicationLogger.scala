@@ -14,22 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.apiplatformtest.controllers
+package uk.gov.hmrc.apiplatformtest.utils
 
-import javax.inject.{Inject, Singleton}
-import play.api.libs.json._
-import play.api.mvc._
-import uk.gov.hmrc.apiplatformtest.services.HashingAlgorithm
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
+import play.api.Logger
 
-@Singleton
-class NrsController @Inject()(cc: ControllerComponents, parsers: PlayBodyParsers) extends BackendController(cc) {
-
-  final def handleNrsPost(): Action[String] = {
-    Action(parsers.tolerantText) { implicit request =>
-      val hash = HashingAlgorithm.sha256Hash(request.body)
-      Ok(Json.obj("hash" -> hash))
-    }
-  }
-
+trait ApplicationLogger {
+  val logger = Logger("application")
 }

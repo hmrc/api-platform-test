@@ -22,8 +22,8 @@ import play.api.test.Helpers._
 import play.api.libs.json.Json.parse
 import play.api.test.{FakeRequest, StubBodyParserFactory, StubControllerComponentsFactory}
 import uk.gov.hmrc.util.AsyncHmrcSpec
-import play.api.test.NoMaterializer
 import play.api.libs.json.Json
+import akka.stream.testkit.NoMaterializer
 
 class JsonControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory with StubBodyParserFactory {
 

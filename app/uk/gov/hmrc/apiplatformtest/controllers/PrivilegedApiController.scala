@@ -23,7 +23,7 @@ import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatPrivilegedAccessA
 import uk.gov.hmrc.apiplatformtest.models.PrivilegedAccessAnswer
 import uk.gov.hmrc.auth.core.AuthProvider.PrivilegedApplication
 import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.play.bootstrap.controller.BackendController
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future.successful
