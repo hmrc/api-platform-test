@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,6 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import java.util.UUID.randomUUID
-
-import org.joda.time.LocalDate
 import play.api.http.Status.{OK, UNAUTHORIZED}
 import play.api.libs.json.JsValue
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
@@ -32,9 +30,9 @@ import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core.retrieve._
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.controllers.RestFormats.localDateFormats
-
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
+import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.{failed, successful}
 
@@ -69,7 +67,6 @@ class HelloWorldControllerSpec extends AsyncHmrcSpec with StubControllerComponen
       private val credentialRole = User
       private val description = randomUUID.toString
       private val groupIdentifier = randomUUID.toString
-      private val unreadMessageCount = 1
       private val headers: Seq[(String, String)] = Seq("Host" -> "localhost", "User-Agent" -> "api-platform-test", "Client-ID" -> randomUUID.toString)
       when(
         mockAuthConnector
@@ -78,9 +75,9 @@ class HelloWorldControllerSpec extends AsyncHmrcSpec with StubControllerComponen
             eqTo(allUserDetails and Retrievals.internalId and Retrievals.externalId and Retrievals.applicationId)
           )(*, *)
       ).thenReturn(
-        successful(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(Some(credentials), Some(name)),
+        successful(new ~(new ~(new ~(new  ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(Some(credentials), Some(name)),
           Some(dateOfBirth)), Some(postCode)), Some(email)), Some(affinityGroup)), Some(agentCode)), agentInformation), Some(credentialRole)),
-          Some(description)), Some(groupIdentifier)), Some(unreadMessageCount)), Some(internalId)), Some(externalId)), Some(applicationId))
+          Some(description)), Some(groupIdentifier)), Some(internalId)), Some(externalId)), Some(applicationId))
         )
       )
 
@@ -102,7 +99,6 @@ class HelloWorldControllerSpec extends AsyncHmrcSpec with StubControllerComponen
       (jsonResult \ "credentialRole").as[CredentialRole] shouldBe credentialRole
       (jsonResult \ "description").as[String] shouldBe description
       (jsonResult \ "groupIdentifier").as[String] shouldBe groupIdentifier
-      (jsonResult \ "unreadMessageCount").as[Int] shouldBe unreadMessageCount
       (jsonResult \ "headers").as[Seq[Header]] shouldBe headers.map(h => Header(h._1, h._2))
     }
 

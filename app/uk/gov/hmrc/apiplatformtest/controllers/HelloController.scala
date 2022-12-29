@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ class HelloController @Inject()(override val authConnector: AuthConnector, cc: C
   def handleDave: Action[AnyContent] = Action.async { implicit request =>
     authorised().retrieve(allUserDetails and internalId and externalId and applicationId) {
       case credentials ~ name ~ dateOfBirth ~ postCode ~ email ~ affinityGroup ~ agentCode ~ agentInformation ~
-        credentialRole ~ description ~ groupIdentifier ~ unreadMessageCount ~ internalId ~ externalId ~ applicationId =>
+        credentialRole ~ description ~ groupIdentifier ~  internalId ~ externalId ~ applicationId =>
         successful(Ok(Json.obj(
           "internalId" -> internalId,
           "externalId" -> externalId,
@@ -60,7 +60,6 @@ class HelloController @Inject()(override val authConnector: AuthConnector, cc: C
           "credentialRole" -> credentialRole,
           "description" -> description,
           "groupIdentifier" -> groupIdentifier,
-          "unreadMessageCount" -> unreadMessageCount,
           "headers" -> request.headers.headers.map(h => Header(h._1, h._2))
         )))
     } recover {
