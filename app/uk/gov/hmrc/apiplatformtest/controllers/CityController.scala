@@ -20,7 +20,7 @@ import javax.inject.{Inject, Singleton}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 
 @Singleton
-class CityController @Inject()(cc: ControllerComponents) extends CommonController(cc) {
+class CityController @Inject() (cc: ControllerComponents) extends CommonController(cc) {
 
   def showCityAndAddress(cityName: String): Action[AnyContent] =
     Action.async { implicit request => success(s"City: $cityName, Address: Oxford Street") }
@@ -29,5 +29,3 @@ class CityController @Inject()(cc: ControllerComponents) extends CommonControlle
     Action.async { implicit request => success(s"City: $cityName, Postcode: $postcode") }
 
 }
-
-

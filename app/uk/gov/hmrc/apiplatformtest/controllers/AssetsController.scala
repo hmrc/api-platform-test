@@ -27,11 +27,8 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class AssetsController @Inject()(cc: ControllerComponents,
-                                 actorSystem: ActorSystem,
-                                 appContext: AppContext,
-                                 assets: Assets)
-                                (implicit val ec: ExecutionContext) extends BackendController(cc) {
+class AssetsController @Inject() (cc: ControllerComponents, actorSystem: ActorSystem, appContext: AppContext, assets: Assets)(implicit val ec: ExecutionContext)
+    extends BackendController(cc) {
 
   def at(file: String): Action[AnyContent] = Action.async { implicit request =>
     after(appContext.assetsDelay, actorSystem.scheduler) {

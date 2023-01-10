@@ -22,13 +22,15 @@ import uk.gov.hmrc.apiplatformtest.connectors.PushPullNotificationsApiConnector
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 class ConfigurationModule extends AbstractModule {
+
   override def configure(): Unit = {
-      bind(classOf[PushPullNotificationsApiConnector.Config]).toProvider(classOf[PushPullNotificationsApiConnectorConfigProvider])
+    bind(classOf[PushPullNotificationsApiConnector.Config]).toProvider(classOf[PushPullNotificationsApiConnectorConfigProvider])
   }
 }
 
 @Singleton
-class PushPullNotificationsApiConnectorConfigProvider @Inject()(sc: ServicesConfig) extends Provider[PushPullNotificationsApiConnector.Config] {
+class PushPullNotificationsApiConnectorConfigProvider @Inject() (sc: ServicesConfig) extends Provider[PushPullNotificationsApiConnector.Config] {
+
   override def get(): PushPullNotificationsApiConnector.Config = {
     lazy val baseUrl = sc.baseUrl("push-pull-notifications-api")
     PushPullNotificationsApiConnector.Config(baseUrl)

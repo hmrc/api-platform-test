@@ -24,10 +24,10 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import scala.concurrent.Future._
 
 @Singleton
-class JsonController @Inject()(cc: ControllerComponents, parsers: PlayBodyParsers) extends BackendController(cc) {
+class JsonController @Inject() (cc: ControllerComponents, parsers: PlayBodyParsers) extends BackendController(cc) {
 
   val VndHmrcJson50: String = "application/vnd.hmrc.5.0+json"
-  val AcceptsJson50 = Accepting(VndHmrcJson50)
+  val AcceptsJson50         = Accepting(VndHmrcJson50)
 
   final def handleJsonPost(): Action[JsValue] = {
     Action.async(parsers.json) { implicit request =>
@@ -38,4 +38,3 @@ class JsonController @Inject()(cc: ControllerComponents, parsers: PlayBodyParser
     }
   }
 }
-

@@ -23,18 +23,17 @@ import scala.concurrent.Future.successful
 import scala.xml.NodeSeq
 
 @Singleton
-class XmlController @Inject()(cc: ControllerComponents, parsers: PlayBodyParsers) extends CommonController(cc) {
+class XmlController @Inject() (cc: ControllerComponents, parsers: PlayBodyParsers) extends CommonController(cc) {
 
   val VndHmrcXml50: String = "application/vnd.hmrc.5.0+xml"
-  val AcceptsXml50 = Accepting(VndHmrcXml50)
+  val AcceptsXml50         = Accepting(VndHmrcXml50)
 
   final def handleXmlPost(): Action[NodeSeq] =
     Action.async(parsers.xml) {
       implicit request: Request[NodeSeq] =>
         render.async {
           case AcceptsXml50() => successful(Ok(<Ping>{request.body.head}</Ping>).as(XML))
-          case _ => successful(UnsupportedMediaType)
+          case _              => successful(UnsupportedMediaType)
         }
     }
 }
-

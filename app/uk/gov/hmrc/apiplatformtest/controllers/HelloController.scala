@@ -32,9 +32,8 @@ import scala.concurrent.Future.successful
 import uk.gov.hmrc.apiplatformtest.utils.ApplicationLogger
 
 @Singleton
-class HelloController @Inject()(override val authConnector: AuthConnector, cc: ControllerComponents)(implicit val ec: ExecutionContext)
-  extends BackendController(cc) with AuthorisedFunctions with ApplicationLogger {
-
+class HelloController @Inject() (override val authConnector: AuthConnector, cc: ControllerComponents)(implicit val ec: ExecutionContext)
+    extends BackendController(cc) with AuthorisedFunctions with ApplicationLogger {
 
   def handle: Action[AnyContent] = Action.async { request =>
     logger.warn(s"Application ID: ${request.headers.get("x-application-id").getOrElse("Not Found")}")
@@ -44,23 +43,23 @@ class HelloController @Inject()(override val authConnector: AuthConnector, cc: C
   def handleDave: Action[AnyContent] = Action.async { implicit request =>
     authorised().retrieve(allUserDetails and internalId and externalId and applicationId) {
       case credentials ~ name ~ dateOfBirth ~ postCode ~ email ~ affinityGroup ~ agentCode ~ agentInformation ~
-        credentialRole ~ description ~ groupIdentifier ~  internalId ~ externalId ~ applicationId =>
+          credentialRole ~ description ~ groupIdentifier ~ internalId ~ externalId ~ applicationId =>
         successful(Ok(Json.obj(
-          "internalId" -> internalId,
-          "externalId" -> externalId,
-          "applicationId" -> applicationId,
-          "credentials" -> credentials,
-          "name" -> name,
-          "dateOfBirth" -> dateOfBirth,
-          "postCode" -> postCode,
-          "email" -> email,
-          "affinityGroup" -> affinityGroup,
-          "agentCode" -> agentCode,
+          "internalId"       -> internalId,
+          "externalId"       -> externalId,
+          "applicationId"    -> applicationId,
+          "credentials"      -> credentials,
+          "name"             -> name,
+          "dateOfBirth"      -> dateOfBirth,
+          "postCode"         -> postCode,
+          "email"            -> email,
+          "affinityGroup"    -> affinityGroup,
+          "agentCode"        -> agentCode,
           "agentInformation" -> agentInformation,
-          "credentialRole" -> credentialRole,
-          "description" -> description,
-          "groupIdentifier" -> groupIdentifier,
-          "headers" -> request.headers.headers.map(h => Header(h._1, h._2))
+          "credentialRole"   -> credentialRole,
+          "description"      -> description,
+          "groupIdentifier"  -> groupIdentifier,
+          "headers"          -> request.headers.headers.map(h => Header(h._1, h._2))
         )))
     } recover {
       case e: AuthorisationException => Unauthorized(Json.obj("errorMessage" -> e.getMessage))
@@ -72,11 +71,13 @@ class HelloController @Inject()(override val authConnector: AuthConnector, cc: C
       case authProviderId ~ credentials ~ clientId ~ applicationName ~ applicationId =>
         successful(Ok(
           Json.obj(
-            "authProviderId" -> authProviderId,
-            "credentials" -> credentials,
-            "clientId" -> clientId,
+            "authProviderId"  -> authProviderId,
+            "credentials"     -> credentials,
+            "clientId"        -> clientId,
             "applicationName" -> applicationName,
-            "applicationId" -> applicationId)))
+            "applicationId"   -> applicationId
+          )
+        ))
     } recover {
       case e: AuthorisationException => Unauthorized(Json.obj("errorMessage" -> e.getMessage))
     }

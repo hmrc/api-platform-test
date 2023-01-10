@@ -25,12 +25,12 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import controllers.Assets
 
 @Singleton
-class DocumentationController @Inject()(
-  assets: Assets,
-  httpErrorHandler: HttpErrorHandler,
-  appContext: AppContext,
-  cc: ControllerComponents
-) extends BackendController(cc) {
+class DocumentationController @Inject() (
+    assets: Assets,
+    httpErrorHandler: HttpErrorHandler,
+    appContext: AppContext,
+    cc: ControllerComponents
+  ) extends BackendController(cc) {
 
   def definition = Action {
     Ok(txt.definition(ApiAccess.build(appContext.access)))
@@ -41,4 +41,3 @@ class DocumentationController @Inject()(
     assets.at(s"/public/api/conf/$version", file)
   }
 }
-

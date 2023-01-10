@@ -26,8 +26,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class NotificationsService @Inject()(pushPullNotificationsApiConnector: PushPullNotificationsApiConnector)
-                                    (implicit val ec: ExecutionContext) {
+class NotificationsService @Inject() (pushPullNotificationsApiConnector: PushPullNotificationsApiConnector)(implicit val ec: ExecutionContext) {
 
   def saveNotification(boxId: UUID, payload: JsValue)(implicit hc: HeaderCarrier): Future[String] = {
     pushPullNotificationsApiConnector.saveNotification(boxId, payload)

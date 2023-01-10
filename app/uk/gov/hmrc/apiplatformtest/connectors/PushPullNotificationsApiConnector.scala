@@ -30,8 +30,7 @@ import scala.concurrent.{ExecutionContext, Future}
 import uk.gov.hmrc.http.UpstreamErrorResponse
 
 @Singleton
-class PushPullNotificationsApiConnector @Inject()(http: HttpClient, config: Config)
-                                                 (implicit ec: ExecutionContext) {
+class PushPullNotificationsApiConnector @Inject() (http: HttpClient, config: Config)(implicit ec: ExecutionContext) {
 
   lazy val serviceBaseUrl: String = config.baseUrl
 
@@ -45,7 +44,7 @@ class PushPullNotificationsApiConnector @Inject()(http: HttpClient, config: Conf
     http
       .GET[Either[UpstreamErrorResponse, JsValue]](s"$serviceBaseUrl/box", Seq("boxName" -> "test/api-platform-test##1.0##callbackUrl", "clientId" -> clientId))
       .map {
-        case Right(r) => (r \ "boxId").as[UUID]
+        case Right(r)  => (r \ "boxId").as[UUID]
         case Left(err) => throw err
       }
   }

@@ -23,7 +23,7 @@ import uk.gov.hmrc.apiplatformtest.services.HashingAlgorithm
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 @Singleton
-class NrsController @Inject()(cc: ControllerComponents, parsers: PlayBodyParsers) extends BackendController(cc) {
+class NrsController @Inject() (cc: ControllerComponents, parsers: PlayBodyParsers) extends BackendController(cc) {
 
   final def handleNrsPost(): Action[String] = {
     Action(parsers.tolerantText) { implicit request =>

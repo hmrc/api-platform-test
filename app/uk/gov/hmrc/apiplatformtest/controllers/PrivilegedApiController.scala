@@ -29,8 +29,8 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.Future.successful
 
 @Singleton
-class PrivilegedApiController @Inject()(override val authConnector: AuthConnector, cc: ControllerComponents)(implicit val ec: ExecutionContext) extends BackendController(cc) with AuthorisedFunctions {
-
+class PrivilegedApiController @Inject() (override val authConnector: AuthConnector, cc: ControllerComponents)(implicit val ec: ExecutionContext) extends BackendController(cc)
+    with AuthorisedFunctions {
 
   private def fromPrivilegedApplication: Result = {
     Ok(Json.toJson(PrivilegedAccessAnswer("Request coming from a privileged application")))
@@ -49,4 +49,3 @@ class PrivilegedApiController @Inject()(override val authConnector: AuthConnecto
   }
 
 }
-
