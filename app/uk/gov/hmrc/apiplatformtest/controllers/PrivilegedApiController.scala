@@ -29,8 +29,10 @@ import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 @Singleton
-class PrivilegedApiController @Inject() (override val authConnector: AuthConnector, cc: ControllerComponents)(implicit val ec: ExecutionContext) extends BackendController(cc)
-    with AuthorisedFunctions {
+class PrivilegedApiController @Inject() (override val authConnector: AuthConnector,
+                                         cc: ControllerComponents)(
+  implicit val ec: ExecutionContext) extends BackendController(cc)
+  with AuthorisedFunctions {
 
   private def fromPrivilegedApplication: Result = {
     Ok(Json.toJson(PrivilegedAccessAnswer("Request coming from a privileged application")))

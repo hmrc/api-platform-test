@@ -42,7 +42,6 @@ class NotificationsController @Inject() (
     notificationsService: NotificationsService
   )(implicit val ec: ExecutionContext
   ) extends BackendController(cc) with ApplicationLogger {
-
   def triggerNotification(): Action[AnyContent] = Action.async { implicit request =>
     def runAsyncProcess(boxId: UUID, correlationId: UUID)(implicit hc: HeaderCarrier): Future[String] = {
       // Here we would run some asynchronous process, and then save the notification
@@ -67,7 +66,8 @@ class NotificationsController @Inject() (
   }
 
   def handleNotificationPush(status: Option[Int], delayInSeconds: Option[Int]): Action[String] = Action.async(parsers.tolerantText) { implicit request =>
-    val bodyToLog = if (request.body.length > 10240) request.body.substring(0, 10240) + "...(truncated to 10kb)" else request.body
+    lazy val MaxBodyLength: Int =  10240
+    val bodyToLog = if (request.body.length > MaxBodyLength) request.body.substring(0, MaxBodyLength) + "...(truncated to 10kb)" else request.body
     logger.info(s"Received notification with payload '${bodyToLog}' and headers '${request.headers.toMap}'")
     val delay     = FiniteDuration(delayInSeconds.getOrElse(0), TimeUnit.SECONDS)
     after(delay, actorSystem.scheduler)(successful(new Status(status.getOrElse(OK))))
