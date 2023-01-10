@@ -26,7 +26,7 @@ val appName = "api-platform-test"
 
 lazy val playSettings: Seq[Setting[_]] = Seq.empty
 
-lazy val microservice = (project in file("."))
+lazy val microservice = Project(appName, file("."))
   .enablePlugins(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin)
   .disablePlugins(JUnitXmlReportPlugin)
   .settings(playSettings: _*)
@@ -34,17 +34,16 @@ lazy val microservice = (project in file("."))
   .settings(publishingSettings: _*)
   .settings(ScoverageSettings())
   .settings(defaultSettings(): _*)
-  .settings(unmanagedResourceDirectories in Compile += baseDirectory.value / "resources")
+  .settings(Compile / unmanagedResourceDirectories += baseDirectory.value / "resources")
   .settings(
     name := appName,
     majorVersion := 0,
-    targetJvm := "jvm-1.8",
     scalaVersion := "2.12.12",
     PlayKeys.playDefaultPort := 6704,
     libraryDependencies ++= AppDependencies.libraryDependencies,
     routesGenerator := InjectedRoutesGenerator,
-    evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
-    bloopAggregateSourceDependencies in Global := true
+    update / evictionWarningOptions := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
+    Global / bloopAggregateSourceDependencies := true
   )
   .settings(
     inConfig(Test)(BloopDefaults.configSettings),
