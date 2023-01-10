@@ -16,12 +16,9 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import play.api.test.Helpers._
-import play.api.http.Status
-
 import play.api.http.{HeaderNames, MimeTypes, Status}
+import play.api.test.Helpers._
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
-
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
 

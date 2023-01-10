@@ -16,8 +16,10 @@
 
 package uk.gov.hmrc.apiplatformtest.config
 
-import com.google.inject.{AbstractModule, Provider}
 import javax.inject.{Inject, Singleton}
+
+import com.google.inject.{AbstractModule, Provider}
+
 import uk.gov.hmrc.apiplatformtest.connectors.PushPullNotificationsApiConnector
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 

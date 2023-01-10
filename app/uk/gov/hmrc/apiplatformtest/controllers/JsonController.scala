@@ -17,11 +17,11 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.Future._
+
 import play.api.libs.json._
 import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-
-import scala.concurrent.Future._
 
 @Singleton
 class JsonController @Inject() (cc: ControllerComponents, parsers: PlayBodyParsers) extends BackendController(cc) {

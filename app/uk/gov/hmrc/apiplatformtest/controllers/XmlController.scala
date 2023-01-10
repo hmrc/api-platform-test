@@ -17,10 +17,10 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import javax.inject.{Inject, Singleton}
-import play.api.mvc._
-
 import scala.concurrent.Future.successful
 import scala.xml.NodeSeq
+
+import play.api.mvc._
 
 @Singleton
 class XmlController @Inject() (cc: ControllerComponents, parsers: PlayBodyParsers) extends CommonController(cc) {

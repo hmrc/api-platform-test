@@ -16,12 +16,12 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import play.api.libs.json.Json
-import play.api.mvc._
-
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
+
+import play.api.libs.json.Json
+import play.api.mvc._
 
 trait HeaderValidator extends Results {
 

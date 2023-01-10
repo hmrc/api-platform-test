@@ -17,12 +17,14 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import javax.inject.{Inject, Singleton}
+
+import controllers.Assets
+
 import play.api.http.{ContentTypes, HeaderNames, HttpErrorHandler}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.apiplatformtest.config.{ApiAccess, AppContext}
 import uk.gov.hmrc.apiplatformtest.views.txt
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import controllers.Assets
 
 @Singleton
 class DocumentationController @Inject() (

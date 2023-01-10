@@ -16,25 +16,24 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import java.time.LocalDate
 import java.util.UUID.randomUUID
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future.{failed, successful}
+
 import play.api.http.Status.{OK, UNAUTHORIZED}
 import play.api.libs.json.JsValue
-import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import play.api.test.Helpers._
+import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import uk.gov.hmrc.apiplatformtest.models.Header
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters._
 import uk.gov.hmrc.auth.core.AffinityGroup.Individual
 import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.retrieve._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
-import uk.gov.hmrc.auth.core.retrieve._
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.http.controllers.RestFormats.localDateFormats
 import uk.gov.hmrc.util.AsyncHmrcSpec
-
-import java.time.LocalDate
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future.{failed, successful}
 
 class HelloWorldControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory{
 

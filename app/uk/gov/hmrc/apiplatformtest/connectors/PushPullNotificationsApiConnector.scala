@@ -17,17 +17,14 @@
 package uk.gov.hmrc.apiplatformtest.connectors
 
 import java.util.UUID
-
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
+
 import play.api.libs.json.{JsValue, Json, OFormat}
 import uk.gov.hmrc.apiplatformtest.connectors.CreateNotificationResponse.formatCreateNotificationResponse
 import uk.gov.hmrc.apiplatformtest.connectors.PushPullNotificationsApiConnector.Config
-import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.HttpReads.Implicits._
-import uk.gov.hmrc.http.HttpClient
-
-import scala.concurrent.{ExecutionContext, Future}
-import uk.gov.hmrc.http.UpstreamErrorResponse
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, UpstreamErrorResponse}
 
 @Singleton
 class PushPullNotificationsApiConnector @Inject() (http: HttpClient, config: Config)(implicit ec: ExecutionContext) {

@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import uk.gov.hmrc.auth.core.AuthConnector
+import scala.concurrent.Future.{failed, successful}
 
-import org.mockito.MockitoSugar
-import org.mockito.ArgumentMatchersSugar
-import scala.concurrent.Future.{successful, failed}
+import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
+
+import uk.gov.hmrc.auth.core.AuthConnector
 
 trait AuthTestSupport extends MockitoSugar with ArgumentMatchersSugar {
 

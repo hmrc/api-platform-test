@@ -19,20 +19,20 @@ package uk.gov.hmrc.apiplatformtest.controllers
 import java.util.UUID
 import java.util.UUID.randomUUID
 import java.util.concurrent.TimeUnit
-
-import akka.actor.ActorSystem
-import akka.pattern.after
 import javax.inject.{Inject, Singleton}
-import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, ControllerComponents, PlayBodyParsers}
-import uk.gov.hmrc.apiplatformtest.services.NotificationsService
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import uk.gov.hmrc.apiplatformtest.utils.ApplicationLogger
-
 import scala.concurrent.Future.successful
 import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ExecutionContext, Future}
+
+import akka.actor.ActorSystem
+import akka.pattern.after
+
+import play.api.libs.json.Json
+import play.api.mvc.{Action, AnyContent, ControllerComponents, PlayBodyParsers}
+import uk.gov.hmrc.apiplatformtest.services.NotificationsService
+import uk.gov.hmrc.apiplatformtest.utils.ApplicationLogger
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 @Singleton
 class NotificationsController @Inject() (

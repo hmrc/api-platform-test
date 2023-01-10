@@ -17,13 +17,12 @@
 package uk.gov.hmrc.apiplatformtest.services
 
 import java.util.UUID
-
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
+
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.apiplatformtest.connectors.PushPullNotificationsApiConnector
 import uk.gov.hmrc.http.HeaderCarrier
-
-import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class NotificationsService @Inject() (pushPullNotificationsApiConnector: PushPullNotificationsApiConnector)(implicit val ec: ExecutionContext) {

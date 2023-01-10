@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.apiplatformtest.config
 
-import play.api.{Configuration, Environment, Mode}
-import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
-
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.duration.{Duration, FiniteDuration}
+
+import play.api.{Configuration, Environment, Mode}
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 @Singleton
 class AppContext @Inject() (runModeConfiguration: Configuration, environment: Environment, servicesConfig: ServicesConfig) {

@@ -17,19 +17,18 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future.successful
+
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.apiplatformtest.models.Header
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters._
+import uk.gov.hmrc.apiplatformtest.utils.ApplicationLogger
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions}
-import uk.gov.hmrc.http.controllers.RestFormats.localDateFormats
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future.successful
-import uk.gov.hmrc.apiplatformtest.utils.ApplicationLogger
 
 @Singleton
 class HelloController @Inject() (override val authConnector: AuthConnector, cc: ControllerComponents)(implicit val ec: ExecutionContext)

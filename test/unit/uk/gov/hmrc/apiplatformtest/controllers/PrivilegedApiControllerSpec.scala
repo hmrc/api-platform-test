@@ -17,15 +17,13 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 import play.api.http.{HeaderNames, MimeTypes, Status}
+import play.api.test.Helpers._
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import uk.gov.hmrc.auth.core.UnsupportedAuthProvider
-
-import play.api.test.Helpers._
-
 import uk.gov.hmrc.util.AsyncHmrcSpec
-
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class PrivilegedApiControllerSpec extends AsyncHmrcSpec with AuthTestSupport with StubControllerComponentsFactory  {
 

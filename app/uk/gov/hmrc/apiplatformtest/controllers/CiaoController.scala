@@ -17,6 +17,7 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import javax.inject.{Inject, Singleton}
+
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 
 @Singleton

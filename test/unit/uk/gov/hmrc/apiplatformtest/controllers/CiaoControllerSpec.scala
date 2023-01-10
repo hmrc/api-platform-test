@@ -22,7 +22,6 @@ import play.api.test.Helpers._
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import uk.gov.hmrc.apiplatformtest.models.DummyAnswer
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatDummyAnswer
-
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
 class CiaoControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory {

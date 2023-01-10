@@ -16,15 +16,16 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.ExecutionContext
+
 import akka.actor.ActorSystem
 import akka.pattern.after
 import controllers.Assets
+
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.apiplatformtest.config.AppContext
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
 
 @Singleton
 class AssetsController @Inject() (cc: ControllerComponents, actorSystem: ActorSystem, appContext: AppContext, assets: Assets)(implicit val ec: ExecutionContext)

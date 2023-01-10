@@ -16,21 +16,21 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import akka.actor.ActorSystem
-import controllers.Assets
-import org.joda.time.DateTime
-import play.api.http.Status.OK
-import play.api.mvc.Results.Ok
-import play.api.mvc.{Action, ActionBuilder, AnyContent}
-import play.api.test.{FakeRequest, StubControllerComponentsFactory}
-import uk.gov.hmrc.apiplatformtest.config.AppContext
-import play.api.test.Helpers._
-
-import uk.gov.hmrc.util.AsyncHmrcSpec
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.successful
 import scala.concurrent.duration._
+
+import akka.actor.ActorSystem
+import controllers.Assets
+import org.joda.time.DateTime
+
+import play.api.http.Status.OK
+import play.api.mvc.Results.Ok
+import play.api.mvc.{Action, ActionBuilder, AnyContent}
+import play.api.test.Helpers._
+import play.api.test.{FakeRequest, StubControllerComponentsFactory}
+import uk.gov.hmrc.apiplatformtest.config.AppContext
+import uk.gov.hmrc.util.AsyncHmrcSpec
 
 class AssetsControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory {
   implicit val actorSystemTest: ActorSystem = ActorSystem("test-actor-system")
