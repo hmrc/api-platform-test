@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import uk.gov.hmrc.auth.core.AuthConnector
+import scala.concurrent.Future.{failed, successful}
 
-import org.mockito.MockitoSugar
-import org.mockito.ArgumentMatchersSugar
-import scala.concurrent.Future.{successful, failed}
+import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
+
+import uk.gov.hmrc.auth.core.AuthConnector
 
 trait AuthTestSupport extends MockitoSugar with ArgumentMatchersSugar {
 

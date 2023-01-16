@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,12 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.Future
+
 import play.api.libs.json._
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.apiplatformtest.controllers.HeadersControllerDomain._
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-
-import scala.concurrent.Future
-
 
 object HeadersControllerDomain {
   case class IdField(name: String, value: String)
@@ -34,11 +33,9 @@ object HeadersControllerDomain {
 }
 
 @Singleton
-class HeadersController @Inject()(cc: ControllerComponents) extends BackendController(cc) {
-
+class HeadersController @Inject() (cc: ControllerComponents) extends BackendController(cc) {
 
   def handle: Action[AnyContent] = Action.async { implicit request =>
-
     def headersWeWant(headerName: String): Boolean = {
       val h = headerName.toUpperCase
 
@@ -48,12 +45,12 @@ class HeadersController @Inject()(cc: ControllerComponents) extends BackendContr
     def findIdHeader(headerName: String): (String, String) = {
       request.headers.headers
         .find(p => p._1.toUpperCase.contains(headerName.toUpperCase) && p._1.toUpperCase.endsWith("ID"))
-        .getOrElse( ("Absent", "-") )
+        .getOrElse(("Absent", "-"))
     }
 
     val requestId = findIdHeader("REQUEST")
-    val clientId = findIdHeader("CLIENT")
-    val response = Payload(IdField(requestId._1, requestId._2), IdField(clientId._1, clientId._2))
+    val clientId  = findIdHeader("CLIENT")
+    val response  = Payload(IdField(requestId._1, requestId._2), IdField(clientId._1, clientId._2))
 
     Future.successful(Ok(Json.toJson(response))
       .withHeaders(request.headers.headers.filter(p => headersWeWant(p._1)): _*))

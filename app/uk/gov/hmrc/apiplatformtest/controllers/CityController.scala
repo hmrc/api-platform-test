@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,11 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import javax.inject.{Inject, Singleton}
+
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 
 @Singleton
-class CityController @Inject()(cc: ControllerComponents) extends CommonController(cc) {
+class CityController @Inject() (cc: ControllerComponents) extends CommonController(cc) {
 
   def showCityAndAddress(cityName: String): Action[AnyContent] =
     Action.async { implicit request => success(s"City: $cityName, Address: Oxford Street") }
@@ -29,5 +30,3 @@ class CityController @Inject()(cc: ControllerComponents) extends CommonControlle
     Action.async { implicit request => success(s"City: $cityName, Postcode: $postcode") }
 
 }
-
-

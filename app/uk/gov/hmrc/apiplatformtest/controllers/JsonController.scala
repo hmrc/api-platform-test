@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,17 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.Future._
+
 import play.api.libs.json._
 import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import scala.concurrent.Future._
-
 @Singleton
-class JsonController @Inject()(cc: ControllerComponents, parsers: PlayBodyParsers) extends BackendController(cc) {
+class JsonController @Inject() (cc: ControllerComponents, parsers: PlayBodyParsers) extends BackendController(cc) {
 
   val VndHmrcJson50: String = "application/vnd.hmrc.5.0+json"
-  val AcceptsJson50 = Accepting(VndHmrcJson50)
+  val AcceptsJson50         = Accepting(VndHmrcJson50)
 
   final def handleJsonPost(): Action[JsValue] = {
     Action.async(parsers.json) { implicit request =>
@@ -38,4 +38,3 @@ class JsonController @Inject()(cc: ControllerComponents, parsers: PlayBodyParser
     }
   }
 }
-

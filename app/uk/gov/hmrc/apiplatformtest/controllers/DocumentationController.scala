@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,20 +17,22 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import javax.inject.{Inject, Singleton}
+
+import controllers.Assets
+
 import play.api.http.{ContentTypes, HeaderNames, HttpErrorHandler}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.apiplatformtest.config.{ApiAccess, AppContext}
 import uk.gov.hmrc.apiplatformtest.views.txt
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import controllers.Assets
 
 @Singleton
-class DocumentationController @Inject()(
-  assets: Assets,
-  httpErrorHandler: HttpErrorHandler,
-  appContext: AppContext,
-  cc: ControllerComponents
-) extends BackendController(cc) {
+class DocumentationController @Inject() (
+    assets: Assets,
+    httpErrorHandler: HttpErrorHandler,
+    appContext: AppContext,
+    cc: ControllerComponents
+  ) extends BackendController(cc) {
 
   def definition = Action {
     Ok(txt.definition(ApiAccess.build(appContext.access)))
@@ -41,4 +43,3 @@ class DocumentationController @Inject()(
     assets.at(s"/public/api/conf/$version", file)
   }
 }
-

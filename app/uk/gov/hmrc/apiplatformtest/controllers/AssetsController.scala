@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,20 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.ExecutionContext
+
 import akka.actor.ActorSystem
 import akka.pattern.after
 import controllers.Assets
+
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.apiplatformtest.config.AppContext
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
-
 @Singleton
-class AssetsController @Inject()(cc: ControllerComponents,
-                                 actorSystem: ActorSystem,
-                                 appContext: AppContext,
-                                 assets: Assets)
-                                (implicit val ec: ExecutionContext) extends BackendController(cc) {
+class AssetsController @Inject() (cc: ControllerComponents, actorSystem: ActorSystem, appContext: AppContext, assets: Assets)(implicit val ec: ExecutionContext)
+    extends BackendController(cc) {
 
   def at(file: String): Action[AnyContent] = Action.async { implicit request =>
     after(appContext.assetsDelay, actorSystem.scheduler) {

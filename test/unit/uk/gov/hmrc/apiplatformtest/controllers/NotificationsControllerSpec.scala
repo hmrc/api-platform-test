@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,27 +18,24 @@ package uk.gov.hmrc.apiplatformtest.controllers
 
 import java.util.UUID
 import java.util.UUID.randomUUID
+import java.util.concurrent.{CountDownLatch, TimeUnit}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future.successful
+import scala.concurrent.{ExecutionContext, Future}
 
 import akka.actor.ActorSystem
 import akka.stream.Materializer
 import org.joda.time.DateTime
 import org.scalatest.concurrent.Eventually
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+
 import play.api.http.Status.{ACCEPTED, INTERNAL_SERVER_ERROR, OK}
+import play.api.libs.json.JsValue
 import play.api.test.Helpers._
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import uk.gov.hmrc.apiplatformtest.services.NotificationsService
-import uk.gov.hmrc.util.AsyncHmrcSpec
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future.successful
-import scala.concurrent.duration._
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
 import uk.gov.hmrc.http.HeaderCarrier
-import play.api.libs.json.JsValue
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
+import uk.gov.hmrc.util.AsyncHmrcSpec
 
 class NotificationsControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerSuite with StubControllerComponentsFactory with Eventually {
 

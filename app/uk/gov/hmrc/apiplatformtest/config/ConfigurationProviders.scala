@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,23 @@
 
 package uk.gov.hmrc.apiplatformtest.config
 
-import com.google.inject.{AbstractModule, Provider}
 import javax.inject.{Inject, Singleton}
+
+import com.google.inject.{AbstractModule, Provider}
+
 import uk.gov.hmrc.apiplatformtest.connectors.PushPullNotificationsApiConnector
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 class ConfigurationModule extends AbstractModule {
+
   override def configure(): Unit = {
-      bind(classOf[PushPullNotificationsApiConnector.Config]).toProvider(classOf[PushPullNotificationsApiConnectorConfigProvider])
+    bind(classOf[PushPullNotificationsApiConnector.Config]).toProvider(classOf[PushPullNotificationsApiConnectorConfigProvider])
   }
 }
 
 @Singleton
-class PushPullNotificationsApiConnectorConfigProvider @Inject()(sc: ServicesConfig) extends Provider[PushPullNotificationsApiConnector.Config] {
+class PushPullNotificationsApiConnectorConfigProvider @Inject() (sc: ServicesConfig) extends Provider[PushPullNotificationsApiConnector.Config] {
+
   override def get(): PushPullNotificationsApiConnector.Config = {
     lazy val baseUrl = sc.baseUrl("push-pull-notifications-api")
     PushPullNotificationsApiConnector.Config(baseUrl)

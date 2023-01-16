@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,9 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future.successful
+
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Result}
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatPrivilegedAccessAnswer
@@ -25,12 +28,11 @@ import uk.gov.hmrc.auth.core.AuthProvider.PrivilegedApplication
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future.successful
-
 @Singleton
-class PrivilegedApiController @Inject()(override val authConnector: AuthConnector, cc: ControllerComponents)(implicit val ec: ExecutionContext) extends BackendController(cc) with AuthorisedFunctions {
-
+class PrivilegedApiController @Inject() (override val authConnector: AuthConnector,
+                                         cc: ControllerComponents)(
+  implicit val ec: ExecutionContext) extends BackendController(cc)
+  with AuthorisedFunctions {
 
   private def fromPrivilegedApplication: Result = {
     Ok(Json.toJson(PrivilegedAccessAnswer("Request coming from a privileged application")))
@@ -49,4 +51,3 @@ class PrivilegedApiController @Inject()(override val authConnector: AuthConnecto
   }
 
 }
-

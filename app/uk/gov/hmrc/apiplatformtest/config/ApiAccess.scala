@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,11 @@ import play.api.libs.json.{Json, OFormat}
 case class ApiAccess(`type`: String, whitelistedApplicationIds: Option[Seq[String]])
 
 object ApiAccess {
+
   def build(config: Option[Configuration])(version: String): ApiAccess = ApiAccess(
     `type` = config.flatMap(_.getOptional[String](s"version-$version.type")).getOrElse("PRIVATE"),
-    whitelistedApplicationIds = config.flatMap(_.getOptional[Seq[String]](s"version-$version.whitelistedApplicationIds")).orElse(Some(Seq.empty)))
+    whitelistedApplicationIds = config.flatMap(_.getOptional[Seq[String]](s"version-$version.whitelistedApplicationIds")).orElse(Some(Seq.empty))
+  )
 
   implicit val apiAccessFmt: OFormat[ApiAccess] = Json.format[ApiAccess]
 }

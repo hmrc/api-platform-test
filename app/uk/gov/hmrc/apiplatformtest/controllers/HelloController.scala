@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,24 +17,22 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future.successful
+
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.apiplatformtest.models.Header
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters._
+import uk.gov.hmrc.apiplatformtest.utils.ApplicationLogger
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions}
-import uk.gov.hmrc.http.controllers.RestFormats.localDateFormats
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future.successful
-import uk.gov.hmrc.apiplatformtest.utils.ApplicationLogger
-
 @Singleton
-class HelloController @Inject()(override val authConnector: AuthConnector, cc: ControllerComponents)(implicit val ec: ExecutionContext)
-  extends BackendController(cc) with AuthorisedFunctions with ApplicationLogger {
-
+class HelloController @Inject() (override val authConnector: AuthConnector, cc: ControllerComponents)(implicit val ec: ExecutionContext)
+    extends BackendController(cc) with AuthorisedFunctions with ApplicationLogger {
 
   def handle: Action[AnyContent] = Action.async { request =>
     logger.warn(s"Application ID: ${request.headers.get("x-application-id").getOrElse("Not Found")}")
@@ -44,23 +42,23 @@ class HelloController @Inject()(override val authConnector: AuthConnector, cc: C
   def handleDave: Action[AnyContent] = Action.async { implicit request =>
     authorised().retrieve(allUserDetails and internalId and externalId and applicationId) {
       case credentials ~ name ~ dateOfBirth ~ postCode ~ email ~ affinityGroup ~ agentCode ~ agentInformation ~
-        credentialRole ~ description ~ groupIdentifier ~  internalId ~ externalId ~ applicationId =>
+          credentialRole ~ description ~ groupIdentifier ~ internalId ~ externalId ~ applicationId =>
         successful(Ok(Json.obj(
-          "internalId" -> internalId,
-          "externalId" -> externalId,
-          "applicationId" -> applicationId,
-          "credentials" -> credentials,
-          "name" -> name,
-          "dateOfBirth" -> dateOfBirth,
-          "postCode" -> postCode,
-          "email" -> email,
-          "affinityGroup" -> affinityGroup,
-          "agentCode" -> agentCode,
+          "internalId"       -> internalId,
+          "externalId"       -> externalId,
+          "applicationId"    -> applicationId,
+          "credentials"      -> credentials,
+          "name"             -> name,
+          "dateOfBirth"      -> dateOfBirth,
+          "postCode"         -> postCode,
+          "email"            -> email,
+          "affinityGroup"    -> affinityGroup,
+          "agentCode"        -> agentCode,
           "agentInformation" -> agentInformation,
-          "credentialRole" -> credentialRole,
-          "description" -> description,
-          "groupIdentifier" -> groupIdentifier,
-          "headers" -> request.headers.headers.map(h => Header(h._1, h._2))
+          "credentialRole"   -> credentialRole,
+          "description"      -> description,
+          "groupIdentifier"  -> groupIdentifier,
+          "headers"          -> request.headers.headers.map(h => Header(h._1, h._2))
         )))
     } recover {
       case e: AuthorisationException => Unauthorized(Json.obj("errorMessage" -> e.getMessage))
@@ -72,11 +70,13 @@ class HelloController @Inject()(override val authConnector: AuthConnector, cc: C
       case authProviderId ~ credentials ~ clientId ~ applicationName ~ applicationId =>
         successful(Ok(
           Json.obj(
-            "authProviderId" -> authProviderId,
-            "credentials" -> credentials,
-            "clientId" -> clientId,
+            "authProviderId"  -> authProviderId,
+            "credentials"     -> credentials,
+            "clientId"        -> clientId,
             "applicationName" -> applicationName,
-            "applicationId" -> applicationId)))
+            "applicationId"   -> applicationId
+          )
+        ))
     } recover {
       case e: AuthorisationException => Unauthorized(Json.obj("errorMessage" -> e.getMessage))
     }

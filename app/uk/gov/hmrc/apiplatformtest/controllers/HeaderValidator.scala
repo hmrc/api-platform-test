@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,12 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import play.api.libs.json.Json
-import play.api.mvc._
-
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
 
+import play.api.libs.json.Json
+import play.api.mvc._
 
 trait HeaderValidator extends Results {
 
@@ -32,19 +31,19 @@ trait HeaderValidator extends Results {
 
   val validateContentType: String => Boolean = _ == "json"
 
-  val matchHeader: String => Option[Match] = new Regex( """^application/vnd[.]{1}hmrc[.]{1}(.*?)[+]{1}(.*)$""", "version", "contenttype") findFirstMatchIn _
+  val matchHeader: String => Option[Match] = new Regex("""^application/vnd[.]{1}hmrc[.]{1}(.*?)[+]{1}(.*)$""", "version", "contenttype") findFirstMatchIn _
 
   val acceptHeaderValidationRules: Option[String] => Boolean =
     _ flatMap (a => matchHeader(a) map (res => validateContentType(res.group("contenttype")) && validateVersion(res.group("version")))) getOrElse false
 
+  def validateAccept(rules: Option[String] => Boolean): ActionBuilder[Request, AnyContent] = new ActionBuilder[Request, AnyContent] {
 
-  def validateAccept(rules: Option[String] => Boolean): ActionBuilder[Request, AnyContent] = new  ActionBuilder[Request, AnyContent] {
     def invokeBlock[A](request: Request[A], block: Request[A] => Future[Result]): Future[Result] = {
       if (rules(request.headers.get("Accept"))) block(request)
       else Future.successful(Status(ErrorAcceptHeaderInvalid.httpStatusCode)(Json.toJson(ErrorAcceptHeaderInvalid)))
     }
 
     override protected def executionContext: ExecutionContext = cc.executionContext
-    override def parser: BodyParser[AnyContent] = cc.parsers.defaultBodyParser
+    override def parser: BodyParser[AnyContent]               = cc.parsers.defaultBodyParser
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,15 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import akka.stream.testkit.NoMaterializer
+
 import play.api.http.ContentTypes.TEXT
 import play.api.http.HeaderNames.CONTENT_TYPE
 import play.api.http.Status.OK
-import play.api.test.Helpers._
 import play.api.libs.json.Json
+import play.api.test.Helpers._
 import play.api.test.{FakeRequest, StubControllerComponentsFactory, StubPlayBodyParsersFactory}
 import uk.gov.hmrc.util.AsyncHmrcSpec
-import akka.stream.testkit.NoMaterializer
 
 
 class NrsControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory with StubPlayBodyParsersFactory{

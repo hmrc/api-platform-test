@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,28 +19,29 @@ package uk.gov.hmrc.apiplatformtest.controllers
 import java.util.UUID
 import java.util.UUID.randomUUID
 import java.util.concurrent.TimeUnit
-
-import akka.actor.ActorSystem
-import akka.pattern.after
 import javax.inject.{Inject, Singleton}
-import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, ControllerComponents, PlayBodyParsers}
-import uk.gov.hmrc.apiplatformtest.services.NotificationsService
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import uk.gov.hmrc.apiplatformtest.utils.ApplicationLogger
-
 import scala.concurrent.Future.successful
 import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ExecutionContext, Future}
 
-@Singleton
-class NotificationsController @Inject()(cc: ControllerComponents,
-                                        parsers: PlayBodyParsers,
-                                        actorSystem: ActorSystem,
-                                        notificationsService: NotificationsService)
-                                       (implicit val ec: ExecutionContext) extends BackendController(cc) with ApplicationLogger {
+import akka.actor.ActorSystem
+import akka.pattern.after
 
+import play.api.libs.json.Json
+import play.api.mvc.{Action, AnyContent, ControllerComponents, PlayBodyParsers}
+import uk.gov.hmrc.apiplatformtest.services.NotificationsService
+import uk.gov.hmrc.apiplatformtest.utils.ApplicationLogger
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
+
+@Singleton
+class NotificationsController @Inject() (
+    cc: ControllerComponents,
+    parsers: PlayBodyParsers,
+    actorSystem: ActorSystem,
+    notificationsService: NotificationsService
+  )(implicit val ec: ExecutionContext
+  ) extends BackendController(cc) with ApplicationLogger {
   def triggerNotification(): Action[AnyContent] = Action.async { implicit request =>
     def runAsyncProcess(boxId: UUID, correlationId: UUID)(implicit hc: HeaderCarrier): Future[String] = {
       // Here we would run some asynchronous process, and then save the notification
@@ -58,16 +59,17 @@ class NotificationsController @Inject()(cc: ControllerComponents,
           // Return result without waiting for the async process future to complete
           Ok(Json.obj("boxId" -> boxId, "correlationId" -> correlationId))
         }
-      case _ =>
+      case _              =>
         logger.error("X-Client-ID is missing")
         successful(Status(ErrorInternalServerError.httpStatusCode)(Json.toJson(ErrorInternalServerError)))
     }
   }
 
   def handleNotificationPush(status: Option[Int], delayInSeconds: Option[Int]): Action[String] = Action.async(parsers.tolerantText) { implicit request =>
-    val bodyToLog = if (request.body.length > 10240) request.body.substring(0,10240) + "...(truncated to 10kb)" else request.body
-      logger.info(s"Received notification with payload '${bodyToLog}' and headers '${request.headers.toMap}'")
-    val delay = FiniteDuration(delayInSeconds.getOrElse(0), TimeUnit.SECONDS)
+    lazy val MaxBodyLength: Int =  10240
+    val bodyToLog = if (request.body.length > MaxBodyLength) request.body.substring(0, MaxBodyLength) + "...(truncated to 10kb)" else request.body
+    logger.info(s"Received notification with payload '${bodyToLog}' and headers '${request.headers.toMap}'")
+    val delay     = FiniteDuration(delayInSeconds.getOrElse(0), TimeUnit.SECONDS)
     after(delay, actorSystem.scheduler)(successful(new Status(status.getOrElse(OK))))
   }
 

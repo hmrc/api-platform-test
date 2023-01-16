@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,21 +17,17 @@
 package uk.gov.hmrc.apiplatformtest.connectors
 
 import java.util.UUID
-
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
+
 import play.api.libs.json.{JsValue, Json, OFormat}
 import uk.gov.hmrc.apiplatformtest.connectors.CreateNotificationResponse.formatCreateNotificationResponse
 import uk.gov.hmrc.apiplatformtest.connectors.PushPullNotificationsApiConnector.Config
-import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.HttpReads.Implicits._
-import uk.gov.hmrc.http.HttpClient
-
-import scala.concurrent.{ExecutionContext, Future}
-import uk.gov.hmrc.http.UpstreamErrorResponse
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, UpstreamErrorResponse}
 
 @Singleton
-class PushPullNotificationsApiConnector @Inject()(http: HttpClient, config: Config)
-                                                 (implicit ec: ExecutionContext) {
+class PushPullNotificationsApiConnector @Inject() (http: HttpClient, config: Config)(implicit ec: ExecutionContext) {
 
   lazy val serviceBaseUrl: String = config.baseUrl
 
@@ -45,7 +41,7 @@ class PushPullNotificationsApiConnector @Inject()(http: HttpClient, config: Conf
     http
       .GET[Either[UpstreamErrorResponse, JsValue]](s"$serviceBaseUrl/box", Seq("boxName" -> "test/api-platform-test##1.0##callbackUrl", "clientId" -> clientId))
       .map {
-        case Right(r) => (r \ "boxId").as[UUID]
+        case Right(r)  => (r \ "boxId").as[UUID]
         case Left(err) => throw err
       }
   }

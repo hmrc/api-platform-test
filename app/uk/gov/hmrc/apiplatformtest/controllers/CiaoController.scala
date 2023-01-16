@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,11 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import javax.inject.{Inject, Singleton}
+
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 
 @Singleton
-class CiaoController @Inject()(cc: ControllerComponents) extends CommonController(cc) {
+class CiaoController @Inject() (cc: ControllerComponents) extends CommonController(cc) {
 
   // Successful routes.
   // These resources/endpoints are published to WSO2.
@@ -42,7 +43,6 @@ class CiaoController @Inject()(cc: ControllerComponents) extends CommonControlle
   // Thus, if requests matching these routes are sent to WSO2, WSO2 should block them and answer with 404 MATCHING_RESOURCE_NOT_FOUND.
 
   def handleNotImplemented(): Action[AnyContent] =
-  Action.async { implicit request => failure("Ciao Not Implemented!") }
+    Action.async { implicit request => failure("Ciao Not Implemented!") }
 
 }
-

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,17 @@
 
 package uk.gov.hmrc.apiplatformtest.config
 
-import play.api.{Configuration, Environment, Mode}
-import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
-
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.duration.{Duration, FiniteDuration}
 
+import play.api.{Configuration, Environment, Mode}
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 @Singleton
-class AppContext @Inject()(runModeConfiguration: Configuration, environment: Environment, servicesConfig: ServicesConfig) {
-  def mode: Mode = environment.mode
-  lazy val appName = runModeConfiguration.getOptional[String]("appName").getOrElse(throw new RuntimeException("appName is not configured"))
-  lazy val appUrl = runModeConfiguration.getOptional[String]("appUrl").getOrElse(throw new RuntimeException("appUrl is not configured"))
-  lazy val access = runModeConfiguration.getOptional[Configuration]("api.access")
+class AppContext @Inject() (runModeConfiguration: Configuration, environment: Environment, servicesConfig: ServicesConfig) {
+  def mode: Mode                       = environment.mode
+  lazy val appName                     = runModeConfiguration.getOptional[String]("appName").getOrElse(throw new RuntimeException("appName is not configured"))
+  lazy val appUrl                      = runModeConfiguration.getOptional[String]("appUrl").getOrElse(throw new RuntimeException("appUrl is not configured"))
+  lazy val access                      = runModeConfiguration.getOptional[Configuration]("api.access")
   lazy val assetsDelay: FiniteDuration = Duration(runModeConfiguration.getOptional[String]("assets.delay").getOrElse("0 sec")).asInstanceOf[FiniteDuration]
 }

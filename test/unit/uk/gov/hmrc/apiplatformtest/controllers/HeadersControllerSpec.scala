@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,9 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import play.api.test.Helpers._
-import play.api.http.Status
-
 import play.api.http.{HeaderNames, MimeTypes, Status}
+import play.api.test.Helpers._
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
-
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
 
