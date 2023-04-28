@@ -11,17 +11,12 @@ val appName = "api-platform-test"
 
 lazy val playSettings: Seq[Setting[_]] = Seq.empty
 
+scalaVersion := "2.13.8"
+
 ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.6.0"
-
+ThisBuild / semanticdbEnabled := true
+ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 ThisBuild / evictionWarningOptions := EvictionWarningOptions.default.withWarnScalaVersionEviction(false)
-
-inThisBuild(
-  List(
-    scalaVersion := "2.12.15",
-    semanticdbEnabled := true,
-    semanticdbVersion := scalafixSemanticdb.revision
-  )
-)
 
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin)
@@ -35,7 +30,6 @@ lazy val microservice = Project(appName, file("."))
   .settings(
     name := appName,
     majorVersion := 0,
-    scalaVersion := "2.12.12",
     PlayKeys.playDefaultPort := 6704,
     libraryDependencies ++= AppDependencies.libraryDependencies,
     routesGenerator := InjectedRoutesGenerator,
@@ -48,4 +42,12 @@ lazy val microservice = Project(appName, file("."))
     Test / unmanagedSourceDirectories += baseDirectory.value / "test" / "unit", // TODO remove unit from tests
     Test / unmanagedSourceDirectories += baseDirectory.value / "test-common",
     addTestReportOption(Test, "test-reports")
+  )
+  .settings(
+    scalacOptions ++= Seq(
+      "-Wconf:cat=unused&src=views/.*\\.scala:s",
+      "-Wconf:cat=unused&src=.*RoutesPrefix\\.scala:s",
+      "-Wconf:cat=unused&src=.*Routes\\.scala:s",
+      "-Wconf:cat=unused&src=.*ReverseRoutes\\.scala:s"
+    )
   )
