@@ -13,7 +13,7 @@ object ScoverageSettings {
         """Module;""" +
         """GraphiteStartUp;""" +
         """.*\.Reverse[^.]*""",
-    coverageMinimum := 80.00,
+    coverageMinimumStmtTotal := 80.00,
     coverageFailOnMinimum := true,
     coverageHighlighting := true
   )

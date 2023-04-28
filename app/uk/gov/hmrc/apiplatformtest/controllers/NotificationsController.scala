@@ -69,7 +69,7 @@ class NotificationsController @Inject() (
     lazy val MaxBodyLength: Int =  10240
     val bodyToLog = if (request.body.length > MaxBodyLength) request.body.substring(0, MaxBodyLength) + "...(truncated to 10kb)" else request.body
     logger.info(s"Received notification with payload '${bodyToLog}' and headers '${request.headers.toMap}'")
-    val delay     = FiniteDuration(delayInSeconds.getOrElse(0), TimeUnit.SECONDS)
+    val delay     = FiniteDuration(delayInSeconds.getOrElse(0).toLong, TimeUnit.SECONDS)
     after(delay, actorSystem.scheduler)(successful(new Status(status.getOrElse(OK))))
   }
 
