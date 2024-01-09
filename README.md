@@ -110,7 +110,7 @@ curl -v -X GET|DELETE|POST "[ENVIRONMENT-DOMAIN]/api-platform-test/details/Venic
 
 ### Unit tests
 ```
-sbt test it:test
+sbt run-all-tests
 ```
 
 ---
