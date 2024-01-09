@@ -24,10 +24,9 @@ import uk.gov.hmrc.apiplatformtest.models.DummyAnswer
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatDummyAnswer
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
-
 class CityControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory {
 
-  trait Setup{
+  trait Setup {
     val underTest = new CityController(stubControllerComponents())
   }
 

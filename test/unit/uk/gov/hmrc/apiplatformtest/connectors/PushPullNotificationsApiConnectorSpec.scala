@@ -51,7 +51,7 @@ class PushPullNotificationsApiConnectorSpec
       .build()
 
   implicit lazy val mat: Materializer = app.materializer
-  private val wireMockServer = new WireMockServer(wireMockConfig().port(stubPort))
+  private val wireMockServer          = new WireMockServer(wireMockConfig().port(stubPort))
 
   override def beforeAll(): Unit = {
     wireMockServer.start()
@@ -69,13 +69,13 @@ class PushPullNotificationsApiConnectorSpec
   trait Setup {
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
-    val boxId: UUID = randomUUID
+    val boxId: UUID            = randomUUID
     val encodedBoxName: String = "test/api-platform-test##1.0##callbackUrl"
     val notificationId: String = randomUUID.toString
-    val clientId: String = randomUUID.toString
-    val payload: JsValue = parse("""{"message": "new notification"}""")
-    val notificationsPath = s"/box/$boxId/notifications"
-    val boxPath = s"/box"
+    val clientId: String       = randomUUID.toString
+    val payload: JsValue       = parse("""{"message": "new notification"}""")
+    val notificationsPath      = s"/box/$boxId/notifications"
+    val boxPath                = s"/box"
 
     val underTest: PushPullNotificationsApiConnector = app.injector.instanceOf[PushPullNotificationsApiConnector]
   }
@@ -84,17 +84,18 @@ class PushPullNotificationsApiConnectorSpec
     "send proper request to save notification" in new Setup {
       wireMockServer.stubFor(
         post(notificationsPath).withRequestBody(equalTo(Json.stringify(payload)))
-        .willReturn(aResponse()
-          .withHeader(CONTENT_TYPE, "application/json")
-          .withBody(Json.stringify(Json.toJson(CreateNotificationResponse(notificationId))))
-          .withStatus(OK)))
+          .willReturn(aResponse()
+            .withHeader(CONTENT_TYPE, "application/json")
+            .withBody(Json.stringify(Json.toJson(CreateNotificationResponse(notificationId))))
+            .withStatus(OK))
+      )
 
       await(underTest.saveNotification(boxId, payload))
 
       wireMockServer.verify(
         postRequestedFor(urlPathEqualTo(notificationsPath))
-        .withHeader(CONTENT_TYPE, equalTo("application/json"))
-        .withHeader(USER_AGENT, equalTo("api-platform-test"))
+          .withHeader(CONTENT_TYPE, equalTo("application/json"))
+          .withHeader(USER_AGENT, equalTo("api-platform-test"))
       )
     }
 
@@ -104,7 +105,8 @@ class PushPullNotificationsApiConnectorSpec
           .willReturn(aResponse()
             .withHeader(CONTENT_TYPE, "application/json")
             .withBody(Json.stringify(Json.toJson(CreateNotificationResponse(notificationId))))
-            .withStatus(OK)))
+            .withStatus(OK))
+      )
 
       val result: String = await(underTest.saveNotification(boxId, payload))
 
@@ -115,7 +117,8 @@ class PushPullNotificationsApiConnectorSpec
       wireMockServer.stubFor(
         post(notificationsPath).withRequestBody(equalTo(Json.stringify(payload)))
           .willReturn(aResponse()
-            .withStatus(NOT_FOUND)))
+            .withStatus(NOT_FOUND))
+      )
 
       intercept[UpstreamErrorResponse] {
         await(underTest.saveNotification(boxId, payload))
@@ -132,8 +135,7 @@ class PushPullNotificationsApiConnectorSpec
           .willReturn(aResponse()
             .withHeader(CONTENT_TYPE, "application/json")
             .withBody(Json.stringify(Json.obj("boxId" -> boxId)))
-            .withStatus(OK)
-          )
+            .withStatus(OK))
       )
 
       val result: UUID = await(underTest.getBoxId(clientId))
@@ -148,8 +150,7 @@ class PushPullNotificationsApiConnectorSpec
           .withQueryParam("clientId", equalTo(clientId))
           .willReturn(aResponse()
             .withStatus(NOT_FOUND)
-            .withBody("{}")
-          )
+            .withBody("{}"))
       )
 
       intercept[UpstreamErrorResponse] {

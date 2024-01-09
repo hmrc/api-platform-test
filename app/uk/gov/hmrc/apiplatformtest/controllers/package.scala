@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.apiplatformtest
 
-import play.api.libs.json.{JsValue, Json, Writes}
+import play.api.libs.json.{Json, Writes}
 
 package object controllers {
 

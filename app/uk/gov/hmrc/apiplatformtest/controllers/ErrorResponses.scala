@@ -33,6 +33,6 @@ case object ErrorGatewayTimeout      extends ErrorResponse(GATEWAY_TIMEOUT, "GAT
 object ErrorResponse {
   import play.api.libs.json.Json
 
-  implicit val errorAcceptHeaderInvalid: OFormat[ErrorAcceptHeaderInvalid.type] = Json.format[ErrorAcceptHeaderInvalid.type]
+  implicit val errorAcceptHeaderInvalid: OFormat[ErrorAcceptHeaderInvalid.type]       = Json.format[ErrorAcceptHeaderInvalid.type]
   implicit val errorInternalServerErrorFormat: OFormat[ErrorInternalServerError.type] = Json.format[ErrorInternalServerError.type]
 }

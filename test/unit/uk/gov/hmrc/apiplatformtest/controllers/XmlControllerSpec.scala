@@ -32,19 +32,20 @@ class XmlControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFacto
 
   implicit val mat: Materializer = NoMaterializer
 
-  trait Setup{
+  trait Setup {
     val underTest = new XmlController(stubControllerComponents(), stubPlayBodyParsers)
   }
 
   private val requestBody: NodeSeq = <Pong>hello</Pong>
-  private val request = FakeRequest("POST", "/xml").withBody(requestBody)
+  private val request              = FakeRequest("POST", "/xml").withBody(requestBody)
 
   "POST /xml with good xml" should {
 
     "return 200 with expected response body" in new Setup {
       val req = request.withHeaders(
         CONTENT_TYPE -> XML,
-        ACCEPT -> underTest.VndHmrcXml50)
+        ACCEPT       -> underTest.VndHmrcXml50
+      )
 
       val result = underTest.handleXmlPost()(req)
 
@@ -55,7 +56,8 @@ class XmlControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFacto
     "return 415 when using a wrong Accept header" in new Setup {
       val req = request.withHeaders(
         CONTENT_TYPE -> XML,
-        ACCEPT -> XML)
+        ACCEPT       -> XML
+      )
 
       val result = underTest.handleXmlPost()(req)
 

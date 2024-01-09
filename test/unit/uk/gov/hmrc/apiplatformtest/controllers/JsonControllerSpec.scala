@@ -29,9 +29,9 @@ import uk.gov.hmrc.util.AsyncHmrcSpec
 
 class JsonControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory with StubBodyParserFactory {
 
-  trait Setup{
+  trait Setup {
     implicit val mat: Materializer = NoMaterializer
-    val underTest = new JsonController(stubControllerComponents(), stubPlayBodyParsers)
+    val underTest                  = new JsonController(stubControllerComponents(), stubPlayBodyParsers)
   }
 
   private val payload = """{"firstName":"Alvise","surname":"Fransescoli","dateOfBirth":"04-01-1731"}"""
@@ -42,7 +42,8 @@ class JsonControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFact
     "return 200 with expected response body" in new Setup {
       val req = request.withHeaders(
         CONTENT_TYPE -> JSON,
-        ACCEPT -> underTest.VndHmrcJson50)
+        ACCEPT       -> underTest.VndHmrcJson50
+      )
 
       val result = underTest.handleJsonPost()(req)
 
@@ -53,7 +54,8 @@ class JsonControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFact
     "return 415 when using a wrong Accept header" in new Setup {
       val req = request.withHeaders(
         CONTENT_TYPE -> JSON,
-        ACCEPT -> JSON)
+        ACCEPT       -> JSON
+      )
 
       val result = underTest.handleJsonPost()(req)
 

@@ -26,7 +26,7 @@ import uk.gov.hmrc.util.AsyncHmrcSpec
 
 class CiaoControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory {
 
-  trait Setup{
+  trait Setup {
     val underTest = new CiaoController(stubControllerComponents())
   }
 
