@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import akka.stream.Materializer
 import akka.stream.testkit.NoMaterializer
 
 import play.api.http.ContentTypes.JSON
@@ -29,7 +30,7 @@ import uk.gov.hmrc.util.AsyncHmrcSpec
 class JsonControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory with StubBodyParserFactory {
 
   trait Setup{
-    implicit val mat = NoMaterializer
+    implicit val mat: Materializer = NoMaterializer
     val underTest = new JsonController(stubControllerComponents(), stubPlayBodyParsers)
   }
 

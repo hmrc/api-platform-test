@@ -17,6 +17,7 @@
 package uk.gov.hmrc.apiplatformtest.controllers
 
 import play.api.http.Status._
+import play.api.libs.json.OFormat
 
 sealed abstract class ErrorResponse(val httpStatusCode: Int, val errorCode: String, val message: String)
 
@@ -32,6 +33,6 @@ case object ErrorGatewayTimeout      extends ErrorResponse(GATEWAY_TIMEOUT, "GAT
 object ErrorResponse {
   import play.api.libs.json.Json
 
-  implicit val errorAcceptHeaderInvalid       = Json.format[ErrorAcceptHeaderInvalid.type]
-  implicit val errorInternalServerErrorFormat = Json.format[ErrorInternalServerError.type]
+  implicit val errorAcceptHeaderInvalid: OFormat[ErrorAcceptHeaderInvalid.type] = Json.format[ErrorAcceptHeaderInvalid.type]
+  implicit val errorInternalServerErrorFormat: OFormat[ErrorInternalServerError.type] = Json.format[ErrorInternalServerError.type]
 }

@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import akka.stream.Materializer
 import akka.stream.testkit.NoMaterializer
 
 import play.api.http.ContentTypes.TEXT
@@ -29,7 +30,7 @@ import uk.gov.hmrc.util.AsyncHmrcSpec
 
 class NrsControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory with StubPlayBodyParsersFactory{
 
-  implicit private val mat = NoMaterializer
+  implicit private val mat: Materializer = NoMaterializer
 
   private val controller = new NrsController(stubControllerComponents(), stubPlayBodyParsers)
 

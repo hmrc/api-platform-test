@@ -20,7 +20,5 @@ import play.api.libs.json.{JsValue, Json, Writes}
 
 package object controllers {
 
-  implicit val errorScenarioWrites = new Writes[ErrorResponse] {
-    def writes(e: ErrorResponse): JsValue = Json.obj("code" -> e.errorCode, "message" -> e.message)
-  }
+  implicit val errorScenarioWrites: Writes[ErrorResponse] = (e: ErrorResponse) => Json.obj("code" -> e.errorCode, "message" -> e.message)
 }

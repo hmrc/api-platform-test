@@ -53,16 +53,16 @@ class PushPullNotificationsApiConnectorSpec
   implicit lazy val mat: Materializer = app.materializer
   private val wireMockServer = new WireMockServer(wireMockConfig().port(stubPort))
 
-  override def beforeAll() {
+  override def beforeAll(): Unit = {
     wireMockServer.start()
     WireMock.configureFor(stubHost, stubPort)
   }
 
-  override def beforeEach {
+  override def beforeEach(): Unit = {
     wireMockServer.resetAll()
   }
 
-  override def afterAll() {
+  override def afterAll(): Unit = {
     wireMockServer.stop()
   }
 

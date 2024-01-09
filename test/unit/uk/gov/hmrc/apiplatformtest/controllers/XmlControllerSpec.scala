@@ -18,6 +18,7 @@ package uk.gov.hmrc.apiplatformtest.controllers
 
 import scala.xml.NodeSeq
 
+import akka.stream.Materializer
 import akka.stream.testkit.NoMaterializer
 
 import play.api.http.ContentTypes.XML
@@ -29,7 +30,7 @@ import uk.gov.hmrc.util.AsyncHmrcSpec
 
 class XmlControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory with StubPlayBodyParsersFactory {
 
-  implicit val mat = NoMaterializer
+  implicit val mat: Materializer = NoMaterializer
 
   trait Setup{
     val underTest = new XmlController(stubControllerComponents(), stubPlayBodyParsers)
