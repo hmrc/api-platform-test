@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import akka.stream.Materializer
 import akka.stream.testkit.NoMaterializer
 
 import play.api.http.ContentTypes.TEXT
@@ -26,16 +27,15 @@ import play.api.test.Helpers._
 import play.api.test.{FakeRequest, StubControllerComponentsFactory, StubPlayBodyParsersFactory}
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
+class NrsControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory with StubPlayBodyParsersFactory {
 
-class NrsControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory with StubPlayBodyParsersFactory{
-
-  implicit private val mat = NoMaterializer
+  implicit private val mat: Materializer = NoMaterializer
 
   private val controller = new NrsController(stubControllerComponents(), stubPlayBodyParsers)
 
   "POST to NRS endpoint returns valid SHA-256 without effecting the payload" should {
 
-    val request = FakeRequest("POST", "/nrs")
+    val request          = FakeRequest("POST", "/nrs")
     val plainTextRequest = request.withHeaders(CONTENT_TYPE -> TEXT)
 
     "return the expected hash when sending a trimmed JSON payload" in {

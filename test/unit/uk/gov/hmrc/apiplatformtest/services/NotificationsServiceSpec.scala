@@ -29,15 +29,15 @@ import uk.gov.hmrc.util.AsyncHmrcSpec
 
 class NotificationsServiceSpec extends AsyncHmrcSpec {
 
-  trait Setup{
+  trait Setup {
     implicit val hc: HeaderCarrier = HeaderCarrier()
-    val boxId: UUID = randomUUID
-    val clientId: String = randomUUID.toString
-    val payload: JsValue = parse("""{"message": "new notification"}""")
-    val notificationId: String = randomUUID.toString
+    val boxId: UUID                = randomUUID
+    val clientId: String           = randomUUID.toString
+    val payload: JsValue           = parse("""{"message": "new notification"}""")
+    val notificationId: String     = randomUUID.toString
 
     val mockPushPullNotificationsApiConnector: PushPullNotificationsApiConnector = mock[PushPullNotificationsApiConnector]
-    val underTest = new NotificationsService(mockPushPullNotificationsApiConnector)
+    val underTest                                                                = new NotificationsService(mockPushPullNotificationsApiConnector)
   }
 
   "saveNotification" should {

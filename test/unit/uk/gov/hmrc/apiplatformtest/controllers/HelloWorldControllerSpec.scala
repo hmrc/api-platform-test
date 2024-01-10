@@ -35,12 +35,12 @@ import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
-class HelloWorldControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory{
+class HelloWorldControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory {
 
   trait Setup {
     implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
-    val mockAuthConnector: AuthConnector = mock[AuthConnector]
-    val underTest = new HelloController(mockAuthConnector, stubControllerComponents())
+    val mockAuthConnector: AuthConnector      = mock[AuthConnector]
+    val underTest                             = new HelloController(mockAuthConnector, stubControllerComponents())
   }
 
   "GET /" should {
@@ -52,20 +52,20 @@ class HelloWorldControllerSpec extends AsyncHmrcSpec with StubControllerComponen
 
   "Hello Dave" should {
     "return 200 with the user details and request headers" in new Setup {
-      private val internalId = randomUUID.toString
-      private val externalId = randomUUID.toString
-      private val applicationId = randomUUID().toString
-      private val credentials = Credentials(randomUUID.toString, randomUUID.toString)
-      private val name = Name(Some(randomUUID.toString), Some(randomUUID.toString))
-      private val dateOfBirth = LocalDate.now
-      private val postCode = randomUUID.toString
-      private val email = randomUUID.toString
-      private val affinityGroup = Individual
-      private val agentCode = randomUUID.toString
-      private val agentInformation = AgentInformation(Some(randomUUID.toString), Some(randomUUID.toString), Some(randomUUID.toString))
-      private val credentialRole = User
-      private val description = randomUUID.toString
-      private val groupIdentifier = randomUUID.toString
+      private val internalId                     = randomUUID.toString
+      private val externalId                     = randomUUID.toString
+      private val applicationId                  = randomUUID().toString
+      private val credentials                    = Credentials(randomUUID.toString, randomUUID.toString)
+      private val name                           = Name(Some(randomUUID.toString), Some(randomUUID.toString))
+      private val dateOfBirth                    = LocalDate.now
+      private val postCode                       = randomUUID.toString
+      private val email                          = randomUUID.toString
+      private val affinityGroup                  = Individual
+      private val agentCode                      = randomUUID.toString
+      private val agentInformation               = AgentInformation(Some(randomUUID.toString), Some(randomUUID.toString), Some(randomUUID.toString))
+      private val credentialRole                 = User
+      private val description                    = randomUUID.toString
+      private val groupIdentifier                = randomUUID.toString
       private val headers: Seq[(String, String)] = Seq("Host" -> "localhost", "User-Agent" -> "api-platform-test", "Client-ID" -> randomUUID.toString)
       when(
         mockAuthConnector
@@ -74,10 +74,28 @@ class HelloWorldControllerSpec extends AsyncHmrcSpec with StubControllerComponen
             eqTo(allUserDetails and Retrievals.internalId and Retrievals.externalId and Retrievals.applicationId)
           )(*, *)
       ).thenReturn(
-        successful(new ~(new ~(new ~(new  ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(new ~(Some(credentials), Some(name)),
-          Some(dateOfBirth)), Some(postCode)), Some(email)), Some(affinityGroup)), Some(agentCode)), agentInformation), Some(credentialRole)),
-          Some(description)), Some(groupIdentifier)), Some(internalId)), Some(externalId)), Some(applicationId))
-        )
+        successful(new ~(
+          new ~(
+            new ~(
+              new ~(
+                new ~(
+                  new ~(
+                    new ~(
+                      new ~(new ~(new ~(new ~(new ~(new ~(Some(credentials), Some(name)), Some(dateOfBirth)), Some(postCode)), Some(email)), Some(affinityGroup)), Some(agentCode)),
+                      agentInformation
+                    ),
+                    Some(credentialRole)
+                  ),
+                  Some(description)
+                ),
+                Some(groupIdentifier)
+              ),
+              Some(internalId)
+            ),
+            Some(externalId)
+          ),
+          Some(applicationId)
+        ))
       )
 
       val result = underTest.handleDave()(FakeRequest().withHeaders(headers: _*))
@@ -120,16 +138,16 @@ class HelloWorldControllerSpec extends AsyncHmrcSpec with StubControllerComponen
 
   "Hello Bruce" should {
     "return 200 with application details when authorisation succeeds" in new Setup {
-      private val retrievedAuthProviderId = GGCredId("123")
-      private val retrievedCredentials = Credentials("123", "GG")
-      private val retrievedClientId = "retrieved-client-id"
+      private val retrievedAuthProviderId  = GGCredId("123")
+      private val retrievedCredentials     = Credentials("123", "GG")
+      private val retrievedClientId        = "retrieved-client-id"
       private val retrievedApplicationName = "retrieved-application-name"
-      private val retrievedApplicationId = "retrieved-application-id"
+      private val retrievedApplicationId   = "retrieved-application-id"
 
       when(mockAuthConnector.authorise(*, eqTo(authProviderId and credentials and clientId and applicationName and applicationId))(*, *))
         .thenReturn(successful(
-          new ~(new ~(new ~(new ~(retrievedAuthProviderId, Some(retrievedCredentials)), Some(retrievedClientId)),
-            Some(retrievedApplicationName)), Some(retrievedApplicationId))))
+          new ~(new ~(new ~(new ~(retrievedAuthProviderId, Some(retrievedCredentials)), Some(retrievedClientId)), Some(retrievedApplicationName)), Some(retrievedApplicationId))
+        ))
 
       val result = underTest.handleBruce()(FakeRequest())
 
@@ -144,8 +162,7 @@ class HelloWorldControllerSpec extends AsyncHmrcSpec with StubControllerComponen
     }
 
     "return 401 if the authorisation fails" in new Setup {
-      when(mockAuthConnector.authorise(*, eqTo(authProviderId and credentials and clientId and applicationName and applicationId))
-      (*, *)).thenReturn(failed(InvalidBearerToken()))
+      when(mockAuthConnector.authorise(*, eqTo(authProviderId and credentials and clientId and applicationName and applicationId))(*, *)).thenReturn(failed(InvalidBearerToken()))
 
       val result = underTest.handleBruce()(FakeRequest())
 

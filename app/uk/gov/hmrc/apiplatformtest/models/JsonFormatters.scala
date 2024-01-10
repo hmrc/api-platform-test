@@ -16,25 +16,25 @@
 
 package uk.gov.hmrc.apiplatformtest.models
 
-import play.api.libs.json.{Json, Writes}
+import play.api.libs.json.{Json, OFormat, Writes}
 import uk.gov.hmrc.auth.core.retrieve._
 
 object JsonFormatters {
 
-  implicit val formatDummyAnswer            = Json.format[DummyAnswer]
-  implicit val formatNoFraudAnswer          = Json.format[NoFraudAnswer]
-  implicit val formatPrivilegedAccessAnswer = Json.format[PrivilegedAccessAnswer]
-  implicit val formatName                   = Json.format[Name]
-  implicit val formatCredentials            = Json.format[Credentials]
-  implicit val formatAgentInformation       = Json.format[AgentInformation]
-  implicit val formatHeader                 = Json.format[Header]
+  implicit val formatDummyAnswer: OFormat[DummyAnswer]                       = Json.format[DummyAnswer]
+  implicit val formatNoFraudAnswer: OFormat[NoFraudAnswer]                   = Json.format[NoFraudAnswer]
+  implicit val formatPrivilegedAccessAnswer: OFormat[PrivilegedAccessAnswer] = Json.format[PrivilegedAccessAnswer]
+  implicit val formatName: OFormat[Name]                                     = Json.format[Name]
+  implicit val formatCredentials: OFormat[Credentials]                       = Json.format[Credentials]
+  implicit val formatAgentInformation: OFormat[AgentInformation]             = Json.format[AgentInformation]
+  implicit val formatHeader: OFormat[Header]                                 = Json.format[Header]
 
-  implicit val formatGGCredId            = Json.format[GGCredId]
-  implicit val formatVerifyPid           = Json.format[VerifyPid]
-  implicit val formatPAClientId          = Json.format[PAClientId]
-  implicit val formatStandardApplication = Json.format[StandardApplication]
+  implicit val formatGGCredId: OFormat[GGCredId]                       = Json.format[GGCredId]
+  implicit val formatVerifyPid: OFormat[VerifyPid]                     = Json.format[VerifyPid]
+  implicit val formatPAClientId: OFormat[PAClientId]                   = Json.format[PAClientId]
+  implicit val formatStandardApplication: OFormat[StandardApplication] = Json.format[StandardApplication]
 
-  implicit val writeLegacyCredentials    = Writes[LegacyCredentials] {
+  implicit val writeLegacyCredentials: Writes[LegacyCredentials] = Writes[LegacyCredentials] {
     case value: GGCredId            => Json.toJson(value)
     case value: VerifyPid           => Json.toJson(value)
     case value: PAClientId          => Json.toJson(value)

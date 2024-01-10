@@ -27,21 +27,20 @@ import org.joda.time.DateTime
 import play.api.http.Status.OK
 import play.api.mvc.Results.Ok
 import play.api.mvc.{Action, ActionBuilder, AnyContent}
-import play.api.test.Helpers._
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import uk.gov.hmrc.apiplatformtest.config.AppContext
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
 class AssetsControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory {
   implicit val actorSystemTest: ActorSystem = ActorSystem("test-actor-system")
-  val fileName = "file.xml"
-  val assetsAction: Action[AnyContent] = new ActionBuilder.IgnoringBody().async(successful(Ok("some stuff")))
+  val fileName                              = "file.xml"
+  val assetsAction: Action[AnyContent]      = new ActionBuilder.IgnoringBody().async(successful(Ok("some stuff")))
 
   trait Setup {
     val mockAppContext: AppContext = mock[AppContext]
-    val mockAssets: Assets = mock[Assets]
+    val mockAssets: Assets         = mock[Assets]
     when(mockAssets.at(fileName)).thenReturn(assetsAction)
-    val underTest = new AssetsController(stubControllerComponents(), actorSystemTest, mockAppContext, mockAssets)
+    val underTest                  = new AssetsController(stubControllerComponents(), actorSystemTest, mockAppContext, mockAssets)
   }
 
   "at" should {
@@ -52,7 +51,7 @@ class AssetsControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFa
 
       val before = new DateTime()
       val result = await(underTest.at(fileName)(request))
-      val after = new DateTime()
+      val after  = new DateTime()
 
       result.header.status shouldBe OK
       (after.getMillis - before.getMillis).toInt should be > 2000

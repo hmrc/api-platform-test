@@ -21,25 +21,25 @@ import play.api.test.Helpers._
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
-
 class HeadersControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory {
 
-  trait Setup{
+  trait Setup {
     val underTest = new HeadersController(stubControllerComponents())
   }
 
   private val requestIdHeader = "X-REQUEST-ID"
-  private val clientIdHeader = "x_Client_id"
-  private val dummyHeader = "DUMMY"
+  private val clientIdHeader  = "x_Client_id"
+  private val dummyHeader     = "DUMMY"
 
   "GET /headers" should {
 
     val request = FakeRequest("GET", "/headers")
       .withHeaders(
-        dummyHeader -> dummyHeader,
-        requestIdHeader -> "1234",
-        clientIdHeader -> "ABCD",
-        HeaderNames.ACCEPT -> MimeTypes.JSON)
+        dummyHeader        -> dummyHeader,
+        requestIdHeader    -> "1234",
+        clientIdHeader     -> "ABCD",
+        HeaderNames.ACCEPT -> MimeTypes.JSON
+      )
 
     "return expected headers" in new Setup {
       val result = underTest.handle()(request)
@@ -50,8 +50,8 @@ class HeadersControllerSpec extends AsyncHmrcSpec with StubControllerComponentsF
       responseBody should not contain dummyHeader
 
       val actualHeaders = headers(result).keySet
-      actualHeaders should contain (requestIdHeader)
-      actualHeaders should contain (clientIdHeader)
+      actualHeaders should contain(requestIdHeader)
+      actualHeaders should contain(clientIdHeader)
       actualHeaders should not contain dummyHeader
     }
   }

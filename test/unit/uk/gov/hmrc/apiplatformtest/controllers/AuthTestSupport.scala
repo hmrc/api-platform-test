@@ -26,10 +26,10 @@ trait AuthTestSupport extends MockitoSugar with ArgumentMatchersSugar {
 
   lazy val mockAuthConnector: AuthConnector = mock[AuthConnector]
 
-  //TODO add predicate for privileged user authProviders
+  // TODO add predicate for privileged user authProviders
 
   def withAuthorizedUser(): Unit =
-    when(mockAuthConnector.authorise[Unit](*, *)(*,*)).thenReturn(successful(()))
+    when(mockAuthConnector.authorise[Unit](*, *)(*, *)).thenReturn(successful(()))
 
   def withUnauthorizedUser(error: Throwable): Unit =
     when(mockAuthConnector.authorise(*, *)(*, *)).thenReturn(failed(error))

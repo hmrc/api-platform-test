@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-
 import scala.concurrent.ExecutionContext.Implicits.global
 
 import play.api.http.{HeaderNames, MimeTypes, Status}
@@ -25,13 +24,13 @@ import play.api.test.{FakeRequest, StubControllerComponentsFactory}
 import uk.gov.hmrc.auth.core.UnsupportedAuthProvider
 import uk.gov.hmrc.util.AsyncHmrcSpec
 
-class PrivilegedApiControllerSpec extends AsyncHmrcSpec with AuthTestSupport with StubControllerComponentsFactory  {
+class PrivilegedApiControllerSpec extends AsyncHmrcSpec with AuthTestSupport with StubControllerComponentsFactory {
 
   private val requestIdHeader = "X-REQUEST-ID"
-  private val clientIdHeader = "x_Client_id"
-  private val dummyHeader = "DUMMY"
+  private val clientIdHeader  = "x_Client_id"
+  private val dummyHeader     = "DUMMY"
 
-  trait Setup{
+  trait Setup {
     val underTest = new PrivilegedApiController(mockAuthConnector, stubControllerComponents())
   }
 
@@ -40,10 +39,11 @@ class PrivilegedApiControllerSpec extends AsyncHmrcSpec with AuthTestSupport wit
   "PrivilegedApiController" should {
     val request = FakeRequest("GET", "/privileged")
       .withHeaders(
-        dummyHeader -> dummyHeader,
-        requestIdHeader -> "1234",
-        clientIdHeader -> "ABCD",
-        HeaderNames.ACCEPT -> MimeTypes.JSON)
+        dummyHeader        -> dummyHeader,
+        requestIdHeader    -> "1234",
+        clientIdHeader     -> "ABCD",
+        HeaderNames.ACCEPT -> MimeTypes.JSON
+      )
 
     "handle privileged apps correctly" in new Setup {
       withAuthorizedUser()

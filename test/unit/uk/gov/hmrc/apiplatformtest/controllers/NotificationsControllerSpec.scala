@@ -40,10 +40,10 @@ import uk.gov.hmrc.util.AsyncHmrcSpec
 class NotificationsControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerSuite with StubControllerComponentsFactory with Eventually {
 
   implicit val actorSystemTest: ActorSystem = app.actorSystem
-  implicit val mat: Materializer = app.materializer
+  implicit val mat: Materializer            = app.materializer
 
-  val boxId: UUID = randomUUID
-  val clientId: String = randomUUID.toString
+  val boxId: UUID            = randomUUID
+  val clientId: String       = randomUUID.toString
   val notificationId: String = randomUUID.toString
 
   class FakeNotificationsService(cdl: CountDownLatch)(override implicit val ec: ExecutionContext) extends NotificationsService(null)(ec) {
@@ -54,11 +54,11 @@ class NotificationsControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerSuite
       successful(notificationId)
     }
   }
-  
+
   trait Setup {
     val mockNotificationsService: NotificationsService = mock[NotificationsService]
-    val cdl = new CountDownLatch(1)
-    val underTest = new NotificationsController(stubControllerComponents(), stubPlayBodyParsers, actorSystemTest, new FakeNotificationsService(cdl))
+    val cdl                                            = new CountDownLatch(1)
+    val underTest                                      = new NotificationsController(stubControllerComponents(), stubPlayBodyParsers, actorSystemTest, new FakeNotificationsService(cdl))
   }
 
   "saveNotification" should {
@@ -67,13 +67,13 @@ class NotificationsControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerSuite
     "not save notification immediately" in new Setup {
       await(underTest.triggerNotification()(request))
 
-      cdl.await(5, TimeUnit.MILLISECONDS) shouldBe false  // HAS NOT SENT YET
+      cdl.await(5, TimeUnit.MILLISECONDS) shouldBe false // HAS NOT SENT YET
     }
 
     "eventually save notification using the notifications service" in new Setup {
       await(underTest.triggerNotification()(request))
 
-      cdl.await(3, TimeUnit.SECONDS) shouldBe true  // HAS NOW SENT IT
+      cdl.await(3, TimeUnit.SECONDS) shouldBe true // HAS NOW SENT IT
     }
 
     "return 200 with the box ID and correlation ID" in new Setup {
@@ -109,7 +109,7 @@ class NotificationsControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerSuite
     "not delay the response by default" in new Setup {
       val before = new DateTime()
       val result = await(underTest.handleNotificationPush(None, None)(request))
-      val after = new DateTime()
+      val after  = new DateTime()
 
       result.header.status shouldBe OK
       (after.getMillis - before.getMillis).toInt should be < 100
@@ -118,7 +118,7 @@ class NotificationsControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerSuite
     "delay the response when a delay is passed in" in new Setup {
       val before = new DateTime()
       val result = await(underTest.handleNotificationPush(None, Some(2))(request))
-      val after = new DateTime()
+      val after  = new DateTime()
 
       result.header.status shouldBe OK
       (after.getMillis - before.getMillis).toInt should be > 2000
@@ -126,7 +126,7 @@ class NotificationsControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerSuite
   }
 
   "callbackValidation" should {
-    val request = FakeRequest()
+    val request   = FakeRequest()
     val challenge = UUID.randomUUID().toString
 
     "return 200 and the challenge" in new Setup {

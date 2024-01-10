@@ -5,7 +5,7 @@ import sbt._
 object AppDependencies {
   lazy val libraryDependencies = compile ++ test
 
-  val bootstrapVersion = "7.12.0"
+  val bootstrapVersion = "7.15.0"
 
   private lazy val compile = Seq(
     ws,
@@ -17,8 +17,9 @@ object AppDependencies {
 
   private lazy val test = Seq(
     "uk.gov.hmrc"                   %% "bootstrap-test-play-28"           % bootstrapVersion,
-    "org.mockito"                   %% "mockito-scala-scalatest"          % "1.16.42",
+    "org.mockito"                   %% "mockito-scala-scalatest"          % "1.17.29",
+    "org.scalatest"                 %% "scalatest"                        % "3.2.17",
+    "com.vladsch.flexmark"          %  "flexmark-all"                     % "0.62.2",
     "com.github.tomakehurst"        %  "wiremock-jre8-standalone"         % "2.27.1"
   ).map (_ % "test")
 }
-

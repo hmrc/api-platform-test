@@ -28,8 +28,8 @@ object HeadersControllerDomain {
   case class IdField(name: String, value: String)
   case class Payload(request: IdField, client: IdField)
 
-  implicit val idFieldJF = Json.format[IdField]
-  implicit val payloadJF = Json.format[Payload]
+  implicit val idFieldJF: OFormat[IdField] = Json.format[IdField]
+  implicit val payloadJF: OFormat[Payload] = Json.format[Payload]
 }
 
 @Singleton
