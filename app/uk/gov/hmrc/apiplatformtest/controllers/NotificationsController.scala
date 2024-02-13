@@ -24,8 +24,8 @@ import scala.concurrent.Future.successful
 import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ExecutionContext, Future}
 
-import akka.actor.ActorSystem
-import akka.pattern.after
+import org.apache.pekko.actor.ActorSystem
+import org.apache.pekko.pattern.after
 
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents, PlayBodyParsers}

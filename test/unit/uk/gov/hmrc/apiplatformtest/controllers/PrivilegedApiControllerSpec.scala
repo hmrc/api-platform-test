@@ -34,7 +34,7 @@ class PrivilegedApiControllerSpec extends AsyncHmrcSpec with AuthTestSupport wit
     val underTest = new PrivilegedApiController(mockAuthConnector, stubControllerComponents())
   }
 
-  // implicit val timeout = akka.util.Timeout(defaultTimeout)
+  // implicit val timeout = org.apache.pekko.util.Timeout(defaultTimeout)
   // GET        /privileged
   "PrivilegedApiController" should {
     val request = FakeRequest("GET", "/privileged")
@@ -54,7 +54,7 @@ class PrivilegedApiControllerSpec extends AsyncHmrcSpec with AuthTestSupport wit
     }
 
     "handle authorisation errors correctly" in new Setup {
-      withUnauthorizedUser(new UnsupportedAuthProvider())
+      withUnauthorizedUser(UnsupportedAuthProvider())
       val result = underTest.handlePrivilegedAccess()(request)
       status(result) shouldBe Status.FORBIDDEN
 

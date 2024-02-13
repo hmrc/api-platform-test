@@ -18,8 +18,8 @@ package uk.gov.hmrc.apiplatformtest.controllers
 
 import scala.xml.NodeSeq
 
-import akka.stream.Materializer
-import akka.stream.testkit.NoMaterializer
+import org.apache.pekko.stream.Materializer
+import org.apache.pekko.stream.testkit.NoMaterializer
 
 import play.api.http.ContentTypes.XML
 import play.api.http.HeaderNames.{ACCEPT, CONTENT_TYPE}

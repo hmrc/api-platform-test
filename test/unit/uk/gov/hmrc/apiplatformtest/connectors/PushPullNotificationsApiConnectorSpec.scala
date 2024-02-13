@@ -19,11 +19,11 @@ package uk.gov.hmrc.apiplatformtest.connectors
 import java.util.UUID
 import java.util.UUID.randomUUID
 
-import akka.stream.Materializer
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
+import org.apache.pekko.stream.Materializer
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 
