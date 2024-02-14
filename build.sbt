@@ -1,10 +1,6 @@
-
-import play.core.PlayVersion
 import play.sbt.PlayImport._
 import uk.gov.hmrc.DefaultBuildSettings._
-import uk.gov.hmrc.SbtAutoBuildPlugin
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin
-import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
 import bloop.integrations.sbt.BloopDefaults
 
 val appName = "api-platform-test"

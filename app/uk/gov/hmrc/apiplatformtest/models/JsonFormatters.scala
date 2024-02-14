@@ -30,13 +30,11 @@ object JsonFormatters {
   implicit val formatHeader: OFormat[Header]                                 = Json.format[Header]
 
   implicit val formatGGCredId: OFormat[GGCredId]                       = Json.format[GGCredId]
-  implicit val formatVerifyPid: OFormat[VerifyPid]                     = Json.format[VerifyPid]
   implicit val formatPAClientId: OFormat[PAClientId]                   = Json.format[PAClientId]
   implicit val formatStandardApplication: OFormat[StandardApplication] = Json.format[StandardApplication]
 
   implicit val writeLegacyCredentials: Writes[LegacyCredentials] = Writes[LegacyCredentials] {
     case value: GGCredId            => Json.toJson(value)
-    case value: VerifyPid           => Json.toJson(value)
     case value: PAClientId          => Json.toJson(value)
     case OneTimeLogin               => Json.toJson("")
     case value: StandardApplication => Json.toJson(value)

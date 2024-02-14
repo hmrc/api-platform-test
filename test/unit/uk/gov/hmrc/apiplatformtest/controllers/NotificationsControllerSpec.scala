@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import java.time.Instant
 import java.util.UUID
 import java.util.UUID.randomUUID
 import java.util.concurrent.{CountDownLatch, TimeUnit}
@@ -23,9 +24,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.successful
 import scala.concurrent.{ExecutionContext, Future}
 
-import akka.actor.ActorSystem
-import akka.stream.Materializer
-import org.joda.time.DateTime
+import org.apache.pekko.actor.ActorSystem
+import org.apache.pekko.stream.Materializer
 import org.scalatest.concurrent.Eventually
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 
@@ -107,21 +107,21 @@ class NotificationsControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerSuite
     }
 
     "not delay the response by default" in new Setup {
-      val before = new DateTime()
+      val before = Instant.now
       val result = await(underTest.handleNotificationPush(None, None)(request))
-      val after  = new DateTime()
+      val after  = Instant.now
 
       result.header.status shouldBe OK
-      (after.getMillis - before.getMillis).toInt should be < 100
+      (after.toEpochMilli - before.toEpochMilli).toInt should be < 100
     }
 
     "delay the response when a delay is passed in" in new Setup {
-      val before = new DateTime()
+      val before = Instant.now
       val result = await(underTest.handleNotificationPush(None, Some(2))(request))
-      val after  = new DateTime()
+      val after  = Instant.now
 
       result.header.status shouldBe OK
-      (after.getMillis - before.getMillis).toInt should be > 2000
+      (after.toEpochMilli - before.toEpochMilli).toInt should be > 2000
     }
   }
 

@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
-import akka.stream.Materializer
-import akka.stream.testkit.NoMaterializer
+import org.apache.pekko.stream.Materializer
+import org.apache.pekko.stream.testkit.NoMaterializer
 
 import play.api.http.ContentTypes.TEXT
 import play.api.http.HeaderNames.CONTENT_TYPE
@@ -71,7 +71,7 @@ class NrsControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFacto
 
       status(result) shouldBe OK
 
-      val hash: String = extractHashFromJsonResponse(contentAsString(result).toString())
+      val hash: String = extractHashFromJsonResponse(contentAsString(result))
       hash shouldBe "ADBBFE9C486272D641B216E8A18A79D8DA58E89CBB513ED317BA89A75D3C770A"
     }
 

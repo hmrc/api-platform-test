@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.apiplatformtest.controllers
 
+import java.time.Instant
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future.successful
 import scala.concurrent.duration._
 
-import akka.actor.ActorSystem
 import controllers.Assets
-import org.joda.time.DateTime
+import org.apache.pekko.actor.ActorSystem
 
 import play.api.http.Status.OK
 import play.api.mvc.Results.Ok
@@ -49,12 +49,12 @@ class AssetsControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFa
     "delay the response by the duration set in the config" in new Setup {
       when(mockAppContext.assetsDelay).thenReturn(FiniteDuration(2, "sec"))
 
-      val before = new DateTime()
+      val before = Instant.now
       val result = await(underTest.at(fileName)(request))
-      val after  = new DateTime()
+      val after  = Instant.now
 
       result.header.status shouldBe OK
-      (after.getMillis - before.getMillis).toInt should be > 2000
+      (after.toEpochMilli - before.toEpochMilli).toInt should be > 2000
     }
   }
 }

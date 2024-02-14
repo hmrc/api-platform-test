@@ -19,9 +19,9 @@ package uk.gov.hmrc.apiplatformtest.controllers
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
-import akka.actor.ActorSystem
-import akka.pattern.after
 import controllers.Assets
+import org.apache.pekko.actor.ActorSystem
+import org.apache.pekko.pattern.after
 
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.apiplatformtest.config.AppContext
