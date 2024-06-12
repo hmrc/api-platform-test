@@ -43,26 +43,29 @@ class NotificationsController @Inject() (
   )(implicit val ec: ExecutionContext
   ) extends BackendController(cc) with ApplicationLogger {
 
-  def triggerNotification(): Action[AnyContent] = Action.async { implicit request =>
-    def runAsyncProcess(boxId: UUID, correlationId: UUID)(implicit hc: HeaderCarrier): Future[String] = {
-      // Here we would run some asynchronous process, and then save the notification
-      val delay = FiniteDuration(1, TimeUnit.SECONDS)
-      after(delay, actorSystem.scheduler)(successful(())) flatMap { _ =>
-        notificationsService.saveNotification(boxId, Json.obj("correlationId" -> correlationId, "message" -> "test message"))
-      }
-    }
-
-    request.headers.get("X-Client-ID") match {
-      case Some(clientId) =>
-        notificationsService.getBox(clientId) map { boxId =>
-          val correlationId = randomUUID
-          runAsyncProcess(boxId, correlationId)
-          // Return result without waiting for the async process future to complete
-          Ok(Json.obj("boxId" -> boxId, "correlationId" -> correlationId))
+  def triggerNotification(): Action[String] = {
+    Action.async(parsers.tolerantText) { implicit request =>
+      def runAsyncProcess(boxId: UUID, correlationId: UUID)(implicit hc: HeaderCarrier): Future[String] = {
+        // Here we would run some asynchronous process, and then save the notification
+        val delay   = FiniteDuration(1, TimeUnit.SECONDS)
+        val message = if (request.body.isEmpty) "test message" else request.body
+        after(delay, actorSystem.scheduler)(successful(())) flatMap { _ =>
+          notificationsService.saveNotification(boxId, Json.obj("correlationId" -> correlationId, "message" -> message))
         }
-      case _              =>
-        logger.error("X-Client-ID is missing")
-        successful(Status(ErrorInternalServerError.httpStatusCode)(Json.toJson(ErrorInternalServerError)))
+      }
+
+      request.headers.get("X-Client-ID") match {
+        case Some(clientId) =>
+          notificationsService.getBox(clientId) map { boxId =>
+            val correlationId = randomUUID
+            runAsyncProcess(boxId, correlationId)
+            // Return result without waiting for the async process future to complete
+            Ok(Json.obj("boxId" -> boxId, "correlationId" -> correlationId))
+          }
+        case _              =>
+          logger.error("X-Client-ID is missing")
+          successful(Status(ErrorInternalServerError.httpStatusCode)(Json.toJson(ErrorInternalServerError)))
+      }
     }
   }
 
