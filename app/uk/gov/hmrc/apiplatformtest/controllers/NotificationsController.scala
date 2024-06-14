@@ -45,10 +45,14 @@ class NotificationsController @Inject() (
 
   def triggerNotification(): Action[String] = {
     Action.async(parsers.tolerantText) { implicit request =>
+      val message = if (request.hasBody) {
+        logger.info(s"/notifications endpoint: Received notification with payload '${request.body}' and headers '${request.headers.toMap}'")
+        request.body
+      } else "test message"
+
       def runAsyncProcess(boxId: UUID, correlationId: UUID)(implicit hc: HeaderCarrier): Future[String] = {
         // Here we would run some asynchronous process, and then save the notification
         val delay   = FiniteDuration(1, TimeUnit.SECONDS)
-        val message = if (request.body.isEmpty) "test message" else request.body
         after(delay, actorSystem.scheduler)(successful(())) flatMap { _ =>
           notificationsService.saveNotification(boxId, Json.obj("correlationId" -> correlationId, "message" -> message))
         }
@@ -72,7 +76,7 @@ class NotificationsController @Inject() (
   def handleNotificationPush(status: Option[Int], delayInSeconds: Option[Int]): Action[String] = Action.async(parsers.tolerantText) { implicit request =>
     lazy val MaxBodyLength: Int = 10240
     val bodyToLog               = if (request.body.length > MaxBodyLength) request.body.substring(0, MaxBodyLength) + "...(truncated to 10kb)" else request.body
-    logger.info(s"Received notification with payload '${bodyToLog}' and headers '${request.headers.toMap}'")
+    logger.info(s"/destination/notifications endpoint: Received notification with payload '${bodyToLog}' and headers '${request.headers.toMap}'")
     val delay                   = FiniteDuration(delayInSeconds.getOrElse(0).toLong, TimeUnit.SECONDS)
     after(delay, actorSystem.scheduler)(successful(new Status(status.getOrElse(OK))))
   }
