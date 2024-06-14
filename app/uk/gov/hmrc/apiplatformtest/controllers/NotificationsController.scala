@@ -46,7 +46,7 @@ class NotificationsController @Inject() (
   def triggerNotification(): Action[String] = {
     Action.async(parsers.tolerantText) { implicit request =>
       val message = if (request.hasBody) {
-        logger.info(s"/notifications endpoint: Received notification with payload '${request.body}' and headers '${request.headers.toMap}'")
+        logger.info(s"/notifications endpoint: Received notification with payload")
         request.body
       } else "test message"
 
