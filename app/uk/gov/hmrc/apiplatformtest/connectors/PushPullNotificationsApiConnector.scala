@@ -21,25 +21,31 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 import play.api.libs.json.{JsValue, Json, OFormat}
+
 import uk.gov.hmrc.apiplatformtest.connectors.CreateNotificationResponse.formatCreateNotificationResponse
 import uk.gov.hmrc.apiplatformtest.connectors.PushPullNotificationsApiConnector.Config
 import uk.gov.hmrc.http.HttpReads.Implicits._
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, UpstreamErrorResponse}
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, StringContextOps, UpstreamErrorResponse}
 
 @Singleton
-class PushPullNotificationsApiConnector @Inject() (http: HttpClient, config: Config)(implicit ec: ExecutionContext) {
+class PushPullNotificationsApiConnector @Inject()(http: HttpClientV2, config: Config)(implicit ec: ExecutionContext) {
 
   lazy val serviceBaseUrl: String = config.baseUrl
 
   def saveNotification(boxId: UUID, payload: JsValue)(implicit hc: HeaderCarrier): Future[String] = {
     http
-      .POST[JsValue, CreateNotificationResponse](s"$serviceBaseUrl/box/$boxId/notifications", payload)
+      .post(url"$serviceBaseUrl/box/$boxId/notifications")
+      .withBody(payload)
+      .execute[CreateNotificationResponse]
       .map(_.notificationId)
   }
 
   def getBoxId(clientId: String)(implicit hc: HeaderCarrier): Future[UUID] = {
+    val encodedBoxName = "test/api-platform-test##1.0##callbackUrl" // If inlined, the # symbols will be incorrectly URL-encoded to %23
     http
-      .GET[Either[UpstreamErrorResponse, JsValue]](s"$serviceBaseUrl/box", Seq("boxName" -> "test/api-platform-test##1.0##callbackUrl", "clientId" -> clientId))
+      .get(url"$serviceBaseUrl/box?boxName=$encodedBoxName&clientId=$clientId")
+      .execute[Either[UpstreamErrorResponse, JsValue]]
       .map {
         case Right(r)  => (r \ "boxId").as[UUID]
         case Left(err) => throw err
