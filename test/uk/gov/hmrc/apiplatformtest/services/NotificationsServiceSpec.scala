@@ -23,9 +23,10 @@ import scala.concurrent.Future
 
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json.parse
-import uk.gov.hmrc.apiplatformtest.connectors.PushPullNotificationsApiConnector
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.util.AsyncHmrcSpec
+
+import uk.gov.hmrc.apiplatformtest.connectors.PushPullNotificationsApiConnector
 
 class NotificationsServiceSpec extends AsyncHmrcSpec {
 

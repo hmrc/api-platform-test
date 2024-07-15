@@ -21,8 +21,9 @@ import scala.concurrent.Future
 
 import play.api.libs.json._
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import uk.gov.hmrc.apiplatformtest.controllers.HeadersControllerDomain._
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
+
+import uk.gov.hmrc.apiplatformtest.controllers.HeadersControllerDomain._
 
 object HeadersControllerDomain {
   case class IdField(name: String, value: String)

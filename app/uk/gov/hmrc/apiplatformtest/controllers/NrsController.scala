@@ -20,8 +20,9 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.libs.json._
 import play.api.mvc._
-import uk.gov.hmrc.apiplatformtest.services.HashingAlgorithm
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
+
+import uk.gov.hmrc.apiplatformtest.services.HashingAlgorithm
 
 @Singleton
 class NrsController @Inject() (cc: ControllerComponents, parsers: PlayBodyParsers) extends BackendController(cc) {

@@ -21,15 +21,15 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 import play.api.libs.json.{JsValue, Json, OFormat}
+import uk.gov.hmrc.http.HttpReads.Implicits._
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps, UpstreamErrorResponse}
 
 import uk.gov.hmrc.apiplatformtest.connectors.CreateNotificationResponse.formatCreateNotificationResponse
 import uk.gov.hmrc.apiplatformtest.connectors.PushPullNotificationsApiConnector.Config
-import uk.gov.hmrc.http.HttpReads.Implicits._
-import uk.gov.hmrc.http.client.HttpClientV2
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, StringContextOps, UpstreamErrorResponse}
 
 @Singleton
-class PushPullNotificationsApiConnector @Inject()(http: HttpClientV2, config: Config)(implicit ec: ExecutionContext) {
+class PushPullNotificationsApiConnector @Inject() (http: HttpClientV2, config: Config)(implicit ec: ExecutionContext) {
 
   lazy val serviceBaseUrl: String = config.baseUrl
 

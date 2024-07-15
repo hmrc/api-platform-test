@@ -33,9 +33,10 @@ import play.api.http.Status.{ACCEPTED, INTERNAL_SERVER_ERROR, OK}
 import play.api.libs.json.JsValue
 import play.api.test.Helpers._
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
-import uk.gov.hmrc.apiplatformtest.services.NotificationsService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.util.AsyncHmrcSpec
+
+import uk.gov.hmrc.apiplatformtest.services.NotificationsService
 
 class NotificationsControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerSuite with StubControllerComponentsFactory with Eventually {
 

@@ -25,8 +25,6 @@ import play.api.http.Status.{OK, UNAUTHORIZED}
 import play.api.libs.json.JsValue
 import play.api.test.Helpers._
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
-import uk.gov.hmrc.apiplatformtest.models.Header
-import uk.gov.hmrc.apiplatformtest.models.JsonFormatters._
 import uk.gov.hmrc.auth.core.AffinityGroup.Individual
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve._
@@ -34,6 +32,9 @@ import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.util.AsyncHmrcSpec
+
+import uk.gov.hmrc.apiplatformtest.models.Header
+import uk.gov.hmrc.apiplatformtest.models.JsonFormatters._
 
 class HelloWorldControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory {
 
@@ -146,7 +147,10 @@ class HelloWorldControllerSpec extends AsyncHmrcSpec with StubControllerComponen
 
       when(mockAuthConnector.authorise(*, eqTo(authProviderId and credentials and clientId and applicationName and applicationId))(*, *))
         .thenReturn(successful(
-          new ~(new ~(new ~(new ~(retrievedAuthProviderId, Some(retrievedCredentials)), Some(retrievedClientId)), Some(retrievedApplicationName)), Some(retrievedApplicationId))
+          new ~(
+            new ~(new ~(new ~(retrievedAuthProviderId, Some(retrievedCredentials)), Some(retrievedClientId)), Some(retrievedApplicationName)),
+            Some(retrievedApplicationId)
+          )
         ))
 
       val result = underTest.handleBruce()(FakeRequest())
