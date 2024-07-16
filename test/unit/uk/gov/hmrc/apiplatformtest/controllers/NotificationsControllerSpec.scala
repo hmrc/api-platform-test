@@ -62,18 +62,28 @@ class NotificationsControllerSpec extends AsyncHmrcSpec with GuiceOneAppPerSuite
   }
 
   "saveNotification" should {
-    val request = FakeRequest().withHeaders("X-Client-ID" -> clientId)
+    val request         = FakeRequest().withHeaders("X-Client-ID" -> clientId)
+    val requestWithBody = request.withBody("""{"hello":"world"}""")
 
     "not save notification immediately" in new Setup {
-      await(underTest.triggerNotification()(request))
+
+      await(underTest.triggerNotification()(requestWithBody))
 
       cdl.await(5, TimeUnit.MILLISECONDS) shouldBe false // HAS NOT SENT YET
     }
 
     "eventually save notification using the notifications service" in new Setup {
-      await(underTest.triggerNotification()(request))
+      await(underTest.triggerNotification()(requestWithBody))
 
       cdl.await(3, TimeUnit.SECONDS) shouldBe true // HAS NOW SENT IT
+    }
+
+    "return 200 with the box ID and correlation ID when there is a payload" in new Setup {
+      val result = underTest.triggerNotification()(requestWithBody)
+
+      status(result) shouldBe OK
+      (contentAsJson(result) \ "boxId").as[UUID] shouldBe boxId
+      (contentAsJson(result) \ "correlationId").asOpt[UUID] shouldBe defined
     }
 
     "return 200 with the box ID and correlation ID" in new Setup {
