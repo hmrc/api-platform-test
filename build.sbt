@@ -1,14 +1,10 @@
-import play.sbt.PlayImport._
-import uk.gov.hmrc.DefaultBuildSettings._
-import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin
-import bloop.integrations.sbt.BloopDefaults
-
 val appName = "api-platform-test"
 
-lazy val playSettings: Seq[Setting[_]] = Seq.empty
+Global / bloopAggregateSourceDependencies := true
+Global / bloopExportJarClassifiers := Some(Set("sources"))
 
-scalaVersion := "2.13.12"
-
+ThisBuild / scalaVersion := "2.13.12"
+ThisBuild / majorVersion := 0
 ThisBuild / libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
@@ -16,32 +12,22 @@ ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
   .disablePlugins(JUnitXmlReportPlugin)
-  .settings(playSettings: _*)
-  .settings(scalaSettings: _*)
   .settings(ScoverageSettings())
-  .settings(defaultSettings(): _*)
   .settings(Compile / unmanagedResourceDirectories += baseDirectory.value / "resources")
   .settings(
-    name := appName,
-    majorVersion := 0,
     PlayKeys.playDefaultPort := 6704,
     libraryDependencies ++= AppDependencies.libraryDependencies,
-    routesGenerator := InjectedRoutesGenerator,
-    Global / bloopAggregateSourceDependencies := true
+    retrieveManaged := true
   )
   .settings(
-    inConfig(Test)(BloopDefaults.configSettings),
-    Test / testOptions := Seq(Tests.Filter(_ => true)),// this removes duplicated lines in HTML reports
-    Test / unmanagedSourceDirectories += baseDirectory.value / "test" / "unit", // TODO remove unit from tests
-    Test / unmanagedSourceDirectories += baseDirectory.value / "test-common",
-    addTestReportOption(Test, "test-reports")
+    Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-eT"),
+    Test / unmanagedSourceDirectories += baseDirectory.value / "test-common"
   )
   .settings(
     scalacOptions ++= Seq(
-      "-Wconf:cat=unused&src=views/.*\\.scala:s",
-      "-Wconf:cat=unused&src=.*RoutesPrefix\\.scala:s",
-      "-Wconf:cat=unused&src=.*Routes\\.scala:s",
-      "-Wconf:cat=unused&src=.*ReverseRoutes\\.scala:s"
+      // https://www.scala-lang.org/2021/01/12/configuring-and-suppressing-warnings.html
+      // suppress warnings in generated routes files
+      "-Wconf:src=routes/.*:s"
     )
   )
 

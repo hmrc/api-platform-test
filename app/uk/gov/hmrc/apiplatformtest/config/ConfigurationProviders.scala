@@ -20,8 +20,9 @@ import javax.inject.{Inject, Singleton}
 
 import com.google.inject.{AbstractModule, Provider}
 
-import uk.gov.hmrc.apiplatformtest.connectors.PushPullNotificationsApiConnector
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
+
+import uk.gov.hmrc.apiplatformtest.connectors.PushPullNotificationsApiConnector
 
 class ConfigurationModule extends AbstractModule {
 

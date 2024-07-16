@@ -21,9 +21,10 @@ import scala.concurrent.Future.successful
 
 import play.api.libs.json.Json
 import play.api.mvc.{AnyContent, ControllerComponents, Request, Result}
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
+
 import uk.gov.hmrc.apiplatformtest.models.DummyAnswer
 import uk.gov.hmrc.apiplatformtest.models.JsonFormatters.formatDummyAnswer
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 abstract class CommonController(cc: ControllerComponents) extends BackendController(cc) {
 

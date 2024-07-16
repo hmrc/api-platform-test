@@ -28,8 +28,9 @@ import play.api.http.Status.OK
 import play.api.mvc.Results.Ok
 import play.api.mvc.{Action, ActionBuilder, AnyContent}
 import play.api.test.{FakeRequest, StubControllerComponentsFactory}
-import uk.gov.hmrc.apiplatformtest.config.AppContext
 import uk.gov.hmrc.util.AsyncHmrcSpec
+
+import uk.gov.hmrc.apiplatformtest.config.AppContext
 
 class AssetsControllerSpec extends AsyncHmrcSpec with StubControllerComponentsFactory {
   implicit val actorSystemTest: ActorSystem = ActorSystem("test-actor-system")

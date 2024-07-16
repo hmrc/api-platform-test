@@ -24,8 +24,9 @@ import org.apache.pekko.actor.ActorSystem
 import org.apache.pekko.pattern.after
 
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import uk.gov.hmrc.apiplatformtest.config.AppContext
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
+
+import uk.gov.hmrc.apiplatformtest.config.AppContext
 
 @Singleton
 class AssetsController @Inject() (cc: ControllerComponents, actorSystem: ActorSystem, appContext: AppContext, assets: Assets)(implicit val ec: ExecutionContext)

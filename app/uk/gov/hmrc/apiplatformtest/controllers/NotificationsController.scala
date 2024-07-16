@@ -29,10 +29,11 @@ import org.apache.pekko.pattern.after
 
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents, PlayBodyParsers}
-import uk.gov.hmrc.apiplatformtest.services.NotificationsService
-import uk.gov.hmrc.apiplatformtest.utils.ApplicationLogger
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
+
+import uk.gov.hmrc.apiplatformtest.services.NotificationsService
+import uk.gov.hmrc.apiplatformtest.utils.ApplicationLogger
 
 @Singleton
 class NotificationsController @Inject() (
