@@ -1,0 +1,124 @@
+openapi: "3.0.3"
+info:
+  title: API Platform Test
+  version: 5.0.0
+  contact: {}
+servers:
+  - url: https://test-api.service.hmrc.gov.uk/test/api-platform-test
+    description: Sandbox
+  - url: https://api.service.hmrc.gov.uk/test/api-platform-test
+    description: Production
+    variables: {}
+
+components:
+  parameters:
+    acceptHeader:
+      name: Accept
+      in: header
+      schema:
+        type: string
+        enum: [
+          "application/vnd.hmrc.5.0+json"
+        ]
+      required: true
+  securitySchemes:
+    userRestricted:
+      type: oauth2
+      description: |
+        HMRC supports OAuth 2.0 for authenticating user restricted API requests using an OAuth 2.0 Bearer Token in the AUTHORIZATION header.
+        See https://developer.service.hmrc.gov.uk/api-documentation/docs/authorisation/user-restricted-endpoints for details.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.service.hmrc.gov.uk/oauth/authorize
+          tokenUrl: https://api.service.hmrc.gov.uk/oauth/token
+          refreshUrl: https://api.service.hmrc.gov.uk/oauth/refresh
+          scopes:
+            catch-the-mouse: access restricted headers
+paths:
+  /xml:
+    post:
+      summary: Open XML Post endpoint that returns the incoming request body
+      description: |
+        Open XML Post endpoint that returns the incoming request body
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - {}
+  /json:
+    post:
+      summary: Open JSON Post endpoint that returns the incoming request body
+      description: |
+        Open JSON Post endpoint that returns the incoming request body
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - {}
+  /nrs:
+    post:
+      summary: Open Post endpoint that returns SHA-256 hash of the incoming request body
+      description: |
+        Open Post endpoint that returns SHA-256 hash of the incoming request body
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - {}
+  /restricted-xml:
+    get:
+      summary: User-restricted XML Post endpoint that returns the incoming request body
+      description: |
+        User-restricted XML Post endpoint that returns the incoming request body.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - userRestricted:
+            - catch-the-mouse
+  /restricted-json:
+    get:
+      summary: User-restricted JSON Post endpoint that returns the incoming request body
+      description: |
+        User-restricted JSON Post endpoint that returns the incoming request body.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - userRestricted:
+            - catch-the-mouse
+  /restricted-nrs:
+    get:
+      summary: User-restricted Post endpoint that returns SHA-256 hash of the incoming request body
+      description: |
+        User-restricted Post endpoint that returns SHA-256 hash of the incoming request body.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - userRestricted:
+            - catch-the-mouse

@@ -1,0 +1,39 @@
+openapi: "3.0.3"
+info:
+  title: API Platform Test
+  version: 4.0.0
+  contact: {}
+servers:
+  - url: https://test-api.service.hmrc.gov.uk/test/api-platform-test
+    description: Sandbox
+  - url: https://api.service.hmrc.gov.uk/test/api-platform-test
+    description: Production
+    variables: {}
+
+components:
+  parameters:
+    acceptHeader:
+      name: Accept
+      in: header
+      schema:
+        type: string
+        enum: [
+          "application/vnd.hmrc.4.0+json"
+        ]
+      required: true
+paths:
+  /check/location:
+    get:
+      summary: Get Check Location
+      description: |
+        Get Check Location.
+        This endpoint is open access and requires no Authorization header.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - {}

@@ -1,0 +1,52 @@
+openapi: "3.0.3"
+info:
+  title: API Platform Test
+  version: 2.3.0
+  contact: {}
+servers:
+  - url: https://test-api.service.hmrc.gov.uk/test/api-platform-test
+    description: Sandbox
+  - url: https://api.service.hmrc.gov.uk/test/api-platform-test
+    description: Production
+    variables: {}
+
+components:
+  parameters:
+    acceptHeader:
+      name: Accept
+      in: header
+      schema:
+        type: string
+        enum: [
+          "application/vnd.hmrc.2.3+json"
+        ]
+      required: true
+  securitySchemes:
+    userRestricted:
+      type: oauth2
+      description: |
+        HMRC supports OAuth 2.0 for authenticating user restricted API requests using an OAuth 2.0 Bearer Token in the AUTHORIZATION header.
+        See https://developer.service.hmrc.gov.uk/api-documentation/docs/authorisation/user-restricted-endpoints for details.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.service.hmrc.gov.uk/oauth/authorize
+          tokenUrl: https://api.service.hmrc.gov.uk/oauth/token
+          refreshUrl: https://api.service.hmrc.gov.uk/oauth/refresh
+          scopes:
+            catch-the-mouse: access restricted headers
+paths:
+  /:
+    get:
+      summary: dummy resource
+      description: |
+        dummy resource.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - userRestricted:
+            - catch-the-mouse

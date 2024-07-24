@@ -1,0 +1,124 @@
+openapi: "3.0.3"
+info:
+  title: API Platform Test
+  version: 2.0.0
+  contact: {}
+servers:
+  - url: https://test-api.service.hmrc.gov.uk/test/api-platform-test
+    description: Sandbox
+  - url: https://api.service.hmrc.gov.uk/test/api-platform-test
+    description: Production
+    variables: {}
+
+components:
+  parameters:
+    acceptHeader:
+      name: Accept
+      in: header
+      schema:
+        type: string
+        enum: [
+          "application/vnd.hmrc.2.0+json"
+        ]
+      required: true
+paths:
+  /:
+    get:
+      summary: dummy resource
+      description: |
+        dummy resource
+        This endpoint is open access and requires no Authorization header.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - {}
+  /ciao:
+    get:
+      summary: dummy Ciao resource
+      description: |
+        dummy Ciao resource
+        This endpoint is open access and requires no Authorization header.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - name: surname
+          in: query
+          description: |
+            surname
+          required: false
+          schema:
+            type: string
+            example: smith
+        - name: firstName
+          in: query
+          description: |
+            first name
+          required: false
+          schema:
+            type: string
+            example: john
+        - name: middleName
+          in: query
+          description: |
+            first name
+          required: false
+          schema:
+            type: string
+            example: henry
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - {}
+  /{surname}:
+    get:
+      summary: dummy Ciao Surname resource
+      description: |
+        dummy Ciao Surname resource
+        This endpoint is open access and requires no Authorization header.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - name: surname
+          in: path
+          description: |
+            surname
+          required: true
+          schema:
+            type: string
+            example: smith
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - {}
+  /{firstName}:
+    get:
+      summary: dummy Ciao Full Name resource
+      description: |
+        dummy Ciao Full Name resource
+        This endpoint is open access and requires no Authorization header.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - name: firstName
+          in: path
+          description: |
+            first name
+          required: true
+          schema:
+            type: string
+            example: john
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - {}

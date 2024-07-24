@@ -1,0 +1,119 @@
+openapi: "3.0.3"
+info:
+  title: API Platform Test
+  version: 3.0.0
+  contact: {}
+servers:
+  - url: https://test-api.service.hmrc.gov.uk/test/api-platform-test
+    description: Sandbox
+  - url: https://api.service.hmrc.gov.uk/test/api-platform-test
+    description: Production
+    variables: {}
+
+components:
+  parameters:
+    acceptHeader:
+      name: Accept
+      in: header
+      schema:
+        type: string
+        enum: [
+          "application/vnd.hmrc.3.0+json"
+        ]
+      required: true
+    cityName:
+      name: cityName
+      in: path
+      schema:
+        type: string
+        example: london
+      required: true
+    postcode:
+      name: postcode
+      in: path
+      schema:
+        type: string
+        example: SW19 7HX
+      required: true
+paths:
+  /city-details/{cityName}/address:
+    get:
+      summary: Show City & Address - Get Version
+      description: |
+        Show City & Address - Get Version
+        This endpoint is open access and requires no Authorization header.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/cityName'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - {}
+    put:
+      summary: Show City & Address - Put Version
+      description: |
+        Show City & Address - Put Version
+        This endpoint is open access and requires no Authorization header.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/cityName'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - {}
+  /city-details/{cityName}/{postcode}:
+    get:
+      summary: Show City & Postcode - Get Version
+      description: |
+        Show City & Postcode - Get Version
+        This endpoint is open access and requires no Authorization header.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/cityName'
+        - $ref: '#/components/parameters/postcode'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - {}
+    post:
+      summary: Show City & Postcode - Post Version
+      description: |
+        Show City & Postcode - Post Version
+        This endpoint is open access and requires no Authorization header.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/cityName'
+        - $ref: '#/components/parameters/postcode'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - {}
+    delete:
+      summary: Show City & Postcode - Delete Version
+      description: |
+        Show City & Postcode - Delete Version
+        This endpoint is open access and requires no Authorization header.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/cityName'
+        - $ref: '#/components/parameters/postcode'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - {}
+
