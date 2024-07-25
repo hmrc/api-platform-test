@@ -78,7 +78,7 @@ paths:
       security:
         - {}
   /restricted-xml:
-    get:
+    post:
       summary: User-restricted XML Post endpoint that returns the incoming request body
       description: |
         User-restricted XML Post endpoint that returns the incoming request body.
@@ -93,7 +93,7 @@ paths:
         - userRestricted:
             - catch-the-mouse
   /restricted-json:
-    get:
+    post:
       summary: User-restricted JSON Post endpoint that returns the incoming request body
       description: |
         User-restricted JSON Post endpoint that returns the incoming request body.
@@ -108,7 +108,7 @@ paths:
         - userRestricted:
             - catch-the-mouse
   /restricted-nrs:
-    get:
+    post:
       summary: User-restricted Post endpoint that returns SHA-256 hash of the incoming request body
       description: |
         User-restricted Post endpoint that returns SHA-256 hash of the incoming request body.
