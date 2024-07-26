@@ -1,0 +1,1167 @@
+openapi: "3.0.3"
+info:
+  title: API Platform Test
+  version: 1.0.0
+  contact: {}
+servers:
+  - url: https://test-api.service.hmrc.gov.uk/test/api-platform-test
+    description: Sandbox
+  - url: https://api.service.hmrc.gov.uk/test/api-platform-test
+    description: Production
+    variables: {}
+
+components:
+  parameters:
+    acceptHeader:
+      name: Accept
+      in: header
+      schema:
+        type: string
+        enum: [
+          "application/vnd.hmrc.1.0+json"
+        ]
+      required: true
+    givenNameQueryRequired:
+      name: givenName
+      in: query
+      schema:
+        type: string
+        example: john
+      required: true
+      description: Given name
+    givenNameQueryOptional:
+      name: givenName
+      in: query
+      schema:
+        type: string
+        example: john
+      required: false
+      description: Given name
+    givenNamePath:
+      name: givenName
+      in: path
+      schema:
+        type: string
+        example: john
+      required: true
+      description: Given name
+    lastName:
+      name: lastName
+      in: query
+      schema:
+        type: string
+        example: smith
+      required: false
+      description: Family name
+    petNamePath:
+      name: petName
+      in: path
+      schema:
+        type: string
+        example: whiskers
+      required: true
+      description: Pet name
+    preferenceTypeQueryOptional:
+      name: preferenceType
+      in: query
+      schema:
+        type: string
+        example: holiday
+      required: false
+      description: Preference Type
+    ninoPath:
+      name: nino
+      in: path
+      schema:
+        type: string
+        example: AA999999A
+      required: true
+      description: National Insurance Number. This should be provided without spaces (e.g. AA999999A), as spaces in NINOs will be forbidden in a future version of the API.
+    selfEmploymentIdPath:
+      name: selfEmploymentId
+      in: path
+      schema:
+        type: string
+        example: AA999999A
+      required: true
+      description: An identifier for the self-employment business, unique to the customer
+    periodIdPath:
+      name: periodId
+      in: path
+      schema:
+        type: string
+        example: 1234
+      required: true
+      description: Update period ID. An identifier for the period.
+    taxYearPath:
+      name: taxYear
+      in: path
+      schema:
+        type: string
+        example: 2017-18
+      required: true
+      description: The tax year the data applies to
+    taxCalculationIdPath:
+      name: taxCalculationId
+      in: path
+      schema:
+        type: string
+        example: 1234
+      required: true
+      description: The ID of the tax calculation
+    errorCodePath:
+      name: errorCode
+      in: path
+      schema:
+        type: integer
+        example: 404
+      required: true
+      description: Error code
+    challengeQueryRequired:
+      name: challenge
+      in: query
+      schema:
+        type: string
+      required: true
+      description: value the endpoint returns
+    statusQueryOptional:
+      name: status
+      in: query
+      schema:
+        type: integer
+      required: false
+      description: Status that the endpoint will return
+    delayInSecondsQueryOptional:
+      name: delayInSeconds
+      in: query
+      schema:
+        type: integer
+      required: false
+      description: Delay in seconds before the endpoint returns the response
+  securitySchemes:
+    userRestricted:
+      type: oauth2
+      description: |
+        HMRC supports OAuth 2.0 for authenticating user restricted API requests using an OAuth 2.0 Bearer Token in the AUTHORIZATION header.
+        See https://developer.service.hmrc.gov.uk/api-documentation/docs/authorisation/user-restricted-endpoints for details.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.service.hmrc.gov.uk/oauth/authorize
+          tokenUrl: https://api.service.hmrc.gov.uk/oauth/token
+          refreshUrl: https://api.service.hmrc.gov.uk/oauth/refresh
+          scopes:
+            catch-the-mouse: access catch-the-mouse
+    applicationRestricted:
+      type: oauth2
+      description: |
+        HMRC supports OAuth 2.0 for authenticating application restricted API requests using an OAuth 2.0 Bearer Token in the AUTHORIZATION header.
+        See https://developer.service.hmrc.gov.uk/api-documentation/docs/authorisation/application-restricted-endpoints for details.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.service.hmrc.gov.uk/oauth/token
+          scopes:
+            yippie-kai-yay: access yippie-kai-yay
+paths:
+  /hello/world:
+    get:
+      summary: Get hello world
+      description: |
+        Get hello world
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+    post:
+      summary: Post hello world
+      description: |
+        Post hello world
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/hello_world_request.json'
+            example:
+              $ref: './examples/hello_world_request.json'
+        required: true
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /hello/dave:
+    get:
+      summary: Get hello Dave
+      description: |
+        Get hello Dave.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - userRestricted:
+            - catch-the-mouse
+  /hello/bruce:
+    get:
+      summary: Get hello Bruce
+      description: |
+        Get hello Bruce.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted:
+            - yippie-kai-yay
+  /hello/friend:
+    get:
+      summary: Get hello friend
+      description: |
+        Get hello friend.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/givenNameQueryRequired'
+        - $ref: '#/components/parameters/lastName'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+    post:
+      summary: Post hello friend
+      description: |
+        Post hello friend
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/hello_world_request.json'
+            example:
+              $ref: './examples/hello_world_request.json'
+        required: true
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /hello/buddies:
+    get:
+      summary: Get hello buddies
+      description: |
+        Get hello buddies.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/givenNameQueryOptional'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+    post:
+      summary: Post hello buddies
+      description: |
+        Post hello buddies
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/hello_world_request.json'
+            example:
+              $ref: './examples/hello_world_request.json'
+        required: true
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /hello/family/{givenName}:
+    get:
+      summary: Get family member
+      description: |
+        Get family member.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/givenNamePath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+    put:
+      summary: Post family member
+      description: |
+        Post family member
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/givenNamePath'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/hello_world_request.json'
+            example:
+              $ref: './examples/hello_world_request.json'
+        required: true
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /hello/family/{givenName}/pets:
+    get:
+      summary: Get pets
+      description: |
+        Get pets
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/givenNamePath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+    post:
+      summary: Post pets
+      description: |
+        Post pets
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/givenNamePath'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/hello_world_request.json'
+            example:
+              $ref: './examples/hello_world_request.json'
+        required: true
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /hello/family/{givenName}/pets/{petName}:
+    get:
+      summary: Get pet
+      description: |
+        Get pet
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/givenNamePath'
+        - $ref: '#/components/parameters/petNamePath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    put:
+      summary: Put pet
+      description: |
+        Put pet
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/givenNamePath'
+        - $ref: '#/components/parameters/petNamePath'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/hello_world_request.json'
+            example:
+              $ref: './examples/hello_world_request.json'
+        required: true
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+  /hello/family/{givenName}/pets/{petName}/weight:
+    get:
+      summary: Get pet weight
+      description: |
+        Get pet
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/givenNamePath'
+        - $ref: '#/components/parameters/petNamePath'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/hello_world_request.json'
+            example:
+              $ref: './examples/hello_world_request.json'
+        required: true
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    post:
+      summary: Post pet weight
+      description: |
+        Post pet weight
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/givenNamePath'
+        - $ref: '#/components/parameters/petNamePath'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/hello_world_request.json'
+            example:
+              $ref: './examples/hello_world_request.json'
+        required: true
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /hello/family/{givenName}/preference:
+    get:
+      summary: Get preference
+      description: |
+        Get preference
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/givenNamePath'
+        - $ref: '#/components/parameters/preferenceTypeQueryOptional'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+    post:
+      summary: Post preference
+      description: |
+        Post preference
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/givenNamePath'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/hello_world_request.json'
+            example:
+              $ref: './examples/hello_world_request.json'
+        required: true
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/self-employments:
+    get:
+      summary: List all self-employment businesses
+      description: |
+        List all self-employment businesses
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    post:
+      summary: Add a self-employment business [test only]
+      description: |
+        Add a self-employment business. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/self-employments/{selfEmploymentId}:
+    get:
+      summary: Get a self-employment business
+      description: |
+        Get a self-employment business
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/selfEmploymentIdPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    put:
+      summary: Update a self-employment business [test only]
+      description: |
+        Update a self-employment business. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/selfEmploymentIdPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/self-employments/{selfEmploymentId}/obligations:
+    get:
+      summary: Retrieve self-employment business obligations
+      description: |
+        Retrieve self-employment business obligations
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/selfEmploymentIdPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/self-employments/{selfEmploymentId}/periods:
+    get:
+      summary: List all self-employment update periods [test only]
+      description: |
+        List all self-employment update periods. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/selfEmploymentIdPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    post:
+      summary: Create a self-employment update period
+      description: |
+        Create a self-employment update period for submission of periodic data i.e incomes and expenses.
+        Submissions which do not include any incomes or expenses are invalid.
+        You should submit zero values if you do not have incomes or expenses.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/selfEmploymentIdPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/self-employments/{selfEmploymentId}/periods/{periodId}:
+    get:
+      summary: Get a self-employment update period [test only]
+      description: |
+        Get a single self-employment update period for a given identifier. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/selfEmploymentIdPath'
+        - $ref: '#/components/parameters/periodIdPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    post:
+      summary: Update a self-employment update period [test only]
+      description: |
+        Update a self-employment update period. This API is not available in production.
+        Submissions  which do not include any incomes or expenses are invalid.
+        You should submit zero values if you do not have incomes or expenses.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/selfEmploymentIdPath'
+        - $ref: '#/components/parameters/periodIdPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+    put:
+      summary: Update a self-employment update period [test only]
+      description: |
+        Update a self-employment update period. This API is not available in production.
+        Submissions  which do not include any incomes or expenses are invalid.
+        You should submit zero values if you do not have incomes or expenses.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/selfEmploymentIdPath'
+        - $ref: '#/components/parameters/periodIdPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/self-employments/{selfEmploymentId}/taxYear:
+    get:
+      summary: Get a self-employment annual summary [test only]
+      description: |
+        Get a self-employment annual summary for a tax year. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/selfEmploymentIdPath'
+        - $ref: '#/components/parameters/taxYearPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    put:
+      summary: Update a self-employment annual summary [test only]
+      description: |
+        Update a self-employment annual summary for a tax year. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/selfEmploymentIdPath'
+        - $ref: '#/components/parameters/taxYearPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/uk-properties:
+    get:
+      summary: Get a UK property business
+      description: |
+        Get a UK property business
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    post:
+      summary: Add a UK property business [test only]
+      description: |
+        Add a UK property business. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/uk-properties/obligations:
+    get:
+      summary: Retrieve all UK property business obligations
+      description: |
+        Retrieve all UK property business obligations
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/uk-properties/other/periods:
+    get:
+      summary: List all non FHL UK property update periods [test only]
+      description: |
+        List all non FHL UK property update periods [test only]
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    post:
+      summary: Create a non FHL UK property update period
+      description: |
+        Create a non FHL UK property update period for submission of periodic data i.e incomes and expenses.
+        Submissions  which do not include any incomes or expenses are invalid.
+        You should submit zero values if you do not have incomes or expenses.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/uk-properties/other/periods/{periodId}:
+    get:
+      summary: Get a non FHL UK property update period [test only]
+      description: |
+        Get a non FHL UK property update period for a given identifier. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/periodIdPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    put:
+      summary: Update a non FHL UK property update period [test only]
+      description: |
+        Update a non FHL UK property update period. This API is not available in production.
+        Submissions  which do not include any incomes or expenses are invalid.
+        You should submit zero values if you do not have incomes or expenses.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/periodIdPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/uk-properties/other/{taxYear}:
+    get:
+      summary: Get non FHL UK property business annual summary [test only]
+      description: |
+        Get non FHL UK property business for a tax year. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/taxYearPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    put:
+      summary: Update a non-FHL UK property business annual summary [test only]
+      description: |
+        Update a non-FHL UK property business annual summary for a tax year. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/taxYearPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/uk-properties/furnished-holiday-lettings/periods:
+    get:
+      summary: List all FHL UK property update periods [test only]
+      description: |
+        List all FHL UK property update periods. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    post:
+      summary: Create a FHL UK property update period
+      description: |
+        Create a FHL UK property update period for submission of periodic data i.e incomes and expenses.
+        Submissions which do not include any incomes or expenses are invalid.
+        You should submit zero values if you do not have incomes or expenses.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/uk-properties/furnished-holiday-lettings/periods/{periodId}:
+    get:
+      summary: Get a FHL UK property update period [test only]
+      description: |
+        Get a FHL UK property update period for a given identifier. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/periodIdPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    put:
+      summary: Update a FHL UK property update period [test only]
+      description: |
+        Update a FHL UK property update period. This API is not available in production.
+        Submissions which do not include any incomes or expenses are invalid.
+        You should submit zero values if you do not have incomes or expenses.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/periodIdPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/uk-properties/furnished-holiday-lettings/{taxYear}:
+    get:
+      summary: Get a FHL UK property business annual summary [test only]
+      description: |
+        Get a FHL UK property business annual summary for a tax year. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/taxYearPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    put:
+      summary: Update a FHL UK property business annual summary [test only]
+      description: |
+        Update a FHL UK property business annual summary for a tax year. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/taxYearPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/dividends/{taxYear}:
+    get:
+      summary: Get dividends income annual summary [test only]
+      description: |
+        Get dividends income for a tax year. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/taxYearPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    put:
+      summary: Update a dividends income annual summary [test only]
+      description: |
+        Update a dividends income annual summary for a tax year. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/taxYearPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/savings-accounts:
+    get:
+      summary: List all savings accounts [test only]
+      description: |
+        List all savings accounts. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    post:
+      summary: Add a savings account [test only]
+      description: |
+        Add a savings account. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/savings-accounts/{savingsAccountId}:
+    get:
+      summary: Get a savings account [test only]
+      description: |
+        Get a savings account. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    put:
+      summary: Update a savings account [test only]
+      description: |
+        Update a savings account. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/savings-accounts/{savingsAccountId}/{taxYear}:
+    get:
+      summary: Get a savings account annual summary [test only]
+      description: |
+        Get a savings account annual summary for a given tax year. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: [ ]
+    put:
+      summary: Update a savings account annual summary [test only]
+      description: |
+        Update a savings account annual summary for a given tax year. This API is not available in production.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/calculations:
+    post:
+      summary: Trigger a tax calculation [canned]
+      description: |
+        Trigger a tax calculation. Please note that this API will return pre-defined responses that are representative of what may be returned in a future version of this API.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /ni/{nino}/calculations/{taxCalculationId}:
+    get:
+      summary: Retrieve a tax calculation [canned]
+      description: |
+        Retrieve a tax calculation. Please note that this API will return pre-defined responses that are representative of what may be returned in a future version of this API.
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/ninoPath'
+        - $ref: '#/components/parameters/taxCalculationIdPath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /error/{errorCode}:
+    get:
+      summary: Get error
+      description: |
+        Get error
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/errorCodePath'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - {}
+  /notifications:
+    post:
+      summary: Trigger notification
+      description: |
+        Trigger notification
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - applicationRestricted: []
+  /destination/notifications:
+    get:
+      summary: Callback validation
+      description: |
+        Callback validation
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/challengeQueryRequired'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - {}
+    post:
+      summary: Handle notification push
+      description: |
+        Handle notification push
+      tags:
+        - api-platform-test
+      parameters:
+        - $ref: '#/components/parameters/acceptHeader'
+        - $ref: '#/components/parameters/statusQueryOptional'
+        - $ref: '#/components/parameters/delayInSecondsQueryOptional'
+      responses:
+        200:
+          description: "OK Response"
+      security:
+        - {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
