@@ -35,7 +35,7 @@ components:
           scopes:
             catch-the-mouse: access restricted headers
 paths:
-  /:
+  /privileged:
     get:
       summary: dummy resource
       description: |
