@@ -50,7 +50,7 @@ class NotificationsController @Inject() (
 
       def runAsyncProcess(boxId: UUID, correlationId: UUID)(implicit hc: HeaderCarrier): Future[String] = {
         // Here we would run some asynchronous process, and then save the notification
-        val delay   = FiniteDuration(1, TimeUnit.SECONDS)
+        val delay = FiniteDuration(1, TimeUnit.SECONDS)
         after(delay, actorSystem.scheduler)(successful(())) flatMap { _ =>
           notificationsService.saveNotification(boxId, Json.obj("correlationId" -> correlationId, "message" -> message))
         }

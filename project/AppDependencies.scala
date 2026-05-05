@@ -4,7 +4,7 @@ import sbt._
 object AppDependencies {
   lazy val libraryDependencies = compile ++ test
 
-  val bootstrapVersion = "9.0.0"
+  val bootstrapVersion = "10.7.0"
 
   private lazy val compile = Seq(
     ws,
